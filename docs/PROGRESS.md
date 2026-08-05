@@ -36,9 +36,7 @@ story files for exactly this reason; keep doing that for new components.
 
 ## State of the world
 
-- Git repo on `main`, still **zero commits**. This is now the biggest loose
-  end: a full library exists only in the working tree. Recommend committing
-  before anything else.
+- Git repo on `main`, **first commit done** (37b72cf). 162 files, 26,324 lines.
 - Both packages at **0.1.0** with CHANGELOG.md, README.md, and LICENSE.
 - Changesets configured: plain changelog generator, `access: public`,
   `privatePackages: false` (smoke apps excluded). No repository links by
@@ -79,7 +77,7 @@ story files for exactly this reason; keep doing that for new components.
 
 - Actual `pnpm -r publish` — blocked on the user. Needs the `@vegam-ui` scope
   to exist on npm and `npm login`. Never publish without an explicit request.
-- First git commit — blocked on user asking for it.
+- ~~First git commit~~ — ✅ Done 2026-08-05 (37b72cf).
 
 ## Next actions (whenever the user wants them)
 

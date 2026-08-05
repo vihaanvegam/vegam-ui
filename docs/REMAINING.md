@@ -11,26 +11,10 @@ Ordered by how much it would hurt to leave undone.
 
 ## 1. Blocking — needs a human decision or credential
 
-### 1.1 Commit the repository ⚠️ highest risk
+### ~~1.1 Commit the repository~~ ✅ Done 2026-08-05
 
-**There are zero git commits.** `git rev-list HEAD` fails because no commit
-exists; 20 top-level entries are untracked. A complete library — 8 components,
-149 tests, four smoke apps, CI config, and all documentation — exists only in
-the working tree of one machine. An accidental `git clean`, a disk failure, or
-a bad `rm` loses everything.
-
-```bash
-git add -A && git commit -m "feat: initial release of @vegam-ui/ui and @vegam-ui/tokens"
-```
-
-The `.gitignore` is already correct (`node_modules`, `dist`, `.next`,
-`storybook-static`, `*.tgz`). Note that `packages/*/dist` is ignored — that is
-intentional; artifacts are built, not committed.
-
-Husky is installed and a pre-commit hook runs lint-staged. It has **never
-actually executed**, since no commit has ever been made. Expect the first
-commit to be slow while it lints, and expect it to be the first real test of
-that hook.
+First commit created (37b72cf): 162 files, 26,324 lines. Pre-commit hook
+(lint-staged) ran successfully.
 
 ### 1.2 Decide the git remote and push
 
