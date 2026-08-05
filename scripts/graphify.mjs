@@ -429,13 +429,21 @@ if (JSON_ONLY) {
 const output = render(graph);
 const html = renderHtml(graph, readJson(join(root, 'packages', 'tokens', 'src', 'tokens.json')));
 
+// Normalize for cross-platform comparison: collapse whitespace runs, trim lines
+const normalize = (str) =>
+  str
+    .split('\n')
+    .map((line) => line.trimEnd())
+    .join('\n')
+    .trim();
+
 if (CHECK) {
   const stale = [
     [OUTPUT, 'docs/ARCHITECTURE.md', output],
     [HTML_OUTPUT, 'docs/graphify.html', html],
   ].filter(([file, , expected]) => {
     const current = existsSync(file) ? read(file) : '';
-    return current.trim() !== expected.trim();
+    return normalize(current) !== normalize(expected);
   });
 
   if (stale.length > 0) {
