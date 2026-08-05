@@ -71,13 +71,10 @@ screen reader pass (NVDA/VoiceOver) remains manual.
 Nothing catches an unintended CSS change. The token gallery and dark-scheme
 stories make regressions _visible_, but only to a human who looks.
 
-### 3.4 Storybook is not deployed
+### ~~3.4 Storybook is not deployed~~ ✅ Done 2026-08-05
 
-GitHub Pages requires a paid plan for private repos. Options when ready:
-
-- Make the repo public, then enable Pages
-- Use Chromatic (free tier available)
-- Use Vercel/Netlify for static hosting
+Repo is now public. `.github/workflows/storybook.yml` deploys to GitHub Pages.
+Enable Pages: Settings → Pages → Source: **GitHub Actions**.
 
 ---
 
