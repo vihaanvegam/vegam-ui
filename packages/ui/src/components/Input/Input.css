@@ -1,0 +1,75 @@
+.ui-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--ui-color-surface-page);
+  color: var(--ui-color-text-primary);
+  border: var(--ui-border-width-hairline) solid var(--ui-color-border-default);
+  border-radius: var(--ui-radius-md);
+  font-family: var(--ui-font-family-sans);
+  line-height: var(--ui-font-line-height-1-5);
+  transition:
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease),
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+}
+
+.ui-input::placeholder {
+  color: var(--ui-color-text-secondary);
+}
+
+.ui-input:hover:not(:disabled) {
+  border-color: var(--ui-color-border-hover);
+}
+
+.ui-input:focus-visible {
+  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
+    var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+  border-color: var(--ui-color-border-focus);
+}
+
+.ui-input:disabled {
+  background: var(--ui-color-surface-disabled);
+  color: var(--ui-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Invalid state rides on the native aria-invalid attribute — no custom prop. */
+.ui-input[aria-invalid='true'] {
+  border-color: var(--ui-color-border-error);
+}
+.ui-input[aria-invalid='true']:focus-visible {
+  outline-color: var(--ui-color-border-error);
+  border-color: var(--ui-color-border-error);
+}
+
+.ui-input--sm {
+  font-size: var(--ui-font-size-sm);
+  padding: var(--ui-space-1) var(--ui-space-3);
+  min-height: var(--ui-space-8);
+}
+.ui-input--md {
+  font-size: var(--ui-font-size-md);
+  padding: var(--ui-space-2) var(--ui-space-3);
+  min-height: var(--ui-space-10);
+}
+.ui-input--lg {
+  font-size: var(--ui-font-size-xl);
+  padding: var(--ui-space-3) var(--ui-space-4);
+  min-height: var(--ui-space-12);
+}
+
+/* WCAG target size: interactive controls reach at least 44px on touch. */
+@media (pointer: coarse) {
+  .ui-input--sm,
+  .ui-input--md,
+  .ui-input--lg {
+    min-height: var(--ui-space-11, var(--ui-space-12));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-input {
+    transition: none;
+  }
+}

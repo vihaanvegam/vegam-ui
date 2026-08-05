@@ -1,0 +1,42 @@
+.ui-checkbox {
+  box-sizing: border-box;
+  margin: var(--ui-space-0);
+  accent-color: var(--ui-color-action-primary-bg);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ui-checkbox:focus-visible {
+  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
+    var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+}
+
+.ui-checkbox:disabled {
+  cursor: not-allowed;
+}
+
+.ui-checkbox--sm {
+  width: var(--ui-space-4);
+  height: var(--ui-space-4);
+}
+.ui-checkbox--md {
+  width: var(--ui-space-5);
+  height: var(--ui-space-5);
+}
+.ui-checkbox--lg {
+  width: var(--ui-space-6);
+  height: var(--ui-space-6);
+}
+
+/* WCAG 2.5.8 target size: the control itself reaches the 24px AA minimum on
+   coarse pointers; pair it with a clickable label for a larger target (see
+   the component JSDoc and the DECISIONS entry on checkbox target size). */
+@media (pointer: coarse) {
+  .ui-checkbox--sm,
+  .ui-checkbox--md,
+  .ui-checkbox--lg {
+    width: var(--ui-space-6);
+    height: var(--ui-space-6);
+  }
+}

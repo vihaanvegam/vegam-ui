@@ -1,0 +1,12 @@
+/* surface.overlay ships its alpha (rgba scrim values per scheme), so no extra
+   opacity is applied here. blur.standard exists in Figma but not yet in the
+   token export; space-2 (0.5rem = the design's 8px) is the inert-when-filled
+   fallback, same pattern as the focus-ring fallbacks. */
+.ui-blanket {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ui-z-overlay, 1000);
+  background: var(--ui-color-surface-overlay);
+  -webkit-backdrop-filter: blur(var(--ui-blur-standard, var(--ui-space-2)));
+  backdrop-filter: blur(var(--ui-blur-standard, var(--ui-space-2)));
+}

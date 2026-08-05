@@ -1,0 +1,113 @@
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ui-space-2);
+  box-sizing: border-box;
+  border: var(--ui-border-width-hairline) solid transparent;
+  border-radius: var(--ui-radius-md);
+  font-family: var(--ui-font-family-sans);
+  font-weight: var(--ui-font-weight-medium);
+  line-height: var(--ui-font-line-height-1-25);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease),
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease),
+    color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+}
+
+/* focus.ring-width / focus.ring-offset are placeholders in the token source;
+   the fallbacks are real tokens and go inert once the design system fills them. */
+.ui-button:focus-visible {
+  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
+    var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+}
+
+.ui-button--primary {
+  background: var(--ui-color-action-primary-bg);
+  color: var(--ui-color-action-primary-fg-on-solid);
+}
+.ui-button--primary:hover:not(:disabled) {
+  background: var(--ui-color-action-primary-bg-hover);
+}
+.ui-button--primary:active:not(:disabled) {
+  background: var(--ui-color-action-primary-bg-pressed);
+}
+
+/* Secondary is the soft neutral fill, not the solid one: action.neutral.bg is
+   grey-500, which reads as a primary-weight button. */
+.ui-button--secondary {
+  background: var(--ui-color-action-neutral-bg-soft);
+  color: var(--ui-color-text-primary);
+  border-color: var(--ui-color-border-default);
+}
+.ui-button--secondary:hover:not(:disabled) {
+  background: var(--ui-color-surface-disabled);
+}
+.ui-button--secondary:active:not(:disabled) {
+  background: var(--ui-color-border-default);
+}
+
+.ui-button--danger {
+  background: var(--ui-color-action-danger-bg);
+  color: var(--ui-color-action-danger-fg-on-solid);
+}
+.ui-button--danger:hover:not(:disabled) {
+  background: var(--ui-color-action-danger-bg-hover);
+}
+.ui-button--danger:active:not(:disabled) {
+  background: var(--ui-color-action-danger-bg-pressed);
+}
+
+.ui-button--ghost {
+  background: transparent;
+  color: var(--ui-color-text-primary);
+}
+.ui-button--ghost:hover:not(:disabled) {
+  background: var(--ui-color-surface-subtle);
+}
+.ui-button--ghost:active:not(:disabled) {
+  background: var(--ui-color-surface-disabled);
+}
+
+.ui-button:disabled {
+  background: var(--ui-color-surface-disabled);
+  color: var(--ui-color-text-disabled);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+.ui-button--sm {
+  font-size: var(--ui-font-size-sm);
+  padding: var(--ui-space-1) var(--ui-space-3);
+  min-height: var(--ui-space-8);
+}
+.ui-button--md {
+  font-size: var(--ui-font-size-md);
+  padding: var(--ui-space-2) var(--ui-space-4);
+  min-height: var(--ui-space-10);
+}
+.ui-button--lg {
+  font-size: var(--ui-font-size-xl);
+  padding: var(--ui-space-3) var(--ui-space-5);
+  min-height: var(--ui-space-12);
+}
+
+/* WCAG target size: interactive controls reach at least 44px on touch.
+   space.11 (2.75rem) is a placeholder in the token source; space.12 (3rem)
+   also clears the 44px floor. */
+@media (pointer: coarse) {
+  .ui-button--sm,
+  .ui-button--md,
+  .ui-button--lg {
+    min-height: var(--ui-space-11, var(--ui-space-12));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-button {
+    transition: none;
+  }
+}

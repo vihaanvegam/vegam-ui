@@ -1,0 +1,5 @@
+/* The wrapper must not create a box of its own; the data-theme attribute
+   still matches for descendant custom-property remapping. */
+.ui-theme {
+  display: contents;
+}

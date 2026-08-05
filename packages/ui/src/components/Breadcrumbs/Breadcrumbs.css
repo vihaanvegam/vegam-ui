@@ -1,0 +1,141 @@
+.ui-breadcrumbs {
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+}
+
+.ui-breadcrumbs__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ui-space-1);
+  margin: var(--ui-space-0);
+  padding: var(--ui-space-0);
+  list-style: none;
+}
+
+.ui-breadcrumbs__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+}
+
+.ui-breadcrumbs__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  box-sizing: border-box;
+  padding: var(--ui-space-0-5) var(--ui-space-1);
+  border: 0;
+  border-radius: var(--ui-radius-sm);
+  background: transparent;
+  font: inherit;
+  line-height: var(--ui-font-line-height-1-5);
+  color: var(--ui-color-text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+}
+.ui-breadcrumbs__link:hover {
+  color: var(--ui-color-text-primary);
+  text-decoration: underline;
+}
+/* Pressed links flash the action blue, per the Figma press state. */
+.ui-breadcrumbs__link:active {
+  color: var(--ui-color-action-primary-bg);
+  text-decoration: underline;
+}
+
+/* The design binds this ring to focus.ring (not border.focus); ring width and
+   offset placeholders fall back to real tokens as everywhere else. */
+.ui-breadcrumbs__link:focus-visible,
+.ui-breadcrumbs__overflow:focus-visible {
+  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid var(--ui-color-focus-ring);
+  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+}
+
+/* The current page is not a link: quiet color, no hover affordance. */
+.ui-breadcrumbs__link--current,
+.ui-breadcrumbs__link--current:hover,
+.ui-breadcrumbs__link--current:active {
+  color: var(--ui-color-text-primary);
+  text-decoration: none;
+  cursor: default;
+}
+
+.ui-breadcrumbs__label {
+  /* Truncation is opt-in via the truncateWidth prop (sets this variable). */
+  display: block;
+  max-width: var(--ui-breadcrumbs-truncate-width, none);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-breadcrumbs__icon {
+  display: inline-flex;
+  flex: none;
+}
+
+/* Chevron drawn from borders (currentColor) — no icon content. */
+.ui-breadcrumbs__separator {
+  flex: none;
+  width: var(--ui-space-1-5);
+  height: var(--ui-space-1-5);
+  border-right: var(--ui-border-width-icon) solid currentColor;
+  border-top: var(--ui-border-width-icon) solid currentColor;
+  transform: rotate(45deg);
+  color: var(--ui-color-text-tertiary);
+}
+
+.ui-breadcrumbs__overflow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* Figma pads the chip 3px/6px; 3px has no token, so the 2px step is used. */
+  padding: var(--ui-space-0-5) var(--ui-space-1-5);
+  border: 0;
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-color-surface-subtle);
+  color: var(--ui-color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease),
+    color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+}
+.ui-breadcrumbs__overflow:hover {
+  background: var(--ui-color-action-neutral-bg-hover);
+  color: var(--ui-color-text-primary);
+}
+.ui-breadcrumbs__overflow:active {
+  background: var(--ui-color-action-neutral-bg-pressed);
+  color: var(--ui-color-text-primary);
+}
+
+/* Three dots drawn from currentColor — no glyph content. */
+.ui-breadcrumbs__dots {
+  width: var(--ui-space-0-5);
+  height: var(--ui-space-0-5);
+  margin: var(--ui-space-2) var(--ui-space-1-5);
+  border-radius: var(--ui-radius-full);
+  background: currentColor;
+  box-shadow:
+    calc(-1 * var(--ui-space-1)) 0 0 currentColor,
+    var(--ui-space-1) 0 0 currentColor;
+}
+
+/* WCAG target size on touch. space.11 (2.75rem) is a placeholder in the token
+   source; space.12 (3rem) also clears the 44px floor. */
+@media (pointer: coarse) {
+  .ui-breadcrumbs__link:not(.ui-breadcrumbs__link--current),
+  .ui-breadcrumbs__overflow {
+    min-height: var(--ui-space-11, var(--ui-space-12));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-breadcrumbs__link,
+  .ui-breadcrumbs__overflow {
+    transition: none;
+  }
+}

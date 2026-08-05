@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "storybook",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@vegam-ui/ui", "storybook"],
+      "port": 6006
+    },
+    {
+      "name": "graph",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/serve-docs.mjs"],
+      "port": 4173
+    }
+  ]
+}

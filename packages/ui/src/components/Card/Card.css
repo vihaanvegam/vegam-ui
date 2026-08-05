@@ -1,0 +1,27 @@
+.ui-card {
+  box-sizing: border-box;
+  background: var(--ui-color-surface-page);
+  color: var(--ui-color-text-primary);
+  border-radius: var(--ui-radius-lg);
+}
+
+.ui-card--outlined {
+  border: var(--ui-border-width-hairline) solid var(--ui-color-divider-default);
+}
+
+.ui-card--elevated {
+  box-shadow: var(--ui-elevation-md, 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1));
+}
+
+.ui-card--padding-none {
+  padding: var(--ui-space-0);
+}
+.ui-card--padding-sm {
+  padding: var(--ui-space-3);
+}
+.ui-card--padding-md {
+  padding: var(--ui-space-5);
+}
+.ui-card--padding-lg {
+  padding: var(--ui-space-8);
+}

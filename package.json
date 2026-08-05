@@ -1,0 +1,53 @@
+{
+  "name": "@vegam-ui/monorepo",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@11.17.0",
+  "scripts": {
+    "build": "pnpm --filter \"./packages/*\" -r build",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm --filter \"./packages/*\" -r typecheck",
+    "test": "pnpm -r test",
+    "check:package": "pnpm --filter @vegam-ui/ui exec attw --pack . --exclude-entrypoints ./styles.css && pnpm --filter @vegam-ui/ui exec publint",
+    "check:directive": "node scripts/check-directive.mjs",
+    "check:size": "node scripts/check-bundle-size.mjs",
+    "graph": "node scripts/graphify.mjs && prettier --write docs/ARCHITECTURE.md",
+    "graph:check": "node scripts/graphify.mjs --check",
+    "smoke": "node scripts/smoke.mjs",
+    "gates": "pnpm build && pnpm check:package && pnpm check:directive && pnpm smoke",
+    "changeset": "changeset",
+    "release:dry-run": "pnpm -r publish --dry-run --no-git-checks",
+    "release": "pnpm gates && pnpm -r publish",
+    "prepare": "husky",
+    "graph:serve": "node scripts/serve-docs.mjs"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,cjs,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,scss,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@changesets/cli": "^2.31.1",
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "globals": "^17.8.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.2.0",
+    "prettier": "^3.9.6",
+    "publint": "^0.3.22",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.65.0"
+  }
+}

@@ -1,0 +1,36 @@
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  box-sizing: border-box;
+  padding: var(--ui-space-1) var(--ui-space-2);
+  border-radius: var(--ui-radius-full);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-xs);
+  font-weight: var(--ui-font-weight-medium);
+  line-height: var(--ui-font-line-height-1-25);
+}
+
+/* Tones use each intent's soft pair (bg-soft + fg-on-soft), which the token
+   set defines for exactly this: a tinted background with readable text in
+   both schemes. The color.feedback.* group is a placeholder in the source. */
+.ui-badge--neutral {
+  background: var(--ui-color-action-neutral-bg-soft);
+  color: var(--ui-color-action-neutral-fg-on-soft);
+}
+.ui-badge--info {
+  background: var(--ui-color-action-primary-bg-soft);
+  color: var(--ui-color-action-primary-fg-on-soft);
+}
+.ui-badge--success {
+  background: var(--ui-color-action-success-bg-soft);
+  color: var(--ui-color-action-success-fg-on-soft);
+}
+.ui-badge--warning {
+  background: var(--ui-color-action-warning-bg-soft);
+  color: var(--ui-color-action-warning-fg-on-soft);
+}
+.ui-badge--danger {
+  background: var(--ui-color-action-danger-bg-soft);
+  color: var(--ui-color-action-danger-fg-on-soft);
+}

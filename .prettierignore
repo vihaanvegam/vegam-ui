@@ -1,0 +1,9 @@
+node_modules
+dist
+build
+.next
+coverage
+storybook-static
+pnpm-lock.yaml
+.husky
+docs/graphify.html

@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint & format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+      # docs/ARCHITECTURE.md is generated — fail if it drifts from the source
+      - run: pnpm graph:check
+
+  gates:
+    name: Package gates (attw, publint, directive, smoke)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm typecheck
+      - run: pnpm test
+      # Gate 1 + 2: attw and publint against the packed tarball — zero errors
+      - run: pnpm check:package
+      # Gate 4: dist/index.js line 1 must carry 'use client'
+      - run: pnpm check:directive
+      # Gate 3: pack the tarball, install it into all four smoke apps with
+      # plain npm outside the workspace, then build + typecheck each
+      - run: pnpm smoke

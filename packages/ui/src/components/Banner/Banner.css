@@ -1,0 +1,131 @@
+.ui-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ui-space-3);
+  box-sizing: border-box;
+  padding: var(--ui-space-3) var(--ui-space-4);
+  border: var(--ui-border-width-hairline) solid transparent;
+  border-radius: var(--ui-radius-lg);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+}
+
+/* Each intent is the soft triple the token set defines for tinted surfaces:
+   bg-soft behind, border alongside, fg-on-soft for title/icon — AA in both
+   schemes. Figma's "Error" intent maps to the danger group. */
+.ui-banner--info {
+  background: var(--ui-color-action-primary-bg-soft);
+  border-color: var(--ui-color-action-primary-border);
+  color: var(--ui-color-action-primary-fg-on-soft);
+}
+.ui-banner--success {
+  background: var(--ui-color-action-success-bg-soft);
+  border-color: var(--ui-color-action-success-border);
+  color: var(--ui-color-action-success-fg-on-soft);
+}
+.ui-banner--warning {
+  background: var(--ui-color-action-warning-bg-soft);
+  border-color: var(--ui-color-action-warning-border);
+  color: var(--ui-color-action-warning-fg-on-soft);
+}
+.ui-banner--danger {
+  background: var(--ui-color-action-danger-bg-soft);
+  border-color: var(--ui-color-action-danger-border);
+  color: var(--ui-color-action-danger-fg-on-soft);
+}
+
+/* Consumer icons inherit the intent foreground via currentColor. */
+.ui-banner__icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.ui-banner__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--ui-space-0-5);
+  min-width: 0;
+}
+
+.ui-banner__title {
+  font-weight: var(--ui-font-weight-semibold);
+  line-height: var(--ui-font-line-height-1);
+}
+
+.ui-banner__description {
+  color: var(--ui-color-text-secondary);
+  font-weight: var(--ui-font-weight-regular);
+  line-height: var(--ui-font-line-height-1-5);
+}
+
+.ui-banner__actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--ui-space-3);
+}
+
+/* The close glyph is two rotated currentColor bars — the library ships no
+   icon assets (same approach as Select's border-drawn caret). */
+.ui-banner__close {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: var(--ui-space-6);
+  min-height: var(--ui-space-6);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ui-radius-sm);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+}
+.ui-banner__close::before,
+.ui-banner__close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--ui-space-3);
+  height: var(--ui-border-width-icon);
+  border-radius: var(--ui-radius-full);
+  background: currentColor;
+}
+.ui-banner__close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.ui-banner__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.ui-banner__close:hover:not(:disabled) {
+  background: var(--ui-color-surface-subtle);
+}
+
+/* focus.ring-width / focus.ring-offset are placeholders in the token source;
+   the fallbacks are real tokens and go inert once the design system fills them. */
+.ui-banner__close:focus-visible {
+  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
+    var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+}
+
+/* WCAG target size on touch. space.11 (2.75rem) is a placeholder in the token
+   source; space.12 (3rem) also clears the 44px floor. */
+@media (pointer: coarse) {
+  .ui-banner__close {
+    min-width: var(--ui-space-11, var(--ui-space-12));
+    min-height: var(--ui-space-11, var(--ui-space-12));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-banner__close {
+    transition: none;
+  }
+}
