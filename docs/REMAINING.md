@@ -27,22 +27,12 @@ Remote: https://github.com/vihaanvegam/vegam-ui
 - `.github/workflows/release.yml` created
 - RELEASING.md section 2 removed
 
-### 1.4 Publish to npm
+### ~~1.4 Publish to npm~~ ✅ Done 2026-08-05
 
-Not done, and never to be done without an explicit request. Prerequisites:
+Both packages published at 0.1.0:
 
-- The **`@vegam-ui` scope must exist** on npmjs.com and your account must be
-  able to publish to it. Otherwise rename both packages to a scope you own.
-- `npm login` (verify with `npm whoami`)
-- `.changeset/config.json` already sets `"access": "public"` — scoped packages
-  are private by default and npm rejects the publish without it.
-
-```bash
-pnpm gates && pnpm -r publish
-```
-
-The dry run (`pnpm release:dry-run`) is clean and tarball contents were
-verified by hand.
+- https://www.npmjs.com/package/@vegam-ui/ui
+- https://www.npmjs.com/package/@vegam-ui/tokens
 
 ---
 

@@ -38,6 +38,7 @@ story files for exactly this reason; keep doing that for new components.
 
 - Git repo on `main`, pushed to **github.com/vihaanvegam/vegam-ui**.
   Repository links configured, release workflow added.
+- **Published to npm**: @vegam-ui/ui@0.1.0, @vegam-ui/tokens@0.1.0
 - Both packages at **0.1.0** with CHANGELOG.md, README.md, and LICENSE.
 - Changesets configured: plain changelog generator, `access: public`,
   `privatePackages: false` (smoke apps excluded). No repository links by
@@ -76,8 +77,7 @@ story files for exactly this reason; keep doing that for new components.
 
 ## Blocked
 
-- Actual `pnpm -r publish` — blocked on the user. Needs the `@vegam-ui` scope
-  to exist on npm and `npm login`. Never publish without an explicit request.
+- ~~Actual `pnpm -r publish`~~ — ✅ Done 2026-08-05. Both packages at 0.1.0.
 - ~~First git commit~~ — ✅ Done 2026-08-05 (37b72cf).
 
 ## Next actions (whenever the user wants them)
