@@ -65,7 +65,7 @@
     "@vitest/coverage-v8": "^4.1.10",
     "axe-core": "^4.12.1",
     "chromatic": "^18.1.0",
-    "jsdom": "^30.0.0",
+    "jsdom": "^30.0.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "rollup-preserve-directives": "^1.1.3",
