@@ -88,11 +88,10 @@ assertions per component, plus a real NVDA/VoiceOver pass.
 Nothing catches an unintended CSS change. The token gallery and dark-scheme
 stories make regressions _visible_, but only to a human who looks.
 
-### 3.4 Storybook is not deployed
+### ~~3.4 Storybook is not deployed~~ ✅ Done 2026-08-05
 
-`build-storybook` produces `storybook-static/` and is verified to succeed, but
-it is not published anywhere. A GitHub Pages job (or Chromatic, which would
-also cover 3.3) would make it the living documentation it is meant to be.
+`.github/workflows/storybook.yml` deploys to GitHub Pages on every push to main.
+Enable Pages in repo settings: Settings → Pages → Source: GitHub Actions.
 
 ---
 
@@ -133,17 +132,18 @@ Small, cheap, none blocking:
 
 - ~~**CONTRIBUTING.md**~~ — ✅ Done 2026-08-05. Points contributors to
   COMPONENT_RECIPE.md, RUNNING.md, and the pinned-versions warning.
-- **Dependabot / Renovate** — no automated dependency updates. Note the
-  pinned versions that must **not** be bumped casually (ESLint 9, TypeScript 5,
-  Style Dictionary 4, Remix apps on Vite 6/React 18) — reasons in DECISIONS.md.
-  Any bot config should ignore or flag those.
+- ~~**Dependabot / Renovate**~~ — ✅ Done 2026-08-05. `.github/dependabot.yml`
+  with ignore rules for pinned versions (ESLint 9, TypeScript 5, Style Dictionary 4).
 - ~~**Coverage thresholds**~~ — ✅ Done 2026-08-05. vitest.config.ts now enforces
   80% statements/functions/lines, 75% branches. Current coverage: 94%+.
   Run `pnpm --filter @vegam-ui/ui exec vitest run --coverage`.
 - ~~**Bundle-size budget**~~ — ✅ Done 2026-08-05. `pnpm check:size` fails if
   any artifact exceeds its budget (JS 40KB, CJS 30KB, CSS 70KB). Current usage
   ~56-60% of budgets.
-- **Issue/PR templates**, branch protection — all await the remote.
+- ~~**Issue/PR templates**~~ — ✅ Done 2026-08-05. Bug report, feature request,
+  and PR template added.
+- **Branch protection** — configure in GitHub repo settings (require PR reviews,
+  status checks, etc.).
 
 ---
 

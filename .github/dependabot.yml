@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      # Group minor/patch updates to reduce PR noise
+      dev-dependencies:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+      production-dependencies:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # Pinned versions — see docs/DECISIONS.md for reasons
+      - dependency-name: eslint
+        versions: ['>=10']
+      - dependency-name: typescript
+        versions: ['>=6']
+      - dependency-name: style-dictionary
+        versions: ['>=5']
+      # Remix smoke app pins — Vite 6 / React 18 for Remix 2.17 compatibility
+      - dependency-name: vite
+        versions: ['>=7']
+        # Only in apps/smoke-remix
+      - dependency-name: react
+        versions: ['>=19']
+        # Only in apps/smoke-remix and apps/smoke-next-pages
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
