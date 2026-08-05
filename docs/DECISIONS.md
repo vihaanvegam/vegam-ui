@@ -647,3 +647,16 @@ Modal decisions:
   Rejected: building Modal on native <dialog>/showModal (its top-layer and
   focus behavior vary across the support matrix and bypass the [data-theme]
   portal mechanism; revisit when the floor rises).
+
+## 2026-08-05 — Repository links and GitHub changelog generator applied
+
+Context: the repo was pushed to github.com/vihaanvegam/vegam-ui, unblocking
+the deferred repository-link configuration from RELEASING.md section 2.
+Decision: apply the full reversal now — `repository`/`homepage`/`bugs` in both
+package.json files (with `directory` for monorepo subfolder links),
+`@changesets/changelog-github` as the changelog generator, and a
+`.github/workflows/release.yml` that opens version PRs and publishes on merge.
+Consequence: `changeset version` now requires `GITHUB_TOKEN` in the environment
+(locally: `export GITHUB_TOKEN=$(gh auth token)`; CI gets it from
+`secrets.GITHUB_TOKEN`). CI publish requires `NPM_TOKEN` secret. RELEASING.md
+section 2 deleted since it is now applied.

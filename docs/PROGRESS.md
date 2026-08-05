@@ -36,7 +36,8 @@ story files for exactly this reason; keep doing that for new components.
 
 ## State of the world
 
-- Git repo on `main`, **first commit done** (37b72cf). 162 files, 26,324 lines.
+- Git repo on `main`, pushed to **github.com/vihaanvegam/vegam-ui**.
+  Repository links configured, release workflow added.
 - Both packages at **0.1.0** with CHANGELOG.md, README.md, and LICENSE.
 - Changesets configured: plain changelog generator, `access: public`,
   `privatePackages: false` (smoke apps excluded). No repository links by

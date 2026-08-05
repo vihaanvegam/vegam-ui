@@ -1,7 +1,6 @@
 # Releasing
 
-How to cut a release of `@vegam-ui/ui` and `@vegam-ui/tokens`, and how to wire
-up the repository links that are deliberately **not** configured yet.
+How to cut a release of `@vegam-ui/ui` and `@vegam-ui/tokens`.
 
 ---
 
@@ -84,121 +83,7 @@ Requirements before the first publish:
 
 ---
 
-## 2. Adding repository links (not configured yet)
-
-Right now Changesets uses its plain changelog generator: entries are written
-without links back to commits or pull requests, and neither package declares a
-`repository` field. That is a deliberate, easily reversible choice — nothing
-depends on a repo URL existing. Here is everything to change once the remote is
-decided.
-
-### a. Add `repository` to each package.json
-
-`packages/ui/package.json` and `packages/tokens/package.json` — add alongside
-`license`, replacing `ORG/REPO`:
-
-```json
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ORG/REPO.git",
-    "directory": "packages/ui"
-  },
-  "homepage": "https://github.com/ORG/REPO#readme",
-  "bugs": "https://github.com/ORG/REPO/issues",
-```
-
-`directory` must point at that package's folder — it is what makes npm's
-"Repository" link land on the subfolder in a monorepo. Use `packages/tokens`
-for the tokens package.
-
-This also feeds npm's provenance and the sidebar links on npmjs.com. `publint`
-does not require it, but it is the difference between a package that looks
-maintained and one that does not.
-
-### b. Switch Changesets to the GitHub changelog generator
-
-```bash
-pnpm add -w -D @changesets/changelog-github
-```
-
-Then in `.changeset/config.json`, replace the `changelog` line:
-
-```json
-  "changelog": ["@changesets/changelog-github", { "repo": "ORG/REPO" }],
-```
-
-Entries then read `- abc1234: Fix focus ring (#42)` with everything linked.
-
-**This generator requires a `GITHUB_TOKEN` in the environment whenever
-`changeset version` runs** — it calls the GitHub API to resolve commits to PRs
-and authors. Locally: `export GITHUB_TOKEN=$(gh auth token)`. In CI, pass
-`secrets.GITHUB_TOKEN`. Without the token, `changeset version` fails outright,
-which is why this is not enabled by default.
-
-### c. Wire the release workflow (optional but recommended)
-
-Add `.github/workflows/release.yml`. It opens a "Version Packages" PR that
-accumulates pending changesets, and publishes when that PR is merged:
-
-```yaml
-name: Release
-
-on:
-  push:
-    branches: [main]
-
-concurrency: release
-
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write # npm provenance
-
-jobs:
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # changesets needs history
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm gates
-      - uses: changesets/action@v1
-        with:
-          version: pnpm changeset version
-          publish: pnpm -r publish --access public
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-```
-
-Prerequisites:
-
-- Repo secret `NPM_TOKEN` — an npm **automation** token (Access Tokens →
-  Generate New Token → Automation), so it bypasses 2FA in CI
-- Settings → Actions → General → _Allow GitHub Actions to create and approve
-  pull requests_, otherwise the version PR cannot be opened
-- `fetch-depth: 0` is required; a shallow clone makes Changesets miss tags
-
-### d. Checklist
-
-- [ ] `repository` (with `directory`), `homepage`, `bugs` in **both** package.json files
-- [ ] `@changesets/changelog-github` installed and set in `.changeset/config.json`
-- [ ] `GITHUB_TOKEN` available wherever `changeset version` runs
-- [ ] `NPM_TOKEN` secret added, if publishing from CI
-- [ ] Re-run `pnpm gates` — package.json changes affect the packed tarball
-- [ ] Update this file: delete section 2 and note the change in `docs/DECISIONS.md`
-
----
-
-## 3. Version policy
+## 2. Version policy
 
 Versions start at **0.1.0**. While the major is `0`, minor bumps may contain
 breaking changes — signalling that the API is still settling. Cut `1.0.0` when
@@ -211,7 +96,7 @@ stylesheet), so a tokens release does not force a ui release — but a token
 change that alters rendered output should ship a ui release too, since the
 inlined copy only updates when ui is rebuilt.
 
-## 4. Publishing checklist
+## 3. Publishing checklist
 
 - [ ] Changeset written for every consumer-visible change
 - [ ] `pnpm changeset version`, diff reviewed

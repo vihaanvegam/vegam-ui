@@ -16,30 +16,16 @@ Ordered by how much it would hurt to leave undone.
 First commit created (37b72cf): 162 files, 26,324 lines. Pre-commit hook
 (lint-staged) ran successfully.
 
-### 1.2 Decide the git remote and push
+### ~~1.2 Decide the git remote and push~~ ✅ Done 2026-08-05
 
-No remote is configured. Once one exists:
+Remote: https://github.com/vihaanvegam/vegam-ui
 
-```bash
-git remote add origin <url>
-git push -u origin main
-```
+### ~~1.3 Add repository links~~ ✅ Done 2026-08-05
 
-This also unblocks 1.3 and is the only way CI has ever run (see 3.1).
-
-### 1.3 Add repository links
-
-Deliberately omitted per your decision — the full, step-by-step reversal is
-**[RELEASING.md section 2](RELEASING.md#2-adding-repository-links-not-configured-yet)**.
-Summary of what it covers:
-
-- `repository` (with the `directory` field for monorepo subfolder links),
-  `homepage`, and `bugs` in **both** package.json files
-- swapping the plain changelog generator for `@changesets/changelog-github`
-- the `GITHUB_TOKEN` requirement that makes this fail loudly if skipped
-- a ready-to-paste `release.yml`
-
-Delete that section once applied and note it in DECISIONS.md.
+- `repository`, `homepage`, `bugs` added to both package.json files
+- `@changesets/changelog-github` installed and configured
+- `.github/workflows/release.yml` created
+- RELEASING.md section 2 removed
 
 ### 1.4 Publish to npm
 

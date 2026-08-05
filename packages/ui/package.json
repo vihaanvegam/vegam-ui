@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "vegam-ui React component library. Framework-agnostic packaging: ESM + CJS, dual type declarations, one CSS file.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vihaanvegam/vegam-ui.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://github.com/vihaanvegam/vegam-ui#readme",
+  "bugs": "https://github.com/vihaanvegam/vegam-ui/issues",
   "type": "module",
   "sideEffects": [
     "**/*.css"
