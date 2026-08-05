@@ -55,33 +55,16 @@ deliberate choice.
 
 Things that are green locally but not proven in the environments that matter.
 
-### 3.1 CI has never actually run
+### 3.1 CI verification
 
-`.github/workflows/ci.yml` is written and complete (lint/format job + gates
-job), but with no remote it has **never executed on a GitHub runner**. Every
-gate result so far comes from Windows, locally. Specific risks on first run:
+CI workflows upgraded to Node 22 (pnpm 11.17.0 requires it). First run failed
+due to Node version mismatch; should pass after this commit.
 
-- **Linux vs Windows path handling** — the smoke harness needed
-  `realpathSync.native()` for Windows 8.3 short paths; the reverse class of bug
-  is possible on Linux, though less likely.
-- **Wall-clock cost** — the gates job does four full `npm install`s. Expect
-  roughly 10–15 minutes. If that is too slow, cache `~/.npm` or run the four
-  smoke apps as a matrix.
-- **`pnpm/action-setup@v4`** infers the pnpm version from `packageManager`
-  (11.17.0) — verify that resolves on the runner.
+### ~~3.2 Accessibility is reasoned, not machine-verified~~ ✅ Done 2026-08-05
 
-Treat the first CI run as a task, not a formality.
-
-### 3.2 Accessibility is reasoned, not machine-verified
-
-`@storybook/addon-a11y` is installed, so violations surface **interactively in
-Storybook** — but nothing asserts them in CI. Contrast pairs were chosen and
-documented by reasoning about the token values; no tool has verified the
-ratios. Keyboard paths are covered by unit tests (Select's full APG pattern is
-tested), but no screen reader has actually been driven over this library.
-
-Closing this would mean `@storybook/test-runner` with axe, or `vitest-axe`
-assertions per component, plus a real NVDA/VoiceOver pass.
+`vitest-axe` now runs axe-core against all 12 components in CI (19 tests in
+`src/test/a11y.test.tsx`). Keyboard paths are covered by unit tests. A real
+screen reader pass (NVDA/VoiceOver) remains manual.
 
 ### 3.3 No visual regression testing
 
