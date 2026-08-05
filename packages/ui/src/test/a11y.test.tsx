@@ -62,7 +62,7 @@ describe('Accessibility', () => {
 
     it('has no violations as heading', async () => {
       const { container } = render(
-        <Text as="h1" size="7">
+        <Text as="h1" size="display">
           Page Title
         </Text>,
       );
@@ -149,7 +149,7 @@ describe('Accessibility', () => {
   describe('Stack', () => {
     it('has no violations', async () => {
       const { container } = render(
-        <Stack gap="4">
+        <Stack gap={4}>
           <Text>Item 1</Text>
           <Text>Item 2</Text>
         </Stack>,
