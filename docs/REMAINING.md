@@ -66,10 +66,11 @@ due to Node version mismatch; should pass after this commit.
 `src/test/a11y.test.tsx`). Keyboard paths are covered by unit tests. A real
 screen reader pass (NVDA/VoiceOver) remains manual.
 
-### 3.3 No visual regression testing
+### ~~3.3 No visual regression testing~~ ✅ Done 2026-08-05
 
-Nothing catches an unintended CSS change. The token gallery and dark-scheme
-stories make regressions _visible_, but only to a human who looks.
+Chromatic workflow added (`.github/workflows/chromatic.yml`).
+Setup: https://www.chromatic.com → create project → copy token →
+Settings → Secrets → add `CHROMATIC_PROJECT_TOKEN`.
 
 ### ~~3.4 Storybook is not deployed~~ ✅ Done 2026-08-05
 
@@ -125,8 +126,8 @@ Small, cheap, none blocking:
   ~56-60% of budgets.
 - ~~**Issue/PR templates**~~ — ✅ Done 2026-08-05. Bug report, feature request,
   and PR template added.
-- **Branch protection** — configure in GitHub repo settings (require PR reviews,
-  status checks, etc.).
+- **Branch protection** — see instructions in CONTRIBUTING.md or configure
+  manually: Settings → Branches → Add rule → `main`.
 
 ---
 

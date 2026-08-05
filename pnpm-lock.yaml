@@ -213,6 +213,9 @@ importers:
       axe-core:
         specifier: ^4.12.1
         version: 4.12.1
+      chromatic:
+        specifier: ^18.1.0
+        version: 18.1.0
       jsdom:
         specifier: ^30.0.0
         version: 30.0.0
@@ -2760,6 +2763,22 @@ packages:
   chownr@2.0.0:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
+
+  chromatic@18.1.0:
+    resolution: {integrity: sha512-I9av8lUc5CQRlYzwKpmOG9cwYvZ4AFmTvtHeNrzOMC1353F9xYw45CHpSNIsNKuOiqqmzci9esXQd5akl0fi6w==}
+    engines: {node: '>=22.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@chromatic-com/cypress': ^0.*.* || ^1.0.0
+      '@chromatic-com/playwright': ^0.*.* || ^1.0.0
+      '@chromatic-com/vitest': ^0.*.* || ^1.0.0
+    peerDependenciesMeta:
+      '@chromatic-com/cypress':
+        optional: true
+      '@chromatic-com/playwright':
+        optional: true
+      '@chromatic-com/vitest':
+        optional: true
 
   ci-info@3.9.0:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
@@ -8474,6 +8493,10 @@ snapshots:
   chownr@1.1.4: {}
 
   chownr@2.0.0: {}
+
+  chromatic@18.1.0:
+    dependencies:
+      semver: 7.8.5
 
   ci-info@3.9.0: {}
 
