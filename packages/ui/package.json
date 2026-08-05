@@ -1,6 +1,6 @@
 {
   "name": "@vegam-ui/ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "vegam-ui React component library. Framework-agnostic packaging: ESM + CJS, dual type declarations, one CSS file.",
   "license": "MIT",
   "repository": {
