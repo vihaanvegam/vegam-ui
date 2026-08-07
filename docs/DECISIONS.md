@@ -1475,3 +1475,21 @@ screen-reader pass is done; the version bump is not.
   resolves correctly today and resolves to the intended 44px the moment design
   fills it. Logged in TOKENS_PLAN "1.0 reconciliation". Everything else in that
   queue is an enhancement or a rename, not a gap.
+
+## 2026-08-07 (later) — lint-staged moved out of package.json
+
+The pre-commit hook died on the phase 0–6 commit with `eslint --fix: The
+command line is too long.` — Windows caps a command line at ~8k characters,
+and lint-staged appends every staged filename to each command. 230 staged
+files blows past that, so a large commit could never pass its own hook.
+
+`lint-staged.config.js` replaces the `lint-staged` key in package.json,
+because the fix needs functions and JSON can't hold them: above ~6k chars of
+arguments, each command falls back to `.` (whole repo) instead of the file
+list. Same result, one short command, and it matches the forms CI already
+runs (`pnpm lint`, `pnpm format:check`). Small commits still get the fast
+per-file path.
+
+`--no-verify` was not used. The hook exists so that what gets committed is
+formatted; skipping it once trains the habit of skipping it always, and the
+underlying limit would have resurfaced on the next big commit anyway.
