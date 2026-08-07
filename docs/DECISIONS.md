@@ -1515,3 +1515,20 @@ Dropping `@version` from the node label would also work, and is the better
 call if the graph is ever wanted as pure structure — the versions are already
 authoritative in package.json and on npm. Kept for now because showing them
 was deliberate; noted here as the cheaper alternative if this bites again.
+
+**Correction (same day).** The first attempt at this wrote
+`version: pnpm changeset version && pnpm graph` directly in release.yml. That
+made things worse: changesets/action runs the version command through
+`exec(script, undefined, …)` (`@actions/exec`, run.ts:370), which splits the
+string itself and spawns it **without a shell**, so `&&` is passed as a literal
+argument rather than chaining. The bump silently produced no changes, the
+action still reported success, and the release branch was force-pushed to
+main's HEAD — leaving PR #13 open with an empty diff. Nothing was published.
+
+The compound command now lives in the root `version:packages` script
+(`changeset version && pnpm graph`), where pnpm runs it through a shell, and
+release.yml passes the single token `pnpm version:packages`. **Keep that value
+a single token.** Verified locally: `pnpm version:packages` expands and runs
+`changeset version` first (it then stops only because the changelog-github
+generator wants a GITHUB_TOKEN, which CI provides and a laptop does not, and
+it applies no changes when it stops).

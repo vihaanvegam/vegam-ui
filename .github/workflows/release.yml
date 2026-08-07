@@ -30,9 +30,12 @@ jobs:
         with:
           # docs/ARCHITECTURE.md embeds each package's version, so bumping
           # package.json without regenerating it makes graph:check fail on the
-          # version PR. `pnpm graph` here lands the regenerated doc in the same
-          # commit; changesets commits whatever the version command leaves.
-          version: pnpm changeset version && pnpm graph
+          # version PR. version:packages does both; changesets commits whatever
+          # the version command leaves in the tree.
+          # MUST stay a single token — the action runs this via @actions/exec
+          # with no shell, so a literal `&&` here is passed as an argument
+          # instead of chaining, and the bump silently produces nothing.
+          version: pnpm version:packages
           publish: pnpm -r publish --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

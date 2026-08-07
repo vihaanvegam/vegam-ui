@@ -25,6 +25,7 @@
     "smoke": "node scripts/smoke.mjs",
     "gates": "pnpm build && pnpm check:package && pnpm check:directive && pnpm smoke",
     "changeset": "changeset",
+    "version:packages": "changeset version && pnpm graph",
     "release:dry-run": "pnpm -r publish --dry-run --no-git-checks",
     "release": "pnpm gates && pnpm -r publish",
     "prepare": "husky",
