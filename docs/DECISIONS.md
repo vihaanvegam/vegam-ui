@@ -1493,3 +1493,25 @@ per-file path.
 `--no-verify` was not used. The hook exists so that what gets committed is
 formatted; skipping it once trains the habit of skipping it always, and the
 underlying limit would have resurfaced on the next big commit anyway.
+
+## 2026-08-07 (later) — the version PR regenerates the graph
+
+The first "Version Packages" PR (#13) failed CI on `graph:check`. Cause:
+`docs/ARCHITECTURE.md` labels each package node `name@version` (graphify.mjs
+reads `pkg.version`), so `changeset version` bumping package.json without
+re-running the generator puts the two out of sync. Nothing was wrong on main —
+the drift is created by the bot's own commit.
+
+`release.yml`'s version command is now `pnpm changeset version && pnpm graph`;
+changesets commits whatever the version command leaves in the tree, so the
+regenerated doc lands in the same commit. Reproduced locally by hand-bumping
+the three versions (check fails), running `pnpm graph` (check passes).
+
+**Regenerating on the release branch by hand was rejected.** That branch is
+recreated from scratch every time a changeset lands on main, so the fix would
+be wiped and every future release PR would fail identically.
+
+Dropping `@version` from the node label would also work, and is the better
+call if the graph is ever wanted as pure structure — the versions are already
+authoritative in package.json and on npm. Kept for now because showing them
+was deliberate; noted here as the cheaper alternative if this bites again.

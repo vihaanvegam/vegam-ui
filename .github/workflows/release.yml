@@ -28,7 +28,11 @@ jobs:
       - run: pnpm gates
       - uses: changesets/action@v1
         with:
-          version: pnpm changeset version
+          # docs/ARCHITECTURE.md embeds each package's version, so bumping
+          # package.json without regenerating it makes graph:check fail on the
+          # version PR. `pnpm graph` here lands the regenerated doc in the same
+          # commit; changesets commits whatever the version command leaves.
+          version: pnpm changeset version && pnpm graph
           publish: pnpm -r publish --access public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
