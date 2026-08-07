@@ -1,6 +1,6 @@
 {
   "name": "@vegam-ui/tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Design tokens for vegam-ui: CSS custom properties, SCSS variables, and JS constants generated from a single tokens.json.",
   "license": "MIT",
   "repository": {

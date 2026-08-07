@@ -1,6 +1,6 @@
 {
   "name": "@vegam-ui/icons",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "vegam-ui icon set: one tree-shakeable React component per icon, currentColor-driven, server-component safe.",
   "license": "MIT",
   "repository": {

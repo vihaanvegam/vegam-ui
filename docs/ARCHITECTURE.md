@@ -13,9 +13,9 @@ dotted = devDependency, thick = peerDependency.
 
 ```mermaid
 graph LR
-  _vegam_ui_icons["@vegam-ui/icons@0.0.0"]
-  _vegam_ui_tokens["@vegam-ui/tokens@0.1.0"]
-  _vegam_ui_ui["@vegam-ui/ui@0.2.0"]
+  _vegam_ui_icons["@vegam-ui/icons@0.1.0"]
+  _vegam_ui_tokens["@vegam-ui/tokens@0.2.0"]
+  _vegam_ui_ui["@vegam-ui/ui@0.3.0"]
   smoke_next_app["smoke-next-app"]
   smoke_next_pages["smoke-next-pages"]
   smoke_remix["smoke-remix"]
