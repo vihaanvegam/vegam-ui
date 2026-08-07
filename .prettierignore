@@ -7,3 +7,6 @@ storybook-static
 pnpm-lock.yaml
 .husky
 docs/graphify.html
+packages/tokens/src/tokens.json
+packages/icons/svg
+packages/icons/src/icons

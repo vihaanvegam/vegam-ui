@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+﻿import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { Button } from './Button';
 
@@ -58,7 +58,7 @@ export const DarkScheme: Story = {
     <ThemeProvider colorScheme="dark">
       <div
         style={{
-          background: 'var(--ui-color-bg-canvas)',
+          background: 'var(--ui-color-surface-page)',
           padding: 'var(--ui-space-6)',
           display: 'flex',
           gap: 'var(--ui-space-4)',

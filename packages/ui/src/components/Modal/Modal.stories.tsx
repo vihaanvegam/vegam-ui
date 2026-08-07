@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '../Button/Button';
 import { ThemeProvider } from '../../theme/ThemeProvider';
@@ -21,10 +21,10 @@ const WarningIcon = (
 );
 
 /**
- * Story args mirror the Figma component properties (page "Component ·
+ * Story args mirror the Figma component properties (page "Component Â·
  * Modal"): Size and Appearance variants plus the Has Close Button / Show
  * Footer booleans and Title / Description / Body text. Show Blanket is not
- * modeled — the blanket always renders behind an open modal (a modal without
+ * modeled â€” the blanket always renders behind an open modal (a modal without
  * a scrim is a popover, which this library does not ship). The demo keeps
  * `open` in local state so every dismissal affordance actually works.
  */
@@ -133,7 +133,7 @@ export const NoFooter: Story = { args: { showFooter: false } };
 export const DarkScheme: Story = {
   render: (args) => (
     <ThemeProvider colorScheme="dark">
-      <div style={{ background: 'var(--ui-color-bg-canvas)', padding: 'var(--ui-space-6)' }}>
+      <div style={{ background: 'var(--ui-color-surface-page)', padding: 'var(--ui-space-6)' }}>
         <ModalDemo {...args} />
       </div>
     </ThemeProvider>

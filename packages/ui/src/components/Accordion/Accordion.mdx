@@ -1,0 +1,51 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as AccordionStories from './Accordion.stories';
+
+<Meta of={AccordionStories} />
+
+# Accordion
+
+Stacked disclosure sections. Use it to let people scan headings and open only
+what they need — an FAQ, a settings group, a long form split into stages.
+
+**When not to use it:** one panel at a time in a shared region is **Tabs**;
+a single show/hide is just a button and some content.
+
+## Import
+
+```tsx
+import { Accordion } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={AccordionStories.Single} />
+<Canvas of={AccordionStories.Multiple} />
+
+`multiple` also changes the shape of `value`/`onChange`: a single string when
+false, an array when true.
+
+## Props
+
+<Controls of={AccordionStories.Playground} />
+
+## Accessibility
+
+- Each header is a **real heading** wrapping a native `<button>` carrying
+  `aria-expanded` and `aria-controls`; the panel is `role="region"` labelled
+  by its trigger. Set `headingLevel` to whatever fits the surrounding
+  outline — a wrong level is worse than a plain one.
+- **Deliberately no arrow-key navigation.** The APG marks it optional, and
+  headers are already reachable by Tab and by the screen reader's heading
+  list; adding arrows would diverge from native disclosure behaviour for no
+  gain.
+- A collapsed panel is unmounted, so its content is out of the tab order
+  entirely — no focus traps in hidden content.
+
+## Theming
+
+`accordionClasses` exports every part class. The chevron is drawn with
+borders (no icon assets) and rotates behind `prefers-reduced-motion`. No
+`componentDefaults` entry — an accordion has no cosmetic axes.
+
+<Canvas of={AccordionStories.DarkScheme} />

@@ -1,0 +1,74 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as TextStories from './Text.stories';
+
+<Meta of={TextStories} />
+
+# Text
+
+Every piece of typography in the library. It renders the element you ask for
+and styles it from the type scale, so the **element** carries meaning and the
+**props** carry appearance — the two never have to agree.
+
+That separation is the point. A section heading that must look small is still
+an `<h3>`; a visually large lead paragraph is still a `<p>`. Sizing a `<div>`
+to look like a heading, or picking `<h1>` because it is big, is what breaks
+document outline and screen-reader navigation.
+
+## Import
+
+```tsx
+import { Text } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={TextStories.Sizes} />
+
+`size` steps the modular type scale (`xxs` → `display`), `weight` picks a
+shipped font weight, and `tone` applies a semantic colour. **Every one of them
+is optional and inherits when omitted** — a `Text` with no props is just a
+paragraph in the surrounding style, which makes it safe to use everywhere.
+
+<Canvas of={TextStories.Weights} />
+<Canvas of={TextStories.Tones} />
+
+Pick `as` for meaning, then size it however the design needs:
+
+<Canvas of={TextStories.SemanticHeadings} />
+
+```tsx
+<Text as="h2" size="md" weight="semibold">
+  Billing
+</Text>
+<Text tone="muted">Next invoice on the 1st.</Text>
+```
+
+## Props
+
+<Controls of={TextStories.Playground} />
+
+## Accessibility
+
+- **`as` is the accessibility surface.** Headings must be heading elements, in
+  order, without skipping levels — that is how screen-reader users navigate a
+  page. `size` has no effect on the accessibility tree.
+- `as="label"` renders a real `<label>`; pair it with a control's id (or let
+  `Field` do the wiring) so clicking the text focuses the input.
+- **Tone is decoration, not information.** `tone="danger"` colours text red; it
+  does not announce an error. Error text must say it is an error — `Field`'s
+  error slot wires the message into `aria-describedby` and sets
+  `aria-invalid` on the control.
+- All tones clear WCAG AA contrast against the surfaces they are designed for,
+  in both schemes. `disabled` is the deliberate exception the spec permits for
+  inactive content — never use it for text a user must read.
+- Font sizes are rem-based, so they scale with the user's browser text size.
+
+## Theming
+
+- **Class constants**: `textClasses` exports every rendered class
+  (`ui-text`, `ui-text--size-lg`, `ui-text--tone-muted`, …).
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Text: { size: 'sm' } }}` —
+  explicit props always win.
+- **Dark scheme**: tones map to platform text tokens
+  (`--ui-text-primary`, `--ui-text-secondary`, …), so `[data-theme='dark']`
+  remaps the whole scale with no component CSS.

@@ -3,18 +3,18 @@
   width: 100%;
   box-sizing: border-box;
   background: var(--ui-color-surface-page);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
   border: var(--ui-border-width-hairline) solid var(--ui-color-border-default);
   border-radius: var(--ui-radius-md);
   font-family: var(--ui-font-family-sans);
-  line-height: var(--ui-font-line-height-1-5);
+  line-height: 1.5;
   transition:
-    border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease),
-    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard),
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
 }
 
 .ui-input::placeholder {
-  color: var(--ui-color-text-secondary);
+  color: var(--ui-text-secondary);
 }
 
 .ui-input:hover:not(:disabled) {
@@ -22,9 +22,8 @@
 }
 
 .ui-input:focus-visible {
-  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
-    var(--ui-color-border-focus);
-  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
   border-color: var(--ui-color-border-focus);
 }
 

@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Guides/Theming" />
+
+# Theming
+
+Theme state lives entirely in CSS custom properties, selected by DOM
+attributes — never in React context. That makes theming SSR-flash-free,
+nestable, and immune to the dual-package hazard (two React copies cannot
+disagree about CSS).
+
+## Dark mode
+
+Set `data-theme` on any element; every semantic token remaps beneath it:
+
+```html
+<html data-theme="dark">
+  ...
+</html>
+```
+
+Scoped regions nest freely — a light island inside a dark page just works,
+because `[data-theme='light']` re-declares the full semantic set:
+
+```tsx
+<ThemeProvider colorScheme="dark">
+  <App />
+  <ThemeProvider colorScheme="light">
+    <PrintPreview />
+  </ThemeProvider>
+</ThemeProvider>
+```
+
+`ThemeProvider` renders a `display: contents` wrapper carrying the attribute —
+no layout impact, no `document` mutation, safe to nest. Omit `colorScheme` to
+inherit. Overlay surfaces (Select's popup, Modal) portal into the nearest
+`[data-theme]` wrapper so scoped themes apply to them too.
+
+## Overriding tokens
+
+Components read **semantic** tokens only, so restyling is a custom-property
+override — no component CSS involved:
+
+```css
+:root {
+  /* Rebrand the primary action */
+  --ui-color-action-primary-bg: #7c3aed;
+  --ui-color-action-primary-bg-hover: #6d28d9;
+  --ui-color-border-focus: #7c3aed;
+}
+```
+
+Scope overrides under a selector to re-skin one region only. The token
+gallery page lists every token with live swatches in both schemes.
+
+## Per-app component defaults
+
+`ThemeProvider` also carries cosmetic prop defaults (and only cosmetic ones —
+never handlers, content, or semantics):
+
+```tsx
+<ThemeProvider componentDefaults={{ Button: { variant: 'secondary', size: 'sm' } }}>
+  <App />
+</ThemeProvider>
+```
+
+Resolution order: explicit prop → `componentDefaults` → built-in default.
+This is the one theming channel that rides React context, so if your app can
+load two React copies, defaults may not cross that boundary — colors and
+schemes still render correctly because they live in CSS.
+
+## Class-constant overrides
+
+Every component exports its rendered classes (`buttonClasses.root === 'ui-button'`,
+…) as a stable override surface for consumer stylesheets. Component-specific
+dimensions that have no token are exposed as `--ui-<block>-*` custom
+properties (for example the Modal size scale) and can be overridden the same
+way.
+
+## Platform density
+
+The token export also ships a `data-platform` axis (`web` default, `mobile`)
+that swaps sizing/typography selections — e.g. larger touch targets and
+higher text contrast under `data-platform="mobile"`. Nothing in the React API
+sets it today; apply the attribute yourself if your product has a dedicated
+mobile shell.

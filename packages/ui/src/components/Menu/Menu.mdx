@@ -1,0 +1,58 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as MenuStories from './Menu.stories';
+
+<Meta of={MenuStories} />
+
+# Menu
+
+A menu button: a trigger that opens a list of **actions** (the WAI-ARIA APG
+menu-button pattern).
+
+**When not to use it:** picking a _value_ from options is **Select**;
+arbitrary content is **Popover**.
+
+## Import
+
+```tsx
+import { Menu } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={MenuStories.Basic} />
+<Canvas of={MenuStories.Open} />
+
+Items are data. For router links or richer content, `slots.item` renders one
+item — it must render a focusable element carrying `className` and spreading
+`itemProps`:
+
+<Canvas of={MenuStories.LinkItems} />
+
+No ref forwarding is required: Menu locates items by their `role` to move
+focus, so slot output participates in the roving order identically.
+
+## Props
+
+<Controls of={MenuStories.Playground} />
+
+## Accessibility
+
+- Trigger: `aria-haspopup="menu"` + `aria-expanded`. Surface: `role="menu"`
+  named by `label`, items `role="menuitem"`.
+- **Focus MOVES into the menu** (roving tabindex — the APG default here,
+  unlike Select's `aria-activedescendant` model): the active item is the only
+  one with `tabIndex=0`.
+- Keyboard: ArrowDown on the trigger opens focused on the first item,
+  ArrowUp on the last, a pointer click focuses none. Arrows move, Home/End
+  jump, printable characters type-ahead by label, Enter/Space select, Escape
+  closes and **returns focus to the trigger**, Tab closes and lets focus move
+  on naturally.
+- Disabled items are skipped by arrows and type-ahead and never select.
+
+## Theming
+
+`menuClasses` exports root and item classes (including active/disabled);
+`--ui-menu-min-width` and `--ui-menu-max-height` size the surface. Sits on
+`z.popover` so it can open from inside a modal.
+
+<Canvas of={MenuStories.DarkScheme} />

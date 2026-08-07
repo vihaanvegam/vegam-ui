@@ -6,14 +6,14 @@
   width: 100%;
   box-sizing: border-box;
   background: var(--ui-color-surface-page);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
   border: var(--ui-border-width-hairline) solid var(--ui-color-border-default);
   border-radius: var(--ui-radius-md);
   font-family: var(--ui-font-family-sans);
-  line-height: var(--ui-font-line-height-1-5);
+  line-height: 1.5;
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+  transition: border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
 }
 
 .ui-select:hover:not(:disabled) {
@@ -21,9 +21,8 @@
 }
 
 .ui-select:focus-visible {
-  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
-    var(--ui-color-border-focus);
-  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
   border-color: var(--ui-color-border-focus);
 }
 
@@ -40,7 +39,7 @@
 }
 
 .ui-select__value--placeholder {
-  color: var(--ui-color-text-secondary);
+  color: var(--ui-text-secondary);
 }
 
 .ui-select:disabled .ui-select__value--placeholder {
@@ -84,17 +83,16 @@
 
 .ui-select__popup {
   position: fixed;
-  z-index: var(--ui-z-overlay, 1000);
+  /* The z scale's dropdown layer (200) sits below modal (500), but this popup
+     portals outside the modal DOM, so it takes the popover layer — the one
+     the design marks "can open from inside a modal". Flagged in TOKENS_PLAN. */
+  z-index: var(--ui-z-popover);
   box-sizing: border-box;
   background: var(--ui-color-surface-page);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
   border: var(--ui-border-width-hairline) solid var(--ui-color-divider-default);
   border-radius: var(--ui-radius-md);
-  box-shadow: var(
-    --ui-elevation-lg,
-    0 4px 6px -1px rgb(0 0 0 / 0.1),
-    0 2px 4px -2px rgb(0 0 0 / 0.1)
-  );
+  box-shadow: var(--ui-elevation-lg);
   display: flex;
 }
 
@@ -114,8 +112,9 @@
   border-radius: var(--ui-radius-sm);
   font-family: var(--ui-font-family-sans);
   font-size: var(--ui-font-size-sm);
-  line-height: var(--ui-font-line-height-1-5);
-  color: var(--ui-color-text-primary);
+  /* Options are fixed body-size text, so they take the platform body pairing. */
+  line-height: var(--ui-typography-body-line-height);
+  color: var(--ui-text-primary);
   cursor: pointer;
 }
 

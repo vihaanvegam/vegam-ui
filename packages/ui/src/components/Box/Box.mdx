@@ -1,0 +1,57 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as BoxStories from './Box.stories';
+
+<Meta of={BoxStories} />
+
+# Box
+
+The token-typed style primitive: padding, margin, background, radius, border,
+and shadow — every value a **token key**, never a CSS value, so arbitrary
+values are impossible by construction. Box is deliberately _not_ an `sx`
+escape hatch; anything beyond its fixed surface belongs in `className` or
+`style`, which merge normally. For flex or grid layout, reach for Flex, Grid,
+or Stack instead.
+
+## Import
+
+```tsx
+import { Box } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={BoxStories.Padding} />
+
+Every prop is responsive: pass a scalar, or
+`{ base?, tablet?, laptop?, desktop?, wide? }` where a value applies from its
+bound upward. Side props beat axis props beat all-sides props (`pt` > `py` >
+`p`), resolved per breakpoint:
+
+<Canvas of={BoxStories.SidePrecedence} />
+
+Directional names are logical: `pl` pads `inline-start` (left in LTR, right
+in RTL), `pt` pads `block-start`.
+
+<Canvas of={BoxStories.Surfaces} />
+<Canvas of={BoxStories.Elevation} />
+
+## Props
+
+<Controls of={BoxStories.Playground} />
+
+## Accessibility
+
+Renders the element given by `as` (default `div`) with no implicit role and
+no interaction — layout only. Choose `as` for document semantics (`section`,
+`nav`, `main`, …) and pass `role`/`aria-*` through when the region has
+meaning.
+
+## Theming
+
+- Colors come from semantic tokens (`surface.*`, `border.*`), so dark mode is
+  a pure remap — no Box-specific styling exists per scheme.
+- `boxClasses` exports the rendered classes (`ui-box`, `ui-box--bordered`).
+- No `componentDefaults` entry: Box values are per-instance layout, not
+  app-wide cosmetics.
+
+<Canvas of={BoxStories.DarkScheme} />

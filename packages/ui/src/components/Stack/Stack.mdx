@@ -1,0 +1,75 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as StackStories from './Stack.stories';
+
+<Meta of={StackStories} />
+
+# Stack
+
+One-dimensional layout: put children in a row or a column with consistent
+spacing between them. It is the shortest way to stop writing one-off
+`display: flex` rules and margin hacks.
+
+Use `Flex` instead when you need wrapping or **per-breakpoint** values — Stack's
+props are single values by design, which is what keeps it this small. Use
+`Grid` for two-dimensional layout, and `Box` when you want spacing on one
+element rather than between several.
+
+## Import
+
+```tsx
+import { Stack } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={StackStories.Column} />
+
+`direction` picks the axis (`column` by default — the common case), and `gap`
+is a step on the 4px space scale rather than a raw length, so spacing stays on
+the grid.
+
+<Canvas of={StackStories.Row} />
+<Canvas of={StackStories.GapSteps} />
+
+`align` (cross axis) and `justify` (main axis) are both **optional and omitted
+by default**, so Stack falls back to flexbox's own behaviour instead of
+imposing a choice:
+
+<Canvas of={StackStories.Toolbar} />
+
+```tsx
+<Stack direction="row" gap={2} align="center" justify="between">
+  <Text weight="semibold">Team members</Text>
+  <Button size="sm">Invite</Button>
+</Stack>
+```
+
+Gap creates space **between** children only — no leading or trailing edge,
+and nothing to strip when an item is conditionally rendered. That is the whole
+reason to prefer it over margins.
+
+## Props
+
+<Controls of={StackStories.Playground} />
+
+## Accessibility
+
+- Renders a plain `<div>` with **no role**: a stack is visual arrangement, and
+  giving layout a semantic meaning it does not have only adds noise.
+- **Order matters.** Flexbox can reverse or reorder visually, but the
+  accessibility tree and the tab order follow the DOM. Keep the DOM in the
+  order the content should be read; do not use layout to fix a sequence that is
+  wrong in markup.
+- Stack sets no text direction of its own, so `row` follows the document's
+  writing mode and flips correctly under `dir="rtl"`.
+- When a stack groups controls that belong together — a toolbar, a set of
+  filters — give it the semantics yourself via the spread props
+  (`role="group"` with an `aria-label`, or a `<fieldset>`).
+
+## Theming
+
+- **Class constants**: `stackClasses` exports every rendered class
+  (`ui-stack`, `ui-stack--row`, `ui-stack--gap-4`, …).
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Stack: { gap: 2 } }}` —
+  explicit props always win.
+- **Dark scheme**: nothing to remap; Stack paints nothing.

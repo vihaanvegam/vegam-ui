@@ -1,0 +1,95 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Guides/Getting Started" />
+
+# Getting started
+
+`@vegam-ui/ui` is a React component library that works in every React
+framework with zero workarounds: install it, import one CSS file, import
+components.
+
+## Install
+
+```bash
+npm install @vegam-ui/ui
+```
+
+React `>=18` is a peer dependency (React 18 and 19 are both exercised in CI).
+`@types/react` is an optional peer for TypeScript projects.
+
+## One CSS import
+
+Import the stylesheet **once**, at your application root. It contains the
+design tokens and every component style:
+
+```tsx
+import '@vegam-ui/ui/styles.css';
+```
+
+{/* Storybook's MDX has no GFM table support — plain HTML keeps zero deps. */}
+
+<table>
+  <thead>
+    <tr>
+      <th>Framework</th>
+      <th>Where the import goes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Next.js App Router</td>
+      <td>
+        <code>app/layout.tsx</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Next.js Pages Router</td>
+      <td>
+        <code>pages/_app.tsx</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Remix</td>
+      <td>
+        <code>app/root.tsx</code>
+      </td>
+    </tr>
+    <tr>
+      <td>Vite</td>
+      <td>
+        <code>src/main.tsx</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## First component
+
+```tsx
+import { Button } from '@vegam-ui/ui';
+
+export function Example() {
+  return <Button onClick={() => console.log('clicked')}>Click me</Button>;
+}
+```
+
+Every export is named, from the single package entry point — there are no
+default exports and no deep imports. Components forward refs, merge
+`className`, and spread rest props onto their root element, so they compose
+with your own attributes, `data-*` hooks, and test ids.
+
+## React Server Components
+
+The bundle is client-marked (`'use client'`): import the library from client
+components. In the App Router, the file that renders a vegam-ui component
+needs the `'use client'` directive at its top — the server can still render
+that subtree to HTML as usual (full SSR support, no window access during
+render).
+
+## Next steps
+
+- **Theming** — dark mode, token overrides, per-app component defaults: see
+  the Theming guide.
+- **Tokens** — browse every design token live in the token gallery page.
+- Each component's **Docs page** documents its props (generated from the
+  TypeScript types), accessibility behaviour, and theming surface.

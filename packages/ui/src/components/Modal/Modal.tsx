@@ -6,7 +6,7 @@ import { useComponentDefaults } from '../../theme/defaultProps';
 import { cx } from '../../utils/cx';
 import { getTabbables, nextTrapTarget } from '../../utils/focusTrap';
 import { lockScroll } from '../../utils/scrollLock';
-import { useIsomorphicLayoutEffect } from '../../utils/useIsomorphicLayoutEffect';
+import { useIsomorphicLayoutEffect } from '../../hooks/useIsomorphicLayoutEffect';
 import { Blanket } from '../Blanket/Blanket';
 import type { ModalProps } from './Modal.types';
 import './Modal.css';

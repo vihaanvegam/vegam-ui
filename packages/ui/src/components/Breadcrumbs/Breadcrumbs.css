@@ -29,14 +29,15 @@
   border-radius: var(--ui-radius-sm);
   background: transparent;
   font: inherit;
-  line-height: var(--ui-font-line-height-1-5);
-  color: var(--ui-color-text-secondary);
+  /* Crumbs are body-size text, so they take the platform body line-height. */
+  line-height: var(--ui-typography-body-line-height);
+  color: var(--ui-text-secondary);
   text-decoration: none;
   cursor: pointer;
-  transition: color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+  transition: color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
 }
 .ui-breadcrumbs__link:hover {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
   text-decoration: underline;
 }
 /* Pressed links flash the action blue, per the Figma press state. */
@@ -45,19 +46,18 @@
   text-decoration: underline;
 }
 
-/* The design binds this ring to focus.ring (not border.focus); ring width and
-   offset placeholders fall back to real tokens as everywhere else. */
+/* The design binds this ring to focus.ring (not border.focus). */
 .ui-breadcrumbs__link:focus-visible,
 .ui-breadcrumbs__overflow:focus-visible {
-  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid var(--ui-color-focus-ring);
-  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus-ring);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 /* The current page is not a link: quiet color, no hover affordance. */
 .ui-breadcrumbs__link--current,
 .ui-breadcrumbs__link--current:hover,
 .ui-breadcrumbs__link--current:active {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
   text-decoration: none;
   cursor: default;
 }
@@ -84,7 +84,7 @@
   border-right: var(--ui-border-width-icon) solid currentColor;
   border-top: var(--ui-border-width-icon) solid currentColor;
   transform: rotate(45deg);
-  color: var(--ui-color-text-tertiary);
+  color: var(--ui-text-tertiary);
 }
 
 .ui-breadcrumbs__overflow {
@@ -97,19 +97,19 @@
   border: 0;
   border-radius: var(--ui-radius-sm);
   background: var(--ui-color-surface-subtle);
-  color: var(--ui-color-text-secondary);
+  color: var(--ui-text-secondary);
   cursor: pointer;
   transition:
-    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease),
-    color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard),
+    color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
 }
 .ui-breadcrumbs__overflow:hover {
   background: var(--ui-color-action-neutral-bg-hover);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
 }
 .ui-breadcrumbs__overflow:active {
   background: var(--ui-color-action-neutral-bg-pressed);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
 }
 
 /* Three dots drawn from currentColor — no glyph content. */

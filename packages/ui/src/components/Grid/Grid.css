@@ -1,0 +1,170 @@
+/*
+ * Grid consumes per-breakpoint custom properties set inline by the component.
+ * minmax(0, 1fr) keeps tracks equal even when content wants to be wider.
+ * row-gap/column-gap are declared after gap, so their vars win on their axis
+ * when set. Media query bounds are the §8.1 annotated literals.
+ */
+.ui-grid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(var(--ui-grid-columns-base, 1), minmax(0, 1fr));
+  gap: var(--ui-grid-gap-base, 0);
+  row-gap: var(--ui-grid-row-gap-base, var(--ui-grid-gap-base, 0));
+  column-gap: var(--ui-grid-column-gap-base, var(--ui-grid-gap-base, 0));
+}
+
+@media (min-width: 48rem) {
+  /* --ui-breakpoint-tablet */
+  .ui-grid {
+    grid-template-columns: repeat(
+      var(--ui-grid-columns-tablet, var(--ui-grid-columns-base, 1)),
+      minmax(0, 1fr)
+    );
+    row-gap: var(
+      --ui-grid-row-gap-tablet,
+      var(--ui-grid-row-gap-base, var(--ui-grid-gap-tablet, var(--ui-grid-gap-base, 0)))
+    );
+    column-gap: var(
+      --ui-grid-column-gap-tablet,
+      var(--ui-grid-column-gap-base, var(--ui-grid-gap-tablet, var(--ui-grid-gap-base, 0)))
+    );
+  }
+}
+
+@media (min-width: 64rem) {
+  /* --ui-breakpoint-laptop */
+  .ui-grid {
+    grid-template-columns: repeat(
+      var(--ui-grid-columns-laptop, var(--ui-grid-columns-tablet, var(--ui-grid-columns-base, 1))),
+      minmax(0, 1fr)
+    );
+    row-gap: var(
+      --ui-grid-row-gap-laptop,
+      var(
+        --ui-grid-row-gap-tablet,
+        var(
+          --ui-grid-row-gap-base,
+          var(--ui-grid-gap-laptop, var(--ui-grid-gap-tablet, var(--ui-grid-gap-base, 0)))
+        )
+      )
+    );
+    column-gap: var(
+      --ui-grid-column-gap-laptop,
+      var(
+        --ui-grid-column-gap-tablet,
+        var(
+          --ui-grid-column-gap-base,
+          var(--ui-grid-gap-laptop, var(--ui-grid-gap-tablet, var(--ui-grid-gap-base, 0)))
+        )
+      )
+    );
+  }
+}
+
+@media (min-width: 80rem) {
+  /* --ui-breakpoint-desktop */
+  .ui-grid {
+    grid-template-columns: repeat(
+      var(
+        --ui-grid-columns-desktop,
+        var(--ui-grid-columns-laptop, var(--ui-grid-columns-tablet, var(--ui-grid-columns-base, 1)))
+      ),
+      minmax(0, 1fr)
+    );
+    row-gap: var(
+      --ui-grid-row-gap-desktop,
+      var(
+        --ui-grid-row-gap-laptop,
+        var(
+          --ui-grid-row-gap-tablet,
+          var(
+            --ui-grid-row-gap-base,
+            var(
+              --ui-grid-gap-desktop,
+              var(--ui-grid-gap-laptop, var(--ui-grid-gap-tablet, var(--ui-grid-gap-base, 0)))
+            )
+          )
+        )
+      )
+    );
+    column-gap: var(
+      --ui-grid-column-gap-desktop,
+      var(
+        --ui-grid-column-gap-laptop,
+        var(
+          --ui-grid-column-gap-tablet,
+          var(
+            --ui-grid-column-gap-base,
+            var(
+              --ui-grid-gap-desktop,
+              var(--ui-grid-gap-laptop, var(--ui-grid-gap-tablet, var(--ui-grid-gap-base, 0)))
+            )
+          )
+        )
+      )
+    );
+  }
+}
+
+@media (min-width: 100rem) {
+  /* --ui-breakpoint-wide */
+  .ui-grid {
+    grid-template-columns: repeat(
+      var(
+        --ui-grid-columns-wide,
+        var(
+          --ui-grid-columns-desktop,
+          var(
+            --ui-grid-columns-laptop,
+            var(--ui-grid-columns-tablet, var(--ui-grid-columns-base, 1))
+          )
+        )
+      ),
+      minmax(0, 1fr)
+    );
+    row-gap: var(
+      --ui-grid-row-gap-wide,
+      var(
+        --ui-grid-row-gap-desktop,
+        var(
+          --ui-grid-row-gap-laptop,
+          var(
+            --ui-grid-row-gap-tablet,
+            var(
+              --ui-grid-row-gap-base,
+              var(
+                --ui-grid-gap-wide,
+                var(
+                  --ui-grid-gap-desktop,
+                  var(--ui-grid-gap-laptop, var(--ui-grid-gap-tablet, var(--ui-grid-gap-base, 0)))
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+    column-gap: var(
+      --ui-grid-column-gap-wide,
+      var(
+        --ui-grid-column-gap-desktop,
+        var(
+          --ui-grid-column-gap-laptop,
+          var(
+            --ui-grid-column-gap-tablet,
+            var(
+              --ui-grid-column-gap-base,
+              var(
+                --ui-grid-gap-wide,
+                var(
+                  --ui-grid-gap-desktop,
+                  var(--ui-grid-gap-laptop, var(--ui-grid-gap-tablet, var(--ui-grid-gap-base, 0)))
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+}

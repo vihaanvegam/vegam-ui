@@ -1,0 +1,53 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as ChipStories from './Chip.stories';
+
+<Meta of={ChipStories} />
+
+# Chip
+
+A compact label for a value, filter, or selection — this library's Tag.
+
+**Chip vs Badge:** Badge is a _static status marker_ ("Active", "3"). Chip is
+the _interactive_ one. Give it `onClick` to make it activatable, `onRemove`
+to make it dismissible, or neither for a plain label.
+
+## Import
+
+```tsx
+import { Chip } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={ChipStories.Static} />
+<Canvas of={ChipStories.Tones} />
+<Canvas of={ChipStories.Selectable} />
+<Canvas of={ChipStories.Removable} />
+
+## Props
+
+<Controls of={ChipStories.Playground} />
+
+## Accessibility
+
+- A static chip is a `<span>` with no role — it is just text, and inventing a
+  role for it would only add noise.
+- With `onClick` the chip becomes a native `<button>`, so Enter/Space and
+  disabled semantics come from the platform. `selected` is exposed as
+  `aria-pressed`, which is how a toggle's state is conveyed.
+- `onRemove` requires `removeLabel` — an unlabelled ✕ is unusable by screen
+  reader, and the library ships no copy. Name it for the specific chip
+  ("Remove React"), not just "Remove".
+- **An activatable AND removable chip renders two sibling buttons**, never
+  nested ones: a button inside a button is invalid HTML and the inner one is
+  unreachable.
+- Selected state carries a border as well as colour, so it does not depend on
+  colour alone (WCAG 1.4.1).
+
+## Theming
+
+`tone` and `size` are themeable via `componentDefaults={{ Chip: … }}`. The
+neutral tone uses the `component.chip.*` design tokens; the other tones use
+the feedback subtle/foreground pairs, which are contrast-matched by design.
+
+<Canvas of={ChipStories.DarkScheme} />

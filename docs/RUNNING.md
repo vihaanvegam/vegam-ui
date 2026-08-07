@@ -58,14 +58,17 @@ Stop either with `Ctrl+C`.
 
 | Command                | What it does                                                  |
 | ---------------------- | ------------------------------------------------------------- |
-| `pnpm build`           | Builds tokens, then ui (topological order matters)            |
-| `pnpm test`            | Vitest, 149 tests                                             |
+| `pnpm build`           | Builds tokens, then ui and icons (topological order matters)  |
+| `pnpm test`            | Vitest — 653 tests in ui, 94 in icons                         |
 | `pnpm lint`            | ESLint over the whole repo                                    |
 | `pnpm format`          | Prettier, writes fixes                                        |
 | `pnpm format:check`    | Prettier, read-only (what CI runs)                            |
 | `pnpm typecheck`       | `tsc --noEmit` on the packages                                |
 | `pnpm graph`           | Regenerates both relationship graphs                          |
 | `pnpm graph:check`     | Fails if the graphs are stale (what CI runs)                  |
+| `pnpm icons`           | Regenerates packages/icons/src from its committed `svg/`      |
+| `pnpm icons:check`     | Fails if the icon codegen is stale (what CI runs)             |
+| `pnpm icons:import`    | Reports un-exported glyphs, prints the next Figma snippet     |
 | `pnpm gates`           | build → attw → publint → directive → smoke. The release gate. |
 | `pnpm changeset`       | Records a release note for your change                        |
 | `pnpm release:dry-run` | Publish rehearsal, publishes nothing                          |
@@ -143,6 +146,35 @@ Port 4173 busy? `PORT=4300 pnpm graph:serve`.
 
 ---
 
+## Icons: exporting from Figma
+
+`packages/icons/svg/` is design-owned — it arrives by export from the Figma
+library and is never hand-edited, exactly like `tokens.json`. Everything under
+`packages/icons/src/icons/`, plus `src/sizes.ts`, `src/index.ts` and
+`manifest.json`, is **generated and committed**; `pnpm icons:check` fails CI if
+the two disagree.
+
+To add or redraw an icon: change it in Figma, export it into `svg/`, then
+`pnpm icons` and commit both.
+
+⚠ **The Figma Desktop Bridge drops its WebSocket if an `exportAsync` loop runs
+much past 5 seconds, and the plugin does not come back on its own** — you have
+to reopen it in Figma (Plugins → Development → Figma Desktop Bridge). That is
+why the export is batched rather than done in one pass. The loop:
+
+1. `pnpm icons:import` — prints how many are missing and a ready-to-run
+   snippet for the next **8** (the batch size that fits inside the plugin's
+   execution budget).
+2. Run that snippet through the bridge; save the returned JSON to a file.
+3. `pnpm icons:import that.json` — writes those SVGs and prints the next batch.
+4. Repeat until it reports nothing missing, then `pnpm icons` and `pnpm graph`.
+
+A batch that lands is written to disk immediately, so a crash on the next one
+never loses work. `packages/icons/figma-nodes.json` holds every icon's node id
+and doubles as design→code traceability.
+
+---
+
 ## Everyday workflows
 
 **Working on a component**
@@ -215,6 +247,9 @@ gate is designed to bypass.
 | `*.tgz`                         | `pnpm pack`         | ignored       | Release scratch                                 |
 | `docs/ARCHITECTURE.md`          | `pnpm graph`        | **committed** | Reviewable in diffs; CI diffs it                |
 | `docs/graphify.html`            | `pnpm graph`        | **committed** | Viewable without a build step; CI diffs it      |
+| `packages/icons/svg/`           | Figma export        | **committed** | Design source of truth, like `tokens.json`      |
+| `packages/icons/src/icons/`     | `pnpm icons`        | **committed** | It is the package's source; CI diffs it         |
+| `packages/icons/manifest.json`  | `pnpm icons`        | **committed** | Third leg of the `icons:check` drift gate       |
 | `packages/*/CHANGELOG.md`       | `changeset version` | **committed** | It is the release history                       |
 | `.claude/launch.json`           | hand-written        | **committed** | Shared preview configs                          |
 | `.claude/settings.local.json`   | your machine        | ignored       | Per-user                                        |

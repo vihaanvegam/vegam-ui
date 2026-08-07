@@ -1,0 +1,57 @@
+.ui-pagination__list {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* The ellipsis is not interactive — it stands in for skipped pages. */
+.ui-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--ui-size-control-md);
+  color: var(--ui-text-secondary);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+  user-select: none;
+}
+
+/*
+ * Drawn chevrons for previous/next — no icon assets.
+ *
+ * These borders are deliberately PHYSICAL. `transform: rotate()` is
+ * direction-agnostic, so pairing it with logical borders breaks under RTL:
+ * `border-inline-end` flips to the left edge while the rotation stays put,
+ * and a horizontal arrow becomes a vertical one. Physical borders keep the
+ * glyph stable, and the RTL block below mirrors the two arrows that actually
+ * carry direction.
+ */
+.ui-pagination__chevron {
+  inline-size: var(--ui-space-2);
+  block-size: var(--ui-space-2);
+  border-right: var(--ui-border-width-thick) solid currentColor;
+  border-bottom: var(--ui-border-width-thick) solid currentColor;
+}
+
+.ui-pagination__chevron--previous {
+  transform: rotate(135deg);
+  /* Optical centring: the rotated square sits off-axis in its box. */
+  margin-inline-start: var(--ui-space-0-5);
+}
+
+.ui-pagination__chevron--next {
+  transform: rotate(-45deg);
+  margin-inline-end: var(--ui-space-0-5);
+}
+
+/* "Previous" points toward the start of the reading order, which is the
+   right-hand side in RTL — so the pair swaps. */
+[dir='rtl'] .ui-pagination__chevron--previous {
+  transform: rotate(-45deg);
+}
+[dir='rtl'] .ui-pagination__chevron--next {
+  transform: rotate(135deg);
+}

@@ -1,0 +1,54 @@
+/*
+ * The size modifier picks the content-max cap; inline padding tracks the
+ * CURRENT breakpoint's viewport margin token, so a capped page still gets
+ * the right page margins on every screen. Media query bounds are the §8.1
+ * annotated literals.
+ */
+.ui-container {
+  box-sizing: border-box;
+  inline-size: 100%;
+  margin-inline: auto;
+  max-inline-size: var(--ui-container-max);
+  padding-inline: var(--ui-viewport-mobile-margin);
+}
+
+.ui-container--tablet {
+  --ui-container-max: var(--ui-viewport-tablet-content-max);
+}
+.ui-container--laptop {
+  --ui-container-max: var(--ui-viewport-laptop-content-max);
+}
+.ui-container--desktop {
+  --ui-container-max: var(--ui-viewport-desktop-content-max);
+}
+.ui-container--wide {
+  --ui-container-max: var(--ui-viewport-wide-content-max);
+}
+
+@media (min-width: 48rem) {
+  /* --ui-breakpoint-tablet */
+  .ui-container {
+    padding-inline: var(--ui-viewport-tablet-margin);
+  }
+}
+
+@media (min-width: 64rem) {
+  /* --ui-breakpoint-laptop */
+  .ui-container {
+    padding-inline: var(--ui-viewport-laptop-margin);
+  }
+}
+
+@media (min-width: 80rem) {
+  /* --ui-breakpoint-desktop */
+  .ui-container {
+    padding-inline: var(--ui-viewport-desktop-margin);
+  }
+}
+
+@media (min-width: 100rem) {
+  /* --ui-breakpoint-wide */
+  .ui-container {
+    padding-inline: var(--ui-viewport-wide-margin);
+  }
+}

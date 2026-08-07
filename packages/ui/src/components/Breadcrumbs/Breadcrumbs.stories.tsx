@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+﻿import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { Breadcrumbs } from './Breadcrumbs';
 import type { BreadcrumbsItem, BreadcrumbsProps } from './Breadcrumbs.types';
@@ -24,9 +24,9 @@ const TRAIL: BreadcrumbsItem[] = [
 ];
 
 /**
- * Story args mirror the Figma component properties (page "Component ·
- * Breadcrumbs🟢"): the collapsed variant plus the truncationWidth toggle
- * (mapped to the real `truncateWidth` prop — Figma truncates at 120px) and
+ * Story args mirror the Figma component properties (page "Component Â·
+ * BreadcrumbsðŸŸ¢"): the collapsed variant plus the truncationWidth toggle
+ * (mapped to the real `truncateWidth` prop â€” Figma truncates at 120px) and
  * an iconBefore toggle for the first crumb. Items themselves are data;
  * clicking the overflow trigger expands the trail, as in the Figma prototype.
  */
@@ -114,7 +114,7 @@ export const ButtonCrumbs: Story = {
 export const DarkScheme: Story = {
   render: (args) => (
     <ThemeProvider colorScheme="dark">
-      <div style={{ background: 'var(--ui-color-bg-canvas)', padding: 'var(--ui-space-6)' }}>
+      <div style={{ background: 'var(--ui-color-surface-page)', padding: 'var(--ui-space-6)' }}>
         {renderBreadcrumbs(args)}
       </div>
     </ThemeProvider>

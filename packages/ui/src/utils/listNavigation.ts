@@ -26,15 +26,29 @@ export function lastEnabledIndex(items: readonly NavigableItem[]): number {
 
 /**
  * The next enabled index stepping by `delta` from `from` (exclusive).
- * Does not wrap (per the APG listbox pattern); returns `from` unchanged when
- * there is nothing further in that direction.
+ *
+ * Does NOT wrap by default (the APG listbox/menu behaviour Select and Menu
+ * use): it returns `from` unchanged when there is nothing further in that
+ * direction. Pass `loop` for the wrapping variant the APG tabs pattern uses.
+ * Returns `from` when no enabled item exists anywhere.
  */
 export function nextEnabledIndex(
   items: readonly NavigableItem[],
   from: number,
   delta: 1 | -1,
+  loop = false,
 ): number {
-  for (let index = from + delta; index >= 0 && index < items.length; index += delta) {
+  if (!loop) {
+    for (let index = from + delta; index >= 0 && index < items.length; index += delta) {
+      if (!items[index]?.disabled) return index;
+    }
+    return from;
+  }
+  const count = items.length;
+  if (count === 0) return from;
+  // Walk the whole ring once so an all-disabled list terminates.
+  for (let step = 1; step <= count; step += 1) {
+    const index = (((from + delta * step) % count) + count) % count;
     if (!items[index]?.disabled) return index;
   }
   return from;

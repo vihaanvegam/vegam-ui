@@ -1,7 +1,7 @@
 .ui-card {
   box-sizing: border-box;
   background: var(--ui-color-surface-page);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
   border-radius: var(--ui-radius-lg);
 }
 
@@ -10,7 +10,7 @@
 }
 
 .ui-card--elevated {
-  box-shadow: var(--ui-elevation-md, 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1));
+  box-shadow: var(--ui-elevation-md);
 }
 
 .ui-card--padding-none {

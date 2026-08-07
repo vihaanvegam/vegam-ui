@@ -1,0 +1,37 @@
+/*
+ * Styled as a small elevated surface rather than the classic inverted-dark
+ * bubble: the export has no `surface.inverse` token, and component CSS may
+ * only use semantic colours (never a raw grey), so this stays a pure remap
+ * in dark mode. An inverse token is requested in TOKENS_PLAN §3.
+ */
+.ui-tooltip {
+  position: fixed;
+  z-index: var(--ui-z-tooltip);
+  max-inline-size: var(--ui-tooltip-max-width, 18rem);
+  padding: var(--ui-space-1) var(--ui-space-2);
+  border: var(--ui-border-width-hairline) solid var(--ui-color-border-default);
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-color-surface-page);
+  box-shadow: var(--ui-elevation-md);
+  color: var(--ui-text-primary);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-xs);
+  line-height: var(--ui-typography-body-line-height);
+  /* Never swallows pointer events: the bubble can overlap its own trigger,
+     and a hover-out must still register on the trigger underneath. */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--ui-motion-duration-fast) var(--ui-motion-easing-exit);
+}
+
+.ui-tooltip[data-state='entering'],
+.ui-tooltip[data-state='entered'] {
+  opacity: 1;
+  transition-timing-function: var(--ui-motion-easing-enter);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-tooltip {
+    transition: none;
+  }
+}

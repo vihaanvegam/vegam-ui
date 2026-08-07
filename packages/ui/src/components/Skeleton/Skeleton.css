@@ -1,0 +1,63 @@
+/*
+ * The shimmer is a moving highlight over the base fill. surface.disabled is
+ * the base (the design ships no dedicated skeleton token — TOKENS_PLAN §2
+ * leaves that optional), with surface.subtle as the travelling band.
+ */
+.ui-skeleton {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  inline-size: var(--ui-skeleton-width, 100%);
+  background-color: var(--ui-color-surface-disabled);
+  border-radius: var(--ui-skeleton-radius, var(--ui-radius-sm));
+}
+
+.ui-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--ui-color-surface-subtle),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: ui-skeleton-shimmer var(--ui-motion-duration-slow) var(--ui-motion-easing-linear)
+    infinite;
+}
+
+.ui-skeleton--text {
+  /* A line box: height tracks the surrounding type rather than a fixed px. */
+  block-size: 1em;
+  margin-block: 0.25em;
+}
+
+.ui-skeleton--rect {
+  block-size: var(--ui-skeleton-height, var(--ui-space-16));
+}
+
+.ui-skeleton--circle {
+  block-size: var(--ui-skeleton-width, 100%);
+  aspect-ratio: 1;
+  border-radius: var(--ui-radius-full);
+}
+
+/* The last line of a paragraph reads as text when it is short. */
+.ui-skeleton__group > .ui-skeleton:last-child:not(:only-child) {
+  inline-size: 60%;
+}
+
+@keyframes ui-skeleton-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-skeleton::after {
+    animation: none;
+    /* No travelling band; the flat fill still reads as a placeholder. */
+    background-image: none;
+  }
+}

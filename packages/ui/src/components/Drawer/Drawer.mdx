@@ -1,0 +1,54 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as DrawerStories from './Drawer.stories';
+
+<Meta of={DrawerStories} />
+
+# Drawer
+
+An edge-anchored modal panel. It is Modal's machinery end to end — scrim,
+focus trap, scroll lock, controlled-only API, portal into the nearest
+`[data-theme]` — with a placement axis and a slide transition.
+
+**When not to use it:** a centered dialog is **Modal**; a non-modal anchored
+surface is **Popover**.
+
+## Import
+
+```tsx
+import { Drawer } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={DrawerStories.Right} />
+<Canvas of={DrawerStories.Bottom} />
+
+Controlled only: `open` shows it, and every dismissal affordance (Escape,
+scrim click, close button) reports through `onClose` — you flip `open`.
+
+A close button renders only when **both** `onClose` and `closeLabel` are
+given; the label is never defaulted, since the library ships no copy.
+
+## Props
+
+<Controls of={DrawerStories.Playground} />
+
+## Accessibility
+
+- `role="dialog"` + `aria-modal="true"`, named by `title` and described by
+  `description`.
+- Focus moves to the first tabbable inside on open (the panel itself as
+  fallback) and returns to the previously focused element on close.
+- Tab and Shift+Tab are trapped inside the panel, and Escape closes — both
+  handled at the document, so focus that escapes to the browser chrome is
+  recaptured.
+- The scrim is pointer-only and `aria-hidden`; Escape is the keyboard path.
+- Under `prefers-reduced-motion` the panel appears without sliding.
+
+## Theming
+
+`placement` and `size` are themeable via `componentDefaults={{ Drawer: … }}`.
+`drawerClasses` exports every part class; sizes ride `--ui-drawer-size` —
+component custom properties, since the token export has no drawer scale.
+
+<Canvas of={DrawerStories.DarkScheme} />

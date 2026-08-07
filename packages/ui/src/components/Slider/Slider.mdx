@@ -1,0 +1,58 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as SliderStories from './Slider.stories';
+
+<Meta of={SliderStories} />
+
+# Slider
+
+A horizontal single-value slider (the WAI-ARIA APG pattern). Press anywhere
+on the control to jump and drag; the thumb takes the keyboard: arrows step,
+Home/End hit the bounds, Page keys jump ten steps. Values snap to `step` and
+clamp to `min`/`max`.
+
+## Import
+
+```tsx
+import { Slider } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={SliderStories.Basic} />
+<Canvas of={SliderStories.Steps} />
+<Canvas of={SliderStories.InField} />
+
+When `name` is set, a hidden input carries the value in form submissions
+(Select's precedent).
+
+## Props
+
+<Controls of={SliderStories.Playground} />
+
+## Accessibility
+
+- The thumb is the focusable `role="slider"` element with
+  `aria-valuemin`/`-valuemax`/`-valuenow`; the ref forwards to it so
+  `ref.current.focus()` works.
+- Name it via `aria-label`/`aria-labelledby`, or wrap it in a Field — the
+  field label wires to the thumb via `aria-labelledby`.
+- **Set `aria-valuetext` whenever the number is not what the user should
+  hear** — a day picker should announce "Wednesday", not "3"; a size picker
+  "Large", not "2". It is forwarded to the thumb, as are `aria-describedby`,
+  `aria-invalid`, and `aria-errormessage`. Non-ARIA props spread on the root.
+- The whole control is the pointer target (not just the thumb), and the hit
+  area grows toward the 44px floor on coarse pointers.
+- Two deliberate omissions: a Field's `required` is not forwarded
+  (`aria-required` is unsupported on the `slider` role, and a slider always
+  has a value), and `aria-orientation` is not a prop — this slider is
+  horizontal-only, so it must not claim otherwise.
+- RTL value direction is not yet mirrored — a documented limitation until
+  the library-wide RTL audit.
+
+## Theming
+
+Drawn entirely from tokens; the geometry rides component custom properties
+(`--ui-slider-track-size`, `--ui-slider-thumb-size`) as the documented
+override surface. `sliderClasses` exports every part class.
+
+<Canvas of={SliderStories.DarkScheme} />

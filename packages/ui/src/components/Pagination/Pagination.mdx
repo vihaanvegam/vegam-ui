@@ -1,0 +1,54 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as PaginationStories from './Pagination.stories';
+
+<Meta of={PaginationStories} />
+
+# Pagination
+
+Page navigation, composed from Button and IconButton so it inherits their
+focus rings, disabled semantics, and touch targets.
+
+## Import
+
+```tsx
+import { Pagination } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={PaginationStories.Middle} />
+<Canvas of={PaginationStories.AllPagesFit} />
+
+Gaps only appear when they hide more than they cost: with few enough pages,
+every page is listed instead. `siblingCount` widens the window around the
+current page.
+
+<Canvas of={PaginationStories.WiderWindow} />
+
+## Props
+
+<Controls of={PaginationStories.Playground} />
+
+## Accessibility
+
+- A `<nav>` landmark named by `label`, wrapping a list — so a screen reader
+  announces how many pages are on offer.
+- The current page carries `aria-current="page"`, the standard "you are here"
+  signal.
+- **The ellipsis is inert text, not a disabled button** — it never takes
+  focus, because there is nothing to activate.
+- Previous/next are icon buttons named by the required `previousLabel` /
+  `nextLabel`, and they disable at the ends rather than wrapping, so the
+  boundary is discoverable rather than surprising.
+- `pageLabel` gives each number a fuller name ("Page 3") when the bare digit
+  reads poorly in a list of links.
+- All copy is consumer-supplied; the library ships none.
+
+## Theming
+
+`paginationClasses` exports the part classes, and `slotProps.page` /
+`slotProps.step` pass props to the composed buttons (their accessible names
+stay owned by the label props). The exported `paginationRange` helper is the
+page-window arithmetic, should you need the same layout elsewhere.
+
+<Canvas of={PaginationStories.DarkScheme} />

@@ -1,0 +1,47 @@
+.ui-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  inline-size: var(--ui-avatar-size);
+  block-size: var(--ui-avatar-size);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--ui-color-action-neutral-bg-soft);
+  color: var(--ui-color-action-neutral-fg-on-soft);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-avatar-font-size);
+  font-weight: var(--ui-font-weight-medium);
+  line-height: 1;
+  user-select: none;
+}
+
+.ui-avatar--circle {
+  border-radius: var(--ui-radius-full);
+}
+.ui-avatar--square {
+  border-radius: var(--ui-radius-md);
+}
+
+.ui-avatar--sm {
+  --ui-avatar-size: var(--ui-space-6);
+  --ui-avatar-font-size: var(--ui-font-size-xxs);
+}
+.ui-avatar--md {
+  --ui-avatar-size: var(--ui-space-8);
+  --ui-avatar-font-size: var(--ui-font-size-xs);
+}
+.ui-avatar--lg {
+  --ui-avatar-size: var(--ui-space-12);
+  --ui-avatar-font-size: var(--ui-font-size-md);
+}
+.ui-avatar--xl {
+  --ui-avatar-size: var(--ui-space-16);
+  --ui-avatar-font-size: var(--ui-font-size-xl);
+}
+
+.ui-avatar__image {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}

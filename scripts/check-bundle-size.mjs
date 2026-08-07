@@ -13,44 +13,75 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const distDir = join(__dirname, '..', 'packages', 'ui', 'dist');
+const packagesDir = join(__dirname, '..', 'packages');
 
-// Budgets in bytes — current sizes + ~50% headroom for growth
+// Budgets in bytes, sized for the FULL committed catalog (38 components,
+// BLUEPRINT §3) so this stops needing a bump every phase.
+//
+// Measured growth (component count -> dist size):
+//   12 comps: ~25KB js / ~42KB css   (pre-Phase-1)
+//   24 comps: ~40KB js / ~70KB css   (+ layout, forms)
+//   31 comps: ~58KB js / ~81KB css   (+ overlays, feedback)
+//
+// Two different curves, worth knowing before re-basing again:
+//   JS  grows ~2.4KB per component and ACCELERATED in Phase 3 — overlays carry
+//       real logic (positioning, focus management, timers), unlike layout
+//       primitives. Extrapolating the interactive-component rate to 38 gives
+//       roughly 75-80KB.
+//   CSS is ~30KB of inlined design tokens (a FIXED floor, independent of
+//       component count) plus ~1.7KB per component; 38 components lands near
+//       95KB.
+// Budgets below clear those projections with ~15% headroom, and still fail on
+// a genuine regression (an accidental dependency or a doubling).
+//
+// icons is a different shape of artifact: a fixed ~1.5KB factory plus roughly
+// 360 bytes per icon (measured across the pilot set), so its budget tracks the
+// icon COUNT, not a component count. Sized for the full 85-icon Figma set
+// (~32KB ESM); it will read low until the whole set is generated.
 const BUDGETS = {
-  'index.js': 40_000, // ESM bundle (~22KB currently)
-  'index.cjs': 30_000, // CJS bundle (~17KB currently)
-  'index.css': 70_000, // Stylesheet (~42KB currently)
+  ui: {
+    'index.js': 92_000, // ESM bundle (~58KB at 31 components)
+    'index.cjs': 74_000, // CJS bundle (~46KB at 31 components)
+    'index.css': 112_000, // Stylesheet (~81KB at 31 components; ~30KB is tokens)
+  },
+  icons: {
+    'index.js': 48_000, // ESM bundle (~32KB projected at 85 icons)
+    'index.cjs': 44_000, // CJS bundle
+  },
 };
 
 let failed = false;
 
 console.log('Bundle size check\n');
-console.log('File'.padEnd(15) + 'Size'.padStart(10) + 'Budget'.padStart(10) + '  Status');
-console.log('-'.repeat(45));
+console.log('File'.padEnd(22) + 'Size'.padStart(10) + 'Budget'.padStart(10) + '  Status');
+console.log('-'.repeat(52));
 
-for (const [file, budget] of Object.entries(BUDGETS)) {
-  const filePath = join(distDir, file);
-  let size;
+for (const [pkg, budgets] of Object.entries(BUDGETS)) {
+  for (const [file, budget] of Object.entries(budgets)) {
+    const label = `${pkg}/${file}`;
+    const filePath = join(packagesDir, pkg, 'dist', file);
+    let size;
 
-  try {
-    size = statSync(filePath).size;
-  } catch {
+    try {
+      size = statSync(filePath).size;
+    } catch {
+      console.log(
+        `${label.padEnd(22)}${'missing'.padStart(10)}${formatBytes(budget).padStart(10)}  FAIL`,
+      );
+      failed = true;
+      continue;
+    }
+
+    const status = size <= budget ? 'ok' : 'OVER';
+    const pct = ((size / budget) * 100).toFixed(0);
+
     console.log(
-      `${file.padEnd(15)}${'missing'.padStart(10)}${formatBytes(budget).padStart(10)}  FAIL`,
+      `${label.padEnd(22)}${formatBytes(size).padStart(10)}${formatBytes(budget).padStart(10)}  ${status} (${pct}%)`,
     );
-    failed = true;
-    continue;
-  }
 
-  const status = size <= budget ? 'ok' : 'OVER';
-  const pct = ((size / budget) * 100).toFixed(0);
-
-  console.log(
-    `${file.padEnd(15)}${formatBytes(size).padStart(10)}${formatBytes(budget).padStart(10)}  ${status} (${pct}%)`,
-  );
-
-  if (size > budget) {
-    failed = true;
+    if (size > budget) {
+      failed = true;
+    }
   }
 }
 

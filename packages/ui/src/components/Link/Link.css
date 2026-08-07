@@ -1,0 +1,67 @@
+.ui-link {
+  color: var(--ui-color-action-primary-bg);
+  font-family: inherit;
+  border-radius: var(--ui-radius-sm);
+  text-decoration-color: currentColor;
+  /* Keep descenders legible under the underline. */
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+  transition: color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
+}
+
+.ui-link:hover {
+  color: var(--ui-color-action-primary-bg-hover);
+}
+
+.ui-link:active {
+  color: var(--ui-color-action-primary-bg-pressed);
+}
+
+.ui-link:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+/* In flowing text an underline is the non-colour cue that this is a link
+   (WCAG 1.4.1 — colour alone must not carry meaning). */
+.ui-link--default {
+  text-decoration: underline;
+}
+
+.ui-link--subtle {
+  text-decoration: none;
+}
+.ui-link--subtle:hover {
+  text-decoration: underline;
+}
+
+/* Standalone links are not inside a sentence, so position and weight carry
+   the affordance and the underline can wait for hover. */
+.ui-link--standalone {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  font-weight: var(--ui-font-weight-medium);
+  text-decoration: none;
+}
+.ui-link--standalone:hover {
+  text-decoration: underline;
+}
+
+.ui-link__new-tab {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-link {
+    transition: none;
+  }
+}

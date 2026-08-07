@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+﻿import { useId, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { Stack } from '../Stack';
@@ -89,7 +89,7 @@ export const DarkScheme: Story = {
     <ThemeProvider colorScheme="dark">
       <Stack
         gap={3}
-        style={{ background: 'var(--ui-color-bg-canvas)', padding: 'var(--ui-space-6)' }}
+        style={{ background: 'var(--ui-color-surface-page)', padding: 'var(--ui-space-6)' }}
       >
         <LabeledCheckbox label="Dark scheme checkbox" />
         <LabeledCheckbox label="Disabled" disabled />

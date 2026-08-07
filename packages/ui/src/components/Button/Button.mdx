@@ -1,0 +1,63 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as ButtonStories from './Button.stories';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+The action trigger. Use it for anything that _does_ something on the current
+page — submitting a form, opening a Modal, confirming a step. Do **not** use
+it for navigation that changes the URL: that is a link (Phase 4's `Link`
+handles router integration), and disguising links as buttons breaks
+middle-click, focus order announcements, and history.
+
+This page is the reference for the per-component MDX template (BLUEPRINT §6):
+what/when/when-not · import · usage · props · accessibility · theming.
+
+## Import
+
+```tsx
+import { Button } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={ButtonStories.Primary} />
+
+`variant` carries intent (`primary`, `secondary`, `danger`, `ghost`); `size`
+is the visual scale (`sm`, `md`, `lg`). Both are themeable defaults — see
+Theming below.
+
+<Canvas of={ButtonStories.Sizes} />
+
+**`type` defaults to `"button"`**, a deliberate departure from the DOM (native
+buttons default to `submit` and submit enclosing forms by accident). Form
+submit buttons must say `type="submit"` explicitly.
+
+## Props
+
+<Controls of={ButtonStories.Playground} />
+
+## Accessibility
+
+- Renders a native `<button>` — space/enter activation, focusability, and
+  disabled semantics come from the platform, not from ARIA re-implementation.
+- The focus ring is a `:focus-visible` outline from the focus tokens
+  (`--ui-focus-ring-width` / `--ui-focus-ring-offset` / `--ui-color-border-focus`),
+  offset so it stays visible on filled variants (WCAG 2.4.13).
+- Targets grow to the 44px coarse-pointer floor via
+  `@media (pointer: coarse)`.
+- `disabled` uses the native attribute: excluded from the tab order and
+  announced as dimmed/unavailable by screen readers.
+
+## Theming
+
+- **Class constants**: `buttonClasses` exports every rendered class
+  (`ui-button`, `ui-button--primary`, …) as the documented override surface.
+- **Theme defaults**: register per-app defaults via
+  `ThemeProvider componentDefaults={{ Button: { variant: 'secondary' } }}` —
+  explicit props always win.
+- **Dark scheme**: zero component CSS — every color is a semantic token, so
+  `[data-theme='dark']` remaps them wholesale.
+
+<Canvas of={ButtonStories.DarkScheme} />

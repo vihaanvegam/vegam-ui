@@ -1,0 +1,118 @@
+/*
+ * The scroll container is the root, so a wide table scrolls itself instead
+ * of the page. It is focusable when it overflows (see the JSDoc) because a
+ * keyboard user must be able to scroll it.
+ */
+.ui-table-wrapper {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.ui-table-wrapper:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+.ui-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-typography-body-line-height);
+  color: var(--ui-text-primary);
+}
+
+.ui-table__th {
+  padding-inline: var(--ui-space-3);
+  padding-block: var(--ui-space-2);
+  border-block-end: var(--ui-border-width-hairline) solid var(--ui-color-border-default);
+  color: var(--ui-text-secondary);
+  font-size: var(--ui-font-size-xs);
+  font-weight: var(--ui-font-weight-semibold);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.ui-table__td {
+  padding-inline: var(--ui-space-3);
+  padding-block: var(--ui-space-3);
+  border-block-end: var(--ui-border-width-hairline) solid var(--ui-color-divider-default);
+  vertical-align: top;
+}
+
+.ui-table__th--center,
+.ui-table__td--center {
+  text-align: center;
+}
+.ui-table__th--end,
+.ui-table__td--end {
+  text-align: end;
+}
+
+.ui-table--sticky .ui-table__th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--ui-z-sticky);
+  background: var(--ui-color-surface-page);
+}
+
+/* The sort control is a real button filling the header cell. */
+.ui-table__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ui-table__sort:hover {
+  color: var(--ui-text-primary);
+}
+
+.ui-table__sort:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+  border-radius: var(--ui-radius-sm);
+}
+
+/*
+ * Drawn sort caret — a chevron that flips with the direction.
+ *
+ * PHYSICAL borders on purpose: `transform: rotate()` is direction-agnostic,
+ * so logical borders would mirror under RTL while the rotation stayed put,
+ * turning the up/down caret sideways. This glyph points up or down only, so
+ * it needs no RTL mirroring of its own.
+ */
+.ui-table__sort-indicator {
+  inline-size: var(--ui-space-1-5);
+  block-size: var(--ui-space-1-5);
+  border-right: var(--ui-border-width-thick) solid currentColor;
+  border-bottom: var(--ui-border-width-thick) solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+
+.ui-table__th[aria-sort='ascending'] .ui-table__sort-indicator {
+  transform: rotate(-135deg);
+  opacity: 1;
+}
+.ui-table__th[aria-sort='descending'] .ui-table__sort-indicator {
+  transform: rotate(45deg);
+  opacity: 1;
+}
+/* Hint the affordance before it is used. */
+.ui-table__sort:hover .ui-table__sort-indicator {
+  opacity: var(--ui-opacity-disabled);
+}
+
+.ui-table__empty {
+  padding: var(--ui-space-8) var(--ui-space-3);
+  color: var(--ui-text-secondary);
+  text-align: center;
+}

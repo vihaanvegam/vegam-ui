@@ -1,0 +1,62 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as TooltipStories from './Tooltip.stories';
+
+<Meta of={TooltipStories} />
+
+# Tooltip
+
+A short text hint attached to a focusable trigger. It opens on hover after a
+delay and on focus immediately, and closes on leave, blur, or Escape.
+
+**Tooltip vs Popover** — the split that matters:
+
+| Use Tooltip            | Use Popover          |
+| ---------------------- | -------------------- |
+| Passive text hint      | Anything interactive |
+| Opens on hover/focus   | Opens on click       |
+| `pointer-events: none` | Focusable, clickable |
+| Describes the trigger  | Its own named dialog |
+
+## Import
+
+```tsx
+import { Tooltip } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={TooltipStories.Basic} />
+<Canvas of={TooltipStories.Sides} />
+
+The canonical case — explaining an icon-only control:
+
+<Canvas of={TooltipStories.OnIconButton} />
+
+The trigger must be a single element that forwards refs and spreads props
+(every @vegam-ui component does).
+
+## Props
+
+<Controls of={TooltipStories.Playground} />
+
+## Accessibility
+
+- The bubble is `role="tooltip"`, and the trigger points at it with
+  `aria-describedby` — a tooltip **describes**, it never **names**. The
+  IconButton example keeps its own `aria-label`; the tooltip adds detail.
+- Focus opens it with no delay: a keyboard user gains nothing from waiting.
+- Escape dismisses while focus stays on the trigger (WAI-ARIA APG).
+- **Never put interactive content inside** — the bubble is
+  `pointer-events: none` and unreachable by keyboard. Use Popover.
+- **Tooltips are unreliable on touch**, where there is no hover. Never put
+  information here that a user cannot get another way.
+
+## Theming
+
+`tooltipClasses.root` is the class override surface, and
+`--ui-tooltip-max-width` caps the width. It renders as a small elevated
+surface rather than the classic inverted-dark chip: component CSS may only
+use semantic colours, and the export has no `surface.inverse` token — that
+pair is requested in TOKENS_PLAN.
+
+<Canvas of={TooltipStories.DarkScheme} />

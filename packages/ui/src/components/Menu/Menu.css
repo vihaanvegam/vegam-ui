@@ -1,0 +1,67 @@
+.ui-menu {
+  position: fixed;
+  /* popover layer, not dropdown: a menu can open from inside a modal, and
+     z.dropdown (200) sits below z.modal (500) — see TOKENS_PLAN §3. */
+  z-index: var(--ui-z-popover);
+  box-sizing: border-box;
+  min-inline-size: var(--ui-menu-min-width, 12rem);
+  max-block-size: var(--ui-menu-max-height, 20rem);
+  overflow-y: auto;
+  padding: var(--ui-space-1);
+  border: var(--ui-border-width-hairline) solid var(--ui-color-border-default);
+  border-radius: var(--ui-radius-md);
+  background: var(--ui-color-surface-page);
+  box-shadow: var(--ui-elevation-lg);
+  font-family: var(--ui-font-family-sans);
+  opacity: 0;
+  transition: opacity var(--ui-motion-duration-fast) var(--ui-motion-easing-exit);
+}
+
+.ui-menu[data-state='entering'],
+.ui-menu[data-state='entered'] {
+  opacity: 1;
+  transition-timing-function: var(--ui-motion-easing-enter);
+}
+
+.ui-menu__item {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: var(--ui-size-control-md);
+  padding-inline: var(--ui-space-3);
+  padding-block: var(--ui-space-1);
+  border-radius: var(--ui-radius-sm);
+  color: var(--ui-text-primary);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-typography-body-line-height);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ui-menu__item:hover:not(.ui-menu__item--disabled) {
+  background: var(--ui-color-surface-subtle);
+}
+
+.ui-menu__item:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: calc(-1 * var(--ui-focus-ring-width));
+}
+
+.ui-menu__item--disabled {
+  color: var(--ui-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* WCAG target size on touch. */
+@media (pointer: coarse) {
+  .ui-menu__item {
+    min-block-size: var(--ui-space-11, var(--ui-space-12));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-menu {
+    transition: none;
+  }
+}

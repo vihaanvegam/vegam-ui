@@ -1,0 +1,24 @@
+.ui-divider {
+  border: none;
+  margin: 0;
+  background: var(--ui-color-divider-default);
+}
+
+.ui-divider--horizontal {
+  inline-size: 100%;
+  block-size: var(--ui-border-width-hairline);
+}
+
+.ui-divider--vertical {
+  inline-size: var(--ui-border-width-hairline);
+  block-size: auto;
+  align-self: stretch;
+}
+
+.ui-divider--subtle {
+  background: var(--ui-color-divider-subtle);
+}
+
+.ui-divider--accent {
+  background: var(--ui-color-divider-accent);
+}

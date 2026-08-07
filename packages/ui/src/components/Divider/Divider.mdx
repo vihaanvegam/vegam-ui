@@ -1,0 +1,49 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as DividerStories from './Divider.stories';
+
+<Meta of={DividerStories} />
+
+# Divider
+
+A themed rule between content regions, drawn at the hairline width with the
+semantic divider colors. Not for decoration inside a component's own chrome —
+components draw their internal borders themselves.
+
+## Import
+
+```tsx
+import { Divider } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={DividerStories.Horizontal} />
+<Canvas of={DividerStories.Tones} />
+
+Vertical dividers stretch to their flex/grid container:
+
+<Canvas of={DividerStories.Vertical} />
+
+The `strong` divider token is deliberately not offered — the current design
+export maps it to a red (a known data error being raised with the design
+team).
+
+## Props
+
+<Controls of={DividerStories.Playground} />
+
+## Accessibility
+
+Horizontal renders a native `<hr>` (implicit `separator` role); vertical
+renders `role="separator"` with `aria-orientation="vertical"`, since `<hr>`
+is semantically horizontal-only. Screen readers announce both as separators —
+add `aria-hidden` when the rule is purely decorative. Not interactive, not
+focusable.
+
+## Theming
+
+- `tone` is themeable via
+  `ThemeProvider componentDefaults={{ Divider: { tone: 'subtle' } }}`.
+- `dividerClasses` exports root, orientation, and tone classes.
+
+<Canvas of={DividerStories.DarkScheme} />

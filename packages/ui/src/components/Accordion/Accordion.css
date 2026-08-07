@@ -1,0 +1,100 @@
+.ui-accordion {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.ui-accordion__item {
+  border-block-end: var(--ui-border-width-hairline) solid var(--ui-color-divider-default);
+}
+
+.ui-accordion__header {
+  margin: 0;
+  font: inherit;
+}
+
+.ui-accordion__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ui-space-3);
+  inline-size: 100%;
+  box-sizing: border-box;
+  min-block-size: var(--ui-size-control-md);
+  padding-inline: var(--ui-space-1);
+  padding-block: var(--ui-space-3);
+  border: none;
+  background: transparent;
+  color: var(--ui-text-primary);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-md);
+  font-weight: var(--ui-font-weight-medium);
+  line-height: var(--ui-typography-body-line-height);
+  text-align: start;
+  cursor: pointer;
+}
+
+.ui-accordion__trigger:hover:not(:disabled) {
+  color: var(--ui-color-action-primary-bg);
+}
+
+.ui-accordion__trigger:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: calc(-1 * var(--ui-focus-ring-width));
+  border-radius: var(--ui-radius-sm);
+}
+
+.ui-accordion__trigger:disabled {
+  color: var(--ui-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/*
+ * Drawn chevron — no icon assets. Points along the reading direction when
+ * collapsed and down when expanded.
+ *
+ * PHYSICAL borders on purpose: `transform: rotate()` does not flip for RTL,
+ * so logical borders would mirror the glyph out from under the rotation and
+ * swap the two states. The RTL rule below mirrors only the collapsed
+ * chevron, which is the one carrying direction — "expanded" points down in
+ * both directions.
+ */
+.ui-accordion__indicator {
+  flex-shrink: 0;
+  inline-size: var(--ui-space-2);
+  block-size: var(--ui-space-2);
+  border-right: var(--ui-border-width-thick) solid currentColor;
+  border-bottom: var(--ui-border-width-thick) solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
+}
+
+[dir='rtl'] .ui-accordion__indicator {
+  transform: rotate(135deg);
+}
+
+.ui-accordion__trigger[aria-expanded='true'] .ui-accordion__indicator,
+[dir='rtl'] .ui-accordion__trigger[aria-expanded='true'] .ui-accordion__indicator {
+  transform: rotate(45deg);
+}
+
+.ui-accordion__panel {
+  padding-inline: var(--ui-space-1);
+  padding-block-end: var(--ui-space-4);
+  color: var(--ui-text-secondary);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-typography-body-line-height);
+}
+
+@media (pointer: coarse) {
+  .ui-accordion__trigger {
+    min-block-size: var(--ui-space-11, var(--ui-space-12));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-accordion__indicator {
+    transition: none;
+  }
+}

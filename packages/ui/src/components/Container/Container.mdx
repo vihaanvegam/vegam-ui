@@ -1,0 +1,42 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as ContainerStories from './Container.stories';
+
+<Meta of={ContainerStories} />
+
+# Container
+
+The centered page shell. `size` caps content width at the viewport tier's
+`content-max` token; inline padding always follows the **current**
+breakpoint's `viewport.*.margin` token, so a capped page still gets the right
+page margins on every screen. Max-widths, margins, and gutters come straight
+from the design's `--ui-viewport-*` tokens — nothing is invented here.
+
+## Import
+
+```tsx
+import { Container } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={ContainerStories.Desktop} />
+<Canvas of={ContainerStories.Sizes} />
+
+## Props
+
+<Controls of={ContainerStories.Playground} />
+
+## Accessibility
+
+Renders the element given by `as` (default `div`) with no implicit role.
+Choose `as` for document structure — `main` for the page's main content
+region is the common case.
+
+## Theming
+
+- `size` is themeable via
+  `ThemeProvider componentDefaults={{ Container: { size: 'laptop' } }}`.
+- `containerClasses` exports the root and per-size classes; the cap rides the
+  `--ui-container-max` custom property if a bespoke width is unavoidable.
+
+<Canvas of={ContainerStories.DarkScheme} />

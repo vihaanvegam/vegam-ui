@@ -107,15 +107,21 @@ function moduleIdFor(srcRelative) {
     const file = basename(parts[1], '.tsx').replace('.ts', '');
     return file === 'index' ? 'theme' : file;
   }
-  if (parts[0] === 'utils') return basename(parts[1]).replace(/\.tsx?$/, '');
+  if (parts[0] === 'utils' || parts[0] === 'hooks')
+    return basename(parts[1]).replace(/\.tsx?$/, '');
   return parts.join('/');
 }
 
-const LAYER_OF = (id) => {
+// Layer comes from the path prefix, not a name list — the previous hardcoded
+// list rotted silently (focusTrap/scrollLock were drawn inside `components`
+// until 2026-08-07). Only record creation calls this, and records only exist
+// for real walked files, so the prefix is always present.
+const LAYERS = new Set(['components', 'theme', 'utils', 'hooks']);
+const LAYER_OF = (id, srcRelative) => {
   if (id === 'index (barrel)') return 'barrel';
-  if (['ThemeProvider', 'defaultProps', 'theme'].includes(id)) return 'theme';
-  if (['cx', 'useIsomorphicLayoutEffect', 'listNavigation', 'positioning'].includes(id))
-    return 'utils';
+  const top = posix(srcRelative).split('/')[0];
+  if (LAYERS.has(top)) return top;
+  console.warn(`graphify: unknown top-level src folder "${top}" — drawn as components`);
   return 'components';
 };
 
@@ -137,7 +143,7 @@ function moduleGraph() {
     const id = moduleIdFor(srcRelative);
     const record = modules.get(id) ?? {
       id,
-      layer: LAYER_OF(id),
+      layer: LAYER_OF(id, srcRelative),
       files: [],
       css: false,
       clientDirective: false,
@@ -314,6 +320,7 @@ function render(graph) {
     ...layerBlock('barrel', 'public entry'),
     ...layerBlock('components', 'components'),
     ...layerBlock('theme', 'theme'),
+    ...layerBlock('hooks', 'hooks'),
     ...layerBlock('utils', 'utils (framework-free)'),
     ...modules.edges.map(
       (edge) =>
@@ -370,9 +377,12 @@ ${moduleLines.join('\n')}
 
 What to read off this graph:
 
-- **\`utils\` is a sink.** No node in \`utils\` points back into \`components\` or
-  \`theme\`, so behaviour logic stays framework-free — the property CLAUDE.md
-  requires and the reason a non-React target stays cheap.
+- **\`utils\` is a sink.** No node in \`utils\` points back into \`components\`,
+  \`hooks\`, or \`theme\`, so behaviour logic stays framework-free — the property
+  CLAUDE.md requires and the reason a non-React target stays cheap.
+- **\`hooks\` sit between.** Hook modules may import \`utils\`, never the
+  reverse; \`theme\` and \`components\` may import both. The layering
+  \`utils ← hooks ← (theme, components) ← barrel\` stays acyclic.
 - **The one apparent cycle is type-only.** \`defaultProps\` imports each
   component's props type to key \`ThemeComponentDefaults\`, while every component
   imports \`useComponentDefaults\` at runtime. The dotted direction disappears
@@ -397,7 +407,7 @@ under \`[data-theme="dark"]\`).
 ## Facts
 
 - **Public exports:** ${surface.values.length} values, ${surface.types.length} types
-- **Modules:** ${modules.modules.length} (${byLayer('components').length} components, ${byLayer('theme').length} theme, ${byLayer('utils').length} utils)
+- **Modules:** ${modules.modules.length} (${byLayer('components').length} components, ${byLayer('theme').length} theme, ${byLayer('hooks').length} hooks, ${byLayer('utils').length} utils)
 - **\`'use client'\` files:** ${clientModules.length} — ${clientModules.map((module) => module.id).join(', ')}
 - **Modules with colocated CSS:** ${cssModules.length} — ${cssModules.map((module) => module.id).join(', ')}
 - **External imports:** ${[...externals].sort().join(', ') || 'none'}

@@ -8,12 +8,13 @@
   font-family: var(--ui-font-family-sans);
   font-size: var(--ui-font-size-xs);
   font-weight: var(--ui-font-weight-medium);
-  line-height: var(--ui-font-line-height-1-25);
+  line-height: 1.25;
 }
 
 /* Tones use each intent's soft pair (bg-soft + fg-on-soft), which the token
    set defines for exactly this: a tinted background with readable text in
-   both schemes. The color.feedback.* group is a placeholder in the source. */
+   both schemes. The Aug-2026 export fills color.feedback.* with the same
+   values; moving tones onto those names is queued in TOKENS_PLAN.md. */
 .ui-badge--neutral {
   background: var(--ui-color-action-neutral-bg-soft);
   color: var(--ui-color-action-neutral-fg-on-soft);

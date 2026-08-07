@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+﻿import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { Input } from './Input';
 
@@ -7,7 +7,7 @@ const meta: Meta<typeof Input> = {
   component: Input,
   args: {
     'aria-label': 'Example input',
-    placeholder: 'Type here…',
+    placeholder: 'Type hereâ€¦',
   },
   argTypes: {
     size: { control: 'radio', options: ['sm', 'md', 'lg'] },
@@ -44,7 +44,7 @@ export const DarkScheme: Story = {
     <ThemeProvider colorScheme="dark">
       <div
         style={{
-          background: 'var(--ui-color-bg-canvas)',
+          background: 'var(--ui-color-surface-page)',
           padding: 'var(--ui-space-6)',
           display: 'grid',
           gap: 'var(--ui-space-4)',

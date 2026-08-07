@@ -1,0 +1,90 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as InputStories from './Input.stories';
+
+<Meta of={InputStories} />
+
+# Input
+
+The single-line text control. It is a native `<input>` with the design
+system's sizing and states — nothing is re-implemented, so autofill, spellcheck,
+input modes, form validation, and password managers all keep working.
+
+Use `Textarea` for multi-line text and `Select` for a choice from a fixed list.
+For anything a user must understand — a label, a hint, an error — wrap it in
+`Field`, which owns that wiring.
+
+## Import
+
+```tsx
+import { Input } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={InputStories.Default} />
+
+`size` is the only prop Input adds. It steps typography, padding, and the
+minimum control height together.
+
+<Canvas of={InputStories.Sizes} />
+
+Everything else is the native surface: `type`, `value`/`defaultValue`,
+`placeholder`, `required`, `readOnly`, `autoComplete`, `inputMode`, and every
+event handler behave exactly as they do on a bare `<input>`.
+
+### With Field
+
+`Field` wires the label, description, and error to the control automatically —
+**Input reads that context**, so it picks up its `id`, `aria-describedby`, and
+`aria-invalid` with no props passed by hand:
+
+```tsx
+<Field label="Email" description="We only use this for receipts." error={emailError}>
+  <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+</Field>
+```
+
+Explicit props always win over the context, so you can override any single
+piece without opting out of the rest.
+
+<Canvas of={InputStories.Invalid} />
+<Canvas of={InputStories.Disabled} />
+
+## Props
+
+<Controls of={InputStories.Playground} />
+
+**`size` shadows a native attribute.** `InputProps` omits the DOM's `size` —
+the rarely-used character-width hint — and redefines it as the design-system
+size union. If you genuinely need the native behaviour, set a width in CSS
+instead; it is the more predictable control anyway.
+
+## Accessibility
+
+- Renders a native `<input>`: focus, text selection, IME, and form
+  participation all come from the platform.
+- **An input needs a label.** Use `Field` (the intended path), a `<label>` with
+  `htmlFor`, or `aria-label` when a visible label genuinely cannot exist. A
+  `placeholder` is **not** a label — it disappears on typing and fails contrast
+  in most themes.
+- `aria-invalid` marks the error state and drives the error styling; `Field`
+  sets it from the presence of an `error`, and the message is joined into
+  `aria-describedby` so it is announced with the control, not orphaned.
+- The focus ring is a `:focus-visible` outline from the focus tokens, so
+  pointer users do not see a ring while keyboard users always do.
+- `disabled` uses the native attribute — removed from the tab order and
+  announced as unavailable. For a field that should stay readable and
+  copyable, prefer `readOnly`.
+- Minimum control height meets the 44px coarse-pointer floor via
+  `@media (pointer: coarse)`.
+
+## Theming
+
+- **Class constants**: `inputClasses` exports every rendered class
+  (`ui-input`, `ui-input--lg`, …).
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Input: { size: 'lg' } }}` —
+  explicit props always win.
+- **Dark scheme**: surface, border, placeholder, and focus colours are all
+  semantic tokens; `[data-theme='dark']` remaps them with no component CSS.
+
+<Canvas of={InputStories.DarkScheme} />

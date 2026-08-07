@@ -1,0 +1,51 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as PopoverStories from './Popover.stories';
+
+<Meta of={PopoverStories} />
+
+# Popover
+
+A non-modal anchored surface that may contain interactive content — the
+click-opened sibling of Tooltip.
+
+**When not to use it:** a passive hint is a **Tooltip**; a list of actions is
+a **Menu**; blocking the rest of the page is a **Modal**.
+
+## Import
+
+```tsx
+import { Popover } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={PopoverStories.Basic} />
+<Canvas of={PopoverStories.WithForm} />
+<Canvas of={PopoverStories.Sides} />
+
+## Props
+
+<Controls of={PopoverStories.Playground} />
+
+## Accessibility
+
+- `role="dialog"` named by the required `label`; the trigger carries
+  `aria-expanded` and `aria-haspopup="dialog"`.
+- **Non-modal by design**: focus is NOT trapped and the page is not inert,
+  so Tab can leave the surface. That is correct for this pattern — reach for
+  Modal when it should not.
+- Focus moves to the first tabbable inside on open (or the surface itself),
+  and returns to the trigger on close, so keyboard users are never dropped at
+  the top of the document. Set `initialFocus={false}` for surfaces that only
+  add context.
+- Dismisses on Escape and on an outside pointer press.
+- The surface portals into the nearest `[data-theme]` wrapper, so a scoped
+  dark region keeps its scheme.
+
+## Theming
+
+`popoverClasses.root` is the class override surface;
+`--ui-popover-max-width` caps the width. It sits on the `z.popover` layer,
+which the design marks as able to open from inside a modal.
+
+<Canvas of={PopoverStories.DarkScheme} />

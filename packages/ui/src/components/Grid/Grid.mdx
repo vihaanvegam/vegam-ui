@@ -1,0 +1,47 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as GridStories from './Grid.stories';
+
+<Meta of={GridStories} />
+
+# Grid
+
+CSS grid with responsive equal-width columns
+(`repeat(columns, minmax(0, 1fr))`) and token gaps. Deliberately small: for
+named areas, column spans, or auto-fill tracks, use `className`/`style` —
+those are full CSS grid features this primitive does not wrap.
+
+## Import
+
+```tsx
+import { Grid } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={GridStories.Columns} />
+
+The signature move — column counts per breakpoint:
+
+<Canvas of={GridStories.ResponsiveColumns} />
+
+`rowGap`/`columnGap` override `gap` on their axis:
+
+<Canvas of={GridStories.AxisGaps} />
+
+## Props
+
+<Controls of={GridStories.Playground} />
+
+## Accessibility
+
+A generic `<div>` with no implicit role and no interaction. Layout only —
+pass `role`/`aria-*` through when the collection has meaning (the test suite
+shows `role="list"` passing through).
+
+## Theming
+
+- `gap` is themeable via
+  `ThemeProvider componentDefaults={{ Grid: { gap: 4 } }}`.
+- `gridClasses.root` is the class override surface.
+
+<Canvas of={GridStories.DarkScheme} />

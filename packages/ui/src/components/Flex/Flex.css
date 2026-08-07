@@ -1,0 +1,129 @@
+/*
+ * Flex consumes per-breakpoint custom properties set inline by the component.
+ * Media query bounds are the §8.1 annotated literals.
+ */
+.ui-flex {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: var(--ui-flex-direction-base, row);
+  flex-wrap: var(--ui-flex-wrap-base, nowrap);
+  align-items: var(--ui-flex-align-base, stretch);
+  justify-content: var(--ui-flex-justify-base, flex-start);
+  gap: var(--ui-flex-gap-base, 0);
+  flex-grow: var(--ui-flex-grow, 0);
+  flex-shrink: var(--ui-flex-shrink, 1);
+  flex-basis: var(--ui-flex-basis, auto);
+}
+
+@media (min-width: 48rem) {
+  /* --ui-breakpoint-tablet */
+  .ui-flex {
+    flex-direction: var(--ui-flex-direction-tablet, var(--ui-flex-direction-base, row));
+    flex-wrap: var(--ui-flex-wrap-tablet, var(--ui-flex-wrap-base, nowrap));
+    align-items: var(--ui-flex-align-tablet, var(--ui-flex-align-base, stretch));
+    justify-content: var(--ui-flex-justify-tablet, var(--ui-flex-justify-base, flex-start));
+    gap: var(--ui-flex-gap-tablet, var(--ui-flex-gap-base, 0));
+  }
+}
+
+@media (min-width: 64rem) {
+  /* --ui-breakpoint-laptop */
+  .ui-flex {
+    flex-direction: var(
+      --ui-flex-direction-laptop,
+      var(--ui-flex-direction-tablet, var(--ui-flex-direction-base, row))
+    );
+    flex-wrap: var(
+      --ui-flex-wrap-laptop,
+      var(--ui-flex-wrap-tablet, var(--ui-flex-wrap-base, nowrap))
+    );
+    align-items: var(
+      --ui-flex-align-laptop,
+      var(--ui-flex-align-tablet, var(--ui-flex-align-base, stretch))
+    );
+    justify-content: var(
+      --ui-flex-justify-laptop,
+      var(--ui-flex-justify-tablet, var(--ui-flex-justify-base, flex-start))
+    );
+    gap: var(--ui-flex-gap-laptop, var(--ui-flex-gap-tablet, var(--ui-flex-gap-base, 0)));
+  }
+}
+
+@media (min-width: 80rem) {
+  /* --ui-breakpoint-desktop */
+  .ui-flex {
+    flex-direction: var(
+      --ui-flex-direction-desktop,
+      var(
+        --ui-flex-direction-laptop,
+        var(--ui-flex-direction-tablet, var(--ui-flex-direction-base, row))
+      )
+    );
+    flex-wrap: var(
+      --ui-flex-wrap-desktop,
+      var(--ui-flex-wrap-laptop, var(--ui-flex-wrap-tablet, var(--ui-flex-wrap-base, nowrap)))
+    );
+    align-items: var(
+      --ui-flex-align-desktop,
+      var(--ui-flex-align-laptop, var(--ui-flex-align-tablet, var(--ui-flex-align-base, stretch)))
+    );
+    justify-content: var(
+      --ui-flex-justify-desktop,
+      var(
+        --ui-flex-justify-laptop,
+        var(--ui-flex-justify-tablet, var(--ui-flex-justify-base, flex-start))
+      )
+    );
+    gap: var(
+      --ui-flex-gap-desktop,
+      var(--ui-flex-gap-laptop, var(--ui-flex-gap-tablet, var(--ui-flex-gap-base, 0)))
+    );
+  }
+}
+
+@media (min-width: 100rem) {
+  /* --ui-breakpoint-wide */
+  .ui-flex {
+    flex-direction: var(
+      --ui-flex-direction-wide,
+      var(
+        --ui-flex-direction-desktop,
+        var(
+          --ui-flex-direction-laptop,
+          var(--ui-flex-direction-tablet, var(--ui-flex-direction-base, row))
+        )
+      )
+    );
+    flex-wrap: var(
+      --ui-flex-wrap-wide,
+      var(
+        --ui-flex-wrap-desktop,
+        var(--ui-flex-wrap-laptop, var(--ui-flex-wrap-tablet, var(--ui-flex-wrap-base, nowrap)))
+      )
+    );
+    align-items: var(
+      --ui-flex-align-wide,
+      var(
+        --ui-flex-align-desktop,
+        var(--ui-flex-align-laptop, var(--ui-flex-align-tablet, var(--ui-flex-align-base, stretch)))
+      )
+    );
+    justify-content: var(
+      --ui-flex-justify-wide,
+      var(
+        --ui-flex-justify-desktop,
+        var(
+          --ui-flex-justify-laptop,
+          var(--ui-flex-justify-tablet, var(--ui-flex-justify-base, flex-start))
+        )
+      )
+    );
+    gap: var(
+      --ui-flex-gap-wide,
+      var(
+        --ui-flex-gap-desktop,
+        var(--ui-flex-gap-laptop, var(--ui-flex-gap-tablet, var(--ui-flex-gap-base, 0)))
+      )
+    );
+  }
+}

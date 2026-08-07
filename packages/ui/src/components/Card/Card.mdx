@@ -1,0 +1,81 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as CardStories from './Card.stories';
+
+<Meta of={CardStories} />
+
+# Card
+
+A surface that groups related content into one visual unit. Use it when a
+block of content should read as a single object — a summary, a settings
+group, a list item with structure.
+
+Do **not** use it as a generic box: `Box` is the unopinionated layout
+primitive, and reaching for a Card to get padding gives you a border and a
+surface colour you did not ask for. A Card that wraps the entire page is
+scaffolding, not a card.
+
+## Import
+
+```tsx
+import { Card } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={CardStories.Outlined} />
+
+`variant` picks the surface treatment: `outlined` draws a hairline border,
+`elevated` lifts the surface with an elevation shadow. Pick one per surface
+level and stay consistent — mixing both at the same depth reads as noise.
+
+<Canvas of={CardStories.Elevated} />
+
+`padding` steps the interior spacing. `none` exists for full-bleed content —
+media that should run to the card's edges — and hands spacing back to you.
+
+<Canvas of={CardStories.PaddingSteps} />
+
+Card renders a `<div>` and spreads the rest of its props, so composing it with
+layout primitives is the intended pattern:
+
+```tsx
+<Card variant="elevated">
+  <Stack gap={3}>
+    <Text as="h3" size="lg" weight="semibold">
+      Monthly summary
+    </Text>
+    <Text tone="muted">Everything settled on the 1st.</Text>
+  </Stack>
+</Card>
+```
+
+## Props
+
+<Controls of={CardStories.Playground} />
+
+## Accessibility
+
+- Renders a plain `<div>` with **no role**: a card is a visual grouping, not a
+  semantic one, and inventing a role for it would add noise to the
+  accessibility tree.
+- **A card is not a button.** If the whole card should be clickable, do not put
+  `onClick` on the surface — a `<div>` with a handler is invisible to keyboard
+  and screen-reader users. Put a real `Button` or `Link` inside and let the
+  card be the visual frame. Where the card must read as one target, the
+  standard pattern is a single link with the rest of the card marked
+  `aria-hidden`, which is a decision for your app, not the library.
+- When a card groups content under a heading, use a real heading element
+  (`Text as="h3"`) so it joins the document outline; if it needs to be a
+  landmark, put your own `role`/`aria-labelledby` on it via the spread props.
+
+## Theming
+
+- **Class constants**: `cardClasses` exports every rendered class
+  (`ui-card`, `ui-card--elevated`, `ui-card--padding-lg`, …).
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Card: { variant: 'elevated', padding: 'lg' } }}` —
+  explicit props always win.
+- **Dark scheme**: the surface, border, and elevation are all semantic tokens;
+  the dark elevation ramp uses higher-alpha shadows so lift stays readable on
+  a dark background.
+
+<Canvas of={CardStories.DarkScheme} />

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+﻿import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '../Button/Button';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { Banner } from './Banner';
@@ -15,10 +15,10 @@ const InfoIcon = (
 );
 
 /**
- * Story args mirror the Figma component properties (page "Component ·
- * Banner🟢"): the Intent variant plus the Icon / Description / Primary
+ * Story args mirror the Figma component properties (page "Component Â·
+ * BannerðŸŸ¢"): the Intent variant plus the Icon / Description / Primary
  * Action / Secondary Action / Close "Enable" booleans. The shared render
- * maps each Enable toggle to the PRESENCE of the corresponding prop — the
+ * maps each Enable toggle to the PRESENCE of the corresponding prop â€” the
  * component API itself has no boolean style flags (locked rule); an omitted
  * `icon` / `children` / `actions` / `onClose` simply renders nothing.
  * The raw ReactNode props stay code-only (see argTypes) because JSON
@@ -145,7 +145,7 @@ export const DarkScheme: Story = {
     <ThemeProvider colorScheme="dark">
       <div
         style={{
-          background: 'var(--ui-color-bg-canvas)',
+          background: 'var(--ui-color-surface-page)',
           padding: 'var(--ui-space-6)',
           display: 'flex',
           flexDirection: 'column',

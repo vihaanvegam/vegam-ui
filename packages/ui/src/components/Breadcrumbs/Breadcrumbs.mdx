@@ -1,0 +1,117 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as BreadcrumbsStories from './Breadcrumbs.stories';
+
+<Meta of={BreadcrumbsStories} />
+
+# Breadcrumbs
+
+The trail showing where the current page sits in a hierarchy, and a way back
+up it. Use it when your content genuinely nests — a file tree, a catalogue,
+settings sections.
+
+Do **not** use it as a history trail: breadcrumbs describe **structure**, not
+the route the user took to get here (that is what the back button is for).
+For switching between sibling views, `Tabs` is the right control.
+
+## Import
+
+```tsx
+import { Breadcrumbs } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={BreadcrumbsStories.Default} />
+
+`items` is data, root first. **The last item is always the current page** and
+renders as plain text rather than a link — you do not mark it yourself.
+
+```tsx
+<Breadcrumbs
+  items={[
+    { label: 'Home', href: '/' },
+    { label: 'Reports', href: '/reports' },
+    { label: 'Q3 summary' },
+  ]}
+/>
+```
+
+A crumb with `href` renders an anchor; one with only `onClick` renders a
+button, which keeps a non-navigating action out of the link semantics.
+
+<Canvas of={BreadcrumbsStories.ButtonCrumbs} />
+<Canvas of={BreadcrumbsStories.WithIcon} />
+
+### Collapsing a long trail
+
+While `collapsed` and more than two items exist, the trail shows the first
+crumb, an overflow trigger, and the current page; activating the trigger
+expands it. Controlled and uncontrolled both work.
+
+<Canvas of={BreadcrumbsStories.Collapsed} />
+
+`overflowLabel` is **required whenever the trail can collapse** — the trigger's
+dots are decorative CSS, so without it the button has no accessible name.
+
+`truncateWidth` caps each label at a CSS length before ellipsis truncation.
+Labels are only ever truncated when you ask for it:
+
+<Canvas of={BreadcrumbsStories.Truncated} />
+
+### Router links
+
+`slots.link` replaces the element used for non-current crumbs — the hook for
+Next.js or Remix `<Link>`. It receives pre-merged `className` and prepared
+`children`, so you render the element and nothing else:
+
+```tsx
+<Breadcrumbs
+  items={items}
+  slots={{
+    link: ({ item, className, children }) => (
+      <NextLink href={item.href ?? '#'} className={className}>
+        {children}
+      </NextLink>
+    ),
+  }}
+/>
+```
+
+The current page always renders as the built-in span — it is not a link, so
+there is nothing for a router to do with it.
+
+## Props
+
+<Controls of={BreadcrumbsStories.Playground} />
+
+## Accessibility
+
+- The root is a `<nav>` containing an `<ol>`: a landmark a screen-reader user
+  can jump to, wrapping a genuinely ordered list. **Give it a name** —
+  `aria-label="Breadcrumb"` — via the spread props, so it is distinguishable
+  from other navigation landmarks on the page.
+- The current page carries `aria-current="page"`, which is how assistive tech
+  reports "you are here" without relying on the visual difference.
+- Separators are `aria-hidden` spans drawn in CSS, so they are never read as
+  text between crumbs.
+- Item icons are decorative: their wrappers are `aria-hidden`, so the label
+  must carry the meaning on its own.
+- The overflow trigger is a real `<button>` named by `overflowLabel`, so it is
+  reachable and activatable from the keyboard like any other control.
+- Tab order follows the trail; each crumb gets a `:focus-visible` ring from
+  the focus tokens.
+- The separator chevron uses a **physical** border plus an explicit
+  `[dir='rtl']` rule rather than a logical one — a logical border flips under
+  RTL while the `rotate()` that draws the glyph does not, which would mirror
+  the chevron out from under its own transform.
+
+## Theming
+
+- **Class constants**: `breadcrumbsClasses` exports every rendered class
+  (`ui-breadcrumbs`, `ui-breadcrumbs__link`, `ui-breadcrumbs__separator`, …).
+- **Slots**: `slots.link` for router integration; `slotProps` reaches the
+  `list`, every `item`, `link`, `separator`, and the `overflow` trigger.
+- **Dark scheme**: link, hover, current-page, and separator colours are all
+  semantic tokens.
+
+<Canvas of={BreadcrumbsStories.DarkScheme} />

@@ -66,6 +66,12 @@ due to Node version mismatch; should pass after this commit.
 `src/test/a11y.test.tsx`). Keyboard paths are covered by unit tests. A real
 screen reader pass (NVDA/VoiceOver) remains manual.
 
+**Update 2026-08-07:** the manual pass is now written up step by step in
+[SCREEN_READER_CHECKLIST.md](SCREEN_READER_CHECKLIST.md) — per component, what
+to press and what should be heard, across all 38 components plus cross-cutting
+checks. **It has not been run yet**; running it is the last 1.0 gate
+(BLUEPRINT §9).
+
 ### ~~3.3 No visual regression testing~~ ✅ Done 2026-08-05
 
 Chromatic workflow added (`.github/workflows/chromatic.yml`).
@@ -83,6 +89,10 @@ Enable Pages: Settings → Pages → Source: **GitHub Actions**.
 
 Not in the brief; the brief explicitly says not to scaffold components that
 were not asked for. Listed so the boundary is visible, not as a backlog.
+
+> **2026-08-06:** the forward roadmap now lives in [BLUEPRINT.md](BLUEPRINT.md) —
+> most components below are committed catalog items there. This section stays
+> as the historical record of the original brief's boundary.
 
 **Components not built:** Dialog/Modal, Tooltip, Popover, Radio, Switch, Tabs,
 Accordion, Table, Toast, Menu, Avatar, Spinner, Pagination, Breadcrumb.

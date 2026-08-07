@@ -1,0 +1,90 @@
+{
+  "count": 17,
+  "icons": [
+    {
+      "name": "IconAdd",
+      "file": "add.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconBack",
+      "file": "back.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconClock",
+      "file": "clock.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconClose",
+      "file": "close.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconCross",
+      "file": "cross.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconDelete",
+      "file": "delete.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconEdit",
+      "file": "edit.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconFilter",
+      "file": "filter.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconHome",
+      "file": "home.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconInfo",
+      "file": "info.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconLock",
+      "file": "lock.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconLogout",
+      "file": "logout.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconMore",
+      "file": "more.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconReset",
+      "file": "reset.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconSearch",
+      "file": "search.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconSorting",
+      "file": "sorting.svg",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "IconWarning",
+      "file": "warning.svg",
+      "viewBox": "0 0 16 16"
+    }
+  ]
+}

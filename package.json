@@ -13,9 +13,13 @@
     "format:check": "prettier --check .",
     "typecheck": "pnpm --filter \"./packages/*\" -r typecheck",
     "test": "pnpm -r test",
-    "check:package": "pnpm --filter @vegam-ui/ui exec attw --pack . --exclude-entrypoints ./styles.css && pnpm --filter @vegam-ui/ui exec publint",
+    "test:storybook": "pnpm --filter @vegam-ui/ui test:storybook",
+    "check:package": "pnpm --filter @vegam-ui/ui exec attw --pack . --exclude-entrypoints ./styles.css && pnpm --filter @vegam-ui/ui exec publint && pnpm --filter @vegam-ui/icons exec attw --pack . && pnpm --filter @vegam-ui/icons exec publint",
     "check:directive": "node scripts/check-directive.mjs",
     "check:size": "node scripts/check-bundle-size.mjs",
+    "icons": "pnpm --filter @vegam-ui/icons icons",
+    "icons:check": "pnpm --filter @vegam-ui/icons icons:check",
+    "icons:import": "pnpm --filter @vegam-ui/icons icons:import",
     "graph": "node scripts/graphify.mjs && prettier --write docs/ARCHITECTURE.md",
     "graph:check": "node scripts/graphify.mjs --check",
     "smoke": "node scripts/smoke.mjs",
@@ -25,15 +29,6 @@
     "release": "pnpm gates && pnpm -r publish",
     "prepare": "husky",
     "graph:serve": "node scripts/serve-docs.mjs"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx,cjs,mjs}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,css,scss,yml,yaml}": [
-      "prettier --write"
-    ]
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

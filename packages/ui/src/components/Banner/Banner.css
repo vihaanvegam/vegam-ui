@@ -51,13 +51,15 @@
 
 .ui-banner__title {
   font-weight: var(--ui-font-weight-semibold);
-  line-height: var(--ui-font-line-height-1);
+  line-height: 1;
 }
 
 .ui-banner__description {
-  color: var(--ui-color-text-secondary);
+  color: var(--ui-text-secondary);
   font-weight: var(--ui-font-weight-regular);
-  line-height: var(--ui-font-line-height-1-5);
+  /* The description is body-size text, so it takes the platform body pairing
+     (14px/20px on web, 16px/24px on mobile). */
+  line-height: var(--ui-typography-body-line-height);
 }
 
 .ui-banner__actions {
@@ -84,7 +86,7 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  transition: background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+  transition: background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
 }
 .ui-banner__close::before,
 .ui-banner__close::after {
@@ -107,12 +109,9 @@
   background: var(--ui-color-surface-subtle);
 }
 
-/* focus.ring-width / focus.ring-offset are placeholders in the token source;
-   the fallbacks are real tokens and go inert once the design system fills them. */
 .ui-banner__close:focus-visible {
-  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
-    var(--ui-color-border-focus);
-  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 /* WCAG target size on touch. space.11 (2.75rem) is a placeholder in the token

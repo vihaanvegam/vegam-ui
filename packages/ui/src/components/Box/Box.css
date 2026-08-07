@@ -1,0 +1,230 @@
+/*
+ * Box consumes per-breakpoint custom properties set inline by the component
+ * (--ui-box-<prop>-<breakpoint>). Each media block falls back through the
+ * narrower breakpoints, so a value set at one bound inherits upward until
+ * overridden. Media query bounds are the §8.1 annotated literals.
+ */
+.ui-box {
+  box-sizing: border-box;
+  padding-block-start: var(--ui-box-pt-base, 0);
+  padding-block-end: var(--ui-box-pb-base, 0);
+  padding-inline-start: var(--ui-box-pl-base, 0);
+  padding-inline-end: var(--ui-box-pr-base, 0);
+  margin-block-start: var(--ui-box-mt-base, 0);
+  margin-block-end: var(--ui-box-mb-base, 0);
+  margin-inline-start: var(--ui-box-ml-base, 0);
+  margin-inline-end: var(--ui-box-mr-base, 0);
+  background: var(--ui-box-bg-base, none);
+  border-radius: var(--ui-box-radius-base, 0);
+  box-shadow: var(--ui-box-shadow-base, none);
+}
+
+.ui-box--bordered {
+  border: var(--ui-border-width-hairline) solid var(--ui-box-border-color-base, transparent);
+}
+
+@media (min-width: 48rem) {
+  /* --ui-breakpoint-tablet */
+  .ui-box {
+    padding-block-start: var(--ui-box-pt-tablet, var(--ui-box-pt-base, 0));
+    padding-block-end: var(--ui-box-pb-tablet, var(--ui-box-pb-base, 0));
+    padding-inline-start: var(--ui-box-pl-tablet, var(--ui-box-pl-base, 0));
+    padding-inline-end: var(--ui-box-pr-tablet, var(--ui-box-pr-base, 0));
+    margin-block-start: var(--ui-box-mt-tablet, var(--ui-box-mt-base, 0));
+    margin-block-end: var(--ui-box-mb-tablet, var(--ui-box-mb-base, 0));
+    margin-inline-start: var(--ui-box-ml-tablet, var(--ui-box-ml-base, 0));
+    margin-inline-end: var(--ui-box-mr-tablet, var(--ui-box-mr-base, 0));
+    background: var(--ui-box-bg-tablet, var(--ui-box-bg-base, none));
+    border-radius: var(--ui-box-radius-tablet, var(--ui-box-radius-base, 0));
+    box-shadow: var(--ui-box-shadow-tablet, var(--ui-box-shadow-base, none));
+  }
+  .ui-box--bordered {
+    border-color: var(--ui-box-border-color-tablet, var(--ui-box-border-color-base, transparent));
+  }
+}
+
+@media (min-width: 64rem) {
+  /* --ui-breakpoint-laptop */
+  .ui-box {
+    padding-block-start: var(--ui-box-pt-laptop, var(--ui-box-pt-tablet, var(--ui-box-pt-base, 0)));
+    padding-block-end: var(--ui-box-pb-laptop, var(--ui-box-pb-tablet, var(--ui-box-pb-base, 0)));
+    padding-inline-start: var(
+      --ui-box-pl-laptop,
+      var(--ui-box-pl-tablet, var(--ui-box-pl-base, 0))
+    );
+    padding-inline-end: var(--ui-box-pr-laptop, var(--ui-box-pr-tablet, var(--ui-box-pr-base, 0)));
+    margin-block-start: var(--ui-box-mt-laptop, var(--ui-box-mt-tablet, var(--ui-box-mt-base, 0)));
+    margin-block-end: var(--ui-box-mb-laptop, var(--ui-box-mb-tablet, var(--ui-box-mb-base, 0)));
+    margin-inline-start: var(--ui-box-ml-laptop, var(--ui-box-ml-tablet, var(--ui-box-ml-base, 0)));
+    margin-inline-end: var(--ui-box-mr-laptop, var(--ui-box-mr-tablet, var(--ui-box-mr-base, 0)));
+    background: var(--ui-box-bg-laptop, var(--ui-box-bg-tablet, var(--ui-box-bg-base, none)));
+    border-radius: var(
+      --ui-box-radius-laptop,
+      var(--ui-box-radius-tablet, var(--ui-box-radius-base, 0))
+    );
+    box-shadow: var(
+      --ui-box-shadow-laptop,
+      var(--ui-box-shadow-tablet, var(--ui-box-shadow-base, none))
+    );
+  }
+  .ui-box--bordered {
+    border-color: var(
+      --ui-box-border-color-laptop,
+      var(--ui-box-border-color-tablet, var(--ui-box-border-color-base, transparent))
+    );
+  }
+}
+
+@media (min-width: 80rem) {
+  /* --ui-breakpoint-desktop */
+  .ui-box {
+    padding-block-start: var(
+      --ui-box-pt-desktop,
+      var(--ui-box-pt-laptop, var(--ui-box-pt-tablet, var(--ui-box-pt-base, 0)))
+    );
+    padding-block-end: var(
+      --ui-box-pb-desktop,
+      var(--ui-box-pb-laptop, var(--ui-box-pb-tablet, var(--ui-box-pb-base, 0)))
+    );
+    padding-inline-start: var(
+      --ui-box-pl-desktop,
+      var(--ui-box-pl-laptop, var(--ui-box-pl-tablet, var(--ui-box-pl-base, 0)))
+    );
+    padding-inline-end: var(
+      --ui-box-pr-desktop,
+      var(--ui-box-pr-laptop, var(--ui-box-pr-tablet, var(--ui-box-pr-base, 0)))
+    );
+    margin-block-start: var(
+      --ui-box-mt-desktop,
+      var(--ui-box-mt-laptop, var(--ui-box-mt-tablet, var(--ui-box-mt-base, 0)))
+    );
+    margin-block-end: var(
+      --ui-box-mb-desktop,
+      var(--ui-box-mb-laptop, var(--ui-box-mb-tablet, var(--ui-box-mb-base, 0)))
+    );
+    margin-inline-start: var(
+      --ui-box-ml-desktop,
+      var(--ui-box-ml-laptop, var(--ui-box-ml-tablet, var(--ui-box-ml-base, 0)))
+    );
+    margin-inline-end: var(
+      --ui-box-mr-desktop,
+      var(--ui-box-mr-laptop, var(--ui-box-mr-tablet, var(--ui-box-mr-base, 0)))
+    );
+    background: var(
+      --ui-box-bg-desktop,
+      var(--ui-box-bg-laptop, var(--ui-box-bg-tablet, var(--ui-box-bg-base, none)))
+    );
+    border-radius: var(
+      --ui-box-radius-desktop,
+      var(--ui-box-radius-laptop, var(--ui-box-radius-tablet, var(--ui-box-radius-base, 0)))
+    );
+    box-shadow: var(
+      --ui-box-shadow-desktop,
+      var(--ui-box-shadow-laptop, var(--ui-box-shadow-tablet, var(--ui-box-shadow-base, none)))
+    );
+  }
+  .ui-box--bordered {
+    border-color: var(
+      --ui-box-border-color-desktop,
+      var(
+        --ui-box-border-color-laptop,
+        var(--ui-box-border-color-tablet, var(--ui-box-border-color-base, transparent))
+      )
+    );
+  }
+}
+
+@media (min-width: 100rem) {
+  /* --ui-breakpoint-wide */
+  .ui-box {
+    padding-block-start: var(
+      --ui-box-pt-wide,
+      var(
+        --ui-box-pt-desktop,
+        var(--ui-box-pt-laptop, var(--ui-box-pt-tablet, var(--ui-box-pt-base, 0)))
+      )
+    );
+    padding-block-end: var(
+      --ui-box-pb-wide,
+      var(
+        --ui-box-pb-desktop,
+        var(--ui-box-pb-laptop, var(--ui-box-pb-tablet, var(--ui-box-pb-base, 0)))
+      )
+    );
+    padding-inline-start: var(
+      --ui-box-pl-wide,
+      var(
+        --ui-box-pl-desktop,
+        var(--ui-box-pl-laptop, var(--ui-box-pl-tablet, var(--ui-box-pl-base, 0)))
+      )
+    );
+    padding-inline-end: var(
+      --ui-box-pr-wide,
+      var(
+        --ui-box-pr-desktop,
+        var(--ui-box-pr-laptop, var(--ui-box-pr-tablet, var(--ui-box-pr-base, 0)))
+      )
+    );
+    margin-block-start: var(
+      --ui-box-mt-wide,
+      var(
+        --ui-box-mt-desktop,
+        var(--ui-box-mt-laptop, var(--ui-box-mt-tablet, var(--ui-box-mt-base, 0)))
+      )
+    );
+    margin-block-end: var(
+      --ui-box-mb-wide,
+      var(
+        --ui-box-mb-desktop,
+        var(--ui-box-mb-laptop, var(--ui-box-mb-tablet, var(--ui-box-mb-base, 0)))
+      )
+    );
+    margin-inline-start: var(
+      --ui-box-ml-wide,
+      var(
+        --ui-box-ml-desktop,
+        var(--ui-box-ml-laptop, var(--ui-box-ml-tablet, var(--ui-box-ml-base, 0)))
+      )
+    );
+    margin-inline-end: var(
+      --ui-box-mr-wide,
+      var(
+        --ui-box-mr-desktop,
+        var(--ui-box-mr-laptop, var(--ui-box-mr-tablet, var(--ui-box-mr-base, 0)))
+      )
+    );
+    background: var(
+      --ui-box-bg-wide,
+      var(
+        --ui-box-bg-desktop,
+        var(--ui-box-bg-laptop, var(--ui-box-bg-tablet, var(--ui-box-bg-base, none)))
+      )
+    );
+    border-radius: var(
+      --ui-box-radius-wide,
+      var(
+        --ui-box-radius-desktop,
+        var(--ui-box-radius-laptop, var(--ui-box-radius-tablet, var(--ui-box-radius-base, 0)))
+      )
+    );
+    box-shadow: var(
+      --ui-box-shadow-wide,
+      var(
+        --ui-box-shadow-desktop,
+        var(--ui-box-shadow-laptop, var(--ui-box-shadow-tablet, var(--ui-box-shadow-base, none)))
+      )
+    );
+  }
+  .ui-box--bordered {
+    border-color: var(
+      --ui-box-border-color-wide,
+      var(
+        --ui-box-border-color-desktop,
+        var(
+          --ui-box-border-color-laptop,
+          var(--ui-box-border-color-tablet, var(--ui-box-border-color-base, transparent))
+        )
+      )
+    );
+  }
+}

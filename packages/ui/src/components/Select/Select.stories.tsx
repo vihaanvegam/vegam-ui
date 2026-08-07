@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ThemeProvider } from '../../theme/ThemeProvider';
 import { Badge } from '../Badge';
@@ -23,7 +23,7 @@ const meta: Meta<typeof Select> = {
   args: {
     'aria-label': 'Fruit',
     options: FRUIT,
-    placeholder: 'Pick a fruit…',
+    placeholder: 'Pick a fruitâ€¦',
   },
   argTypes: {
     size: { control: 'radio', options: ['sm', 'md', 'lg'] },
@@ -93,7 +93,7 @@ export const CustomOptionSlot: Story = {
 export const DarkScheme: Story = {
   render: (args) => (
     <ThemeProvider colorScheme="dark">
-      <div style={{ background: 'var(--ui-color-bg-canvas)', padding: 'var(--ui-space-6)' }}>
+      <div style={{ background: 'var(--ui-color-surface-page)', padding: 'var(--ui-space-6)' }}>
         <Select {...args} aria-label="Dark fruit" defaultValue="apple" />
       </div>
     </ThemeProvider>

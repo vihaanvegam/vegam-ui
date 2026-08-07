@@ -1,0 +1,73 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as ToastStories from './Toast.stories';
+
+<Meta of={ToastStories} />
+
+# Toast
+
+Transient messages that report the result of an action. Mount `ToastProvider`
+once near the root of your app, then call `useToast()` anywhere beneath it.
+
+**When not to use it:** a message tied to a place on the page is a
+**Banner**; something requiring a decision is a **Modal**.
+
+## Import
+
+```tsx
+import { ToastProvider, useToast } from '@vegam-ui/ui';
+```
+
+```tsx
+function App() {
+  return (
+    <ToastProvider placement="bottom-end">
+      <YourApp />
+    </ToastProvider>
+  );
+}
+
+function SaveButton() {
+  const { show } = useToast();
+  return <Button onClick={() => show({ title: 'Saved' })}>Save</Button>;
+}
+```
+
+## Usage
+
+<Canvas of={ToastStories.Basic} />
+<Canvas of={ToastStories.TopCenter} />
+
+`useToast()` returns `{ show, dismiss, dismissAll }`. `show()` returns the
+new toast's id so you can dismiss it early.
+
+**Why a hook and not an importable `toast()`?** A module-level singleton
+would give a dual-package (ESM + CJS) consumer _two_ queues, one of which
+renders nothing — the same reasoning that keeps theme state in CSS.
+
+## Props
+
+<Controls of={ToastStories.Playground} />
+
+## Accessibility
+
+- The stack lives in **two live regions**: `role="status"` (polite) for
+  info/success and `role="alert"` (assertive) for warning/danger, matching
+  Banner. Both are always rendered — a toast must appear _inside_ a live
+  region that already existed, or it may not be announced at all.
+- **Auto-dismiss timers pause on hover and on focus-within**, so a toast
+  cannot vanish mid-read or while its action is being used. The remaining
+  time is preserved across pause/resume rather than restarted.
+- Anything the user must act on should pass `duration: null` plus a
+  `closeLabel`, so it stays until dismissed. Five seconds is not enough time
+  for many readers.
+- A close button renders only when `closeLabel` is given (no shipped copy).
+- The region does not trap focus; toasts are reachable in normal tab order.
+
+## Theming
+
+`toastClasses` exports region, root, intent, and part classes;
+`--ui-toast-max-width` caps the width. Intent tints the leading accent bar
+only — the surface stays neutral so long text keeps its contrast, which is
+the feedback tokens' own guidance.
+
+<Canvas of={ToastStories.DarkScheme} />

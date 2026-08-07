@@ -13,16 +13,22 @@ dotted = devDependency, thick = peerDependency.
 
 ```mermaid
 graph LR
+  _vegam_ui_icons["@vegam-ui/icons@0.0.0"]
   _vegam_ui_tokens["@vegam-ui/tokens@0.1.0"]
   _vegam_ui_ui["@vegam-ui/ui@0.2.0"]
   smoke_next_app["smoke-next-app"]
   smoke_next_pages["smoke-next-pages"]
   smoke_remix["smoke-remix"]
   smoke_vite["smoke-vite"]
+  _vegam_ui_ui -.->|devDependency| _vegam_ui_icons
   _vegam_ui_ui -.->|devDependency| _vegam_ui_tokens
+  smoke_next_app -->|dependency| _vegam_ui_icons
   smoke_next_app -->|dependency| _vegam_ui_ui
+  smoke_next_pages -->|dependency| _vegam_ui_icons
   smoke_next_pages -->|dependency| _vegam_ui_ui
+  smoke_remix -->|dependency| _vegam_ui_icons
   smoke_remix -->|dependency| _vegam_ui_ui
+  smoke_vite -->|dependency| _vegam_ui_icons
   smoke_vite -->|dependency| _vegam_ui_ui
 ```
 
@@ -46,98 +52,302 @@ graph TD
     index__barrel_["index (barrel)"]
   end
   subgraph layer_components["components"]
+    Accordion["Accordion"]
+    Avatar["Avatar"]
     Badge["Badge"]
     Banner["Banner"]
     Blanket["Blanket"]
+    Box["Box"]
     Breadcrumbs["Breadcrumbs"]
     Button["Button"]
     Card["Card"]
     Checkbox["Checkbox"]
-    focusTrap["focusTrap"]
+    Chip["Chip"]
+    Container["Container"]
+    Divider["Divider"]
+    Drawer["Drawer"]
+    Field["Field"]
+    Flex["Flex"]
+    Grid["Grid"]
+    IconButton["IconButton"]
     Input["Input"]
+    Link["Link"]
+    Menu["Menu"]
     Modal["Modal"]
-    scrollLock["scrollLock"]
+    Pagination["Pagination"]
+    Popover["Popover"]
+    Progress["Progress"]
+    Radio["Radio"]
     Select["Select"]
+    Skeleton["Skeleton"]
+    Slider["Slider"]
+    Spinner["Spinner"]
     Stack["Stack"]
+    Switch["Switch"]
+    Table["Table"]
+    Tabs["Tabs"]
     Text["Text"]
+    Textarea["Textarea"]
+    Toast["Toast"]
+    Tooltip["Tooltip"]
   end
   subgraph layer_theme["theme"]
     defaultProps["defaultProps"]
     theme["theme"]
     ThemeProvider["ThemeProvider"]
   end
+  subgraph layer_hooks["hooks"]
+    useAnchoredPosition["useAnchoredPosition"]
+    useBreakpoint["useBreakpoint"]
+    useControlled["useControlled"]
+    useDismiss["useDismiss"]
+    useIsomorphicLayoutEffect["useIsomorphicLayoutEffect"]
+    useMediaQuery["useMediaQuery"]
+    useRovingFocus["useRovingFocus"]
+    useThemedPortal["useThemedPortal"]
+    useTransitionState["useTransitionState"]
+    useTriggerRef["useTriggerRef"]
+  end
   subgraph layer_utils__framework_free_["utils (framework-free)"]
+    breakpoints["breakpoints"]
     cx["cx"]
+    dismiss["dismiss"]
+    drag["drag"]
+    focusTrap["focusTrap"]
     listNavigation["listNavigation"]
     positioning["positioning"]
-    useIsomorphicLayoutEffect["useIsomorphicLayoutEffect"]
+    responsive["responsive"]
+    scrollLock["scrollLock"]
+    tokenScales["tokenScales"]
   end
+  Accordion --> cx
+  Accordion --> useControlled
+  Avatar --> cx
+  Avatar --> defaultProps
   Badge --> cx
   Badge --> defaultProps
   Banner --> cx
   Banner --> defaultProps
   Blanket --> cx
+  Box --> breakpoints
+  Box --> cx
+  Box --> responsive
+  Box --> tokenScales
   Breadcrumbs --> cx
+  Breadcrumbs --> useControlled
   Button --> cx
   Button --> defaultProps
   Card --> cx
   Card --> defaultProps
   Checkbox --> cx
   Checkbox --> defaultProps
+  Checkbox --> Field
   Checkbox --> useIsomorphicLayoutEffect
+  Chip --> cx
+  Chip --> defaultProps
+  Container --> cx
+  Container --> defaultProps
+  defaultProps -.->|type| Avatar
   defaultProps -.->|type| Badge
   defaultProps -.->|type| Banner
   defaultProps -.->|type| Button
   defaultProps -.->|type| Card
   defaultProps -.->|type| Checkbox
+  defaultProps -.->|type| Chip
+  defaultProps -.->|type| Container
+  defaultProps -.->|type| Divider
+  defaultProps -.->|type| Drawer
+  defaultProps -.->|type| Flex
+  defaultProps -.->|type| Grid
+  defaultProps -.->|type| IconButton
   defaultProps -.->|type| Input
+  defaultProps -.->|type| Link
   defaultProps -.->|type| Modal
+  defaultProps -.->|type| Progress
+  defaultProps -.->|type| Radio
   defaultProps -.->|type| Select
+  defaultProps -.->|type| Skeleton
+  defaultProps -.->|type| Spinner
   defaultProps -.->|type| Stack
+  defaultProps -.->|type| Tabs
   defaultProps -.->|type| Text
+  defaultProps -.->|type| Textarea
+  Divider --> cx
+  Divider --> defaultProps
+  Divider -.->|type| tokenScales
+  Drawer --> Blanket
+  Drawer --> cx
+  Drawer --> defaultProps
+  Drawer --> focusTrap
+  Drawer --> scrollLock
+  Drawer --> useThemedPortal
+  Drawer --> useTransitionState
+  Field --> cx
+  Flex --> cx
+  Flex --> defaultProps
+  Flex --> responsive
+  Flex --> tokenScales
+  Grid --> cx
+  Grid --> defaultProps
+  Grid --> responsive
+  Grid --> tokenScales
+  IconButton --> Button
+  IconButton --> cx
+  IconButton --> defaultProps
+  index__barrel_ --> Accordion
+  index__barrel_ --> Avatar
   index__barrel_ --> Badge
   index__barrel_ --> Banner
   index__barrel_ --> Blanket
+  index__barrel_ --> Box
   index__barrel_ --> Breadcrumbs
+  index__barrel_ --> breakpoints
   index__barrel_ --> Button
   index__barrel_ --> Card
   index__barrel_ --> Checkbox
+  index__barrel_ --> Chip
+  index__barrel_ --> Container
   index__barrel_ --> cx
+  index__barrel_ --> Divider
+  index__barrel_ --> Drawer
+  index__barrel_ --> Field
+  index__barrel_ --> Flex
+  index__barrel_ --> Grid
+  index__barrel_ --> IconButton
   index__barrel_ --> Input
+  index__barrel_ --> Link
+  index__barrel_ --> Menu
   index__barrel_ --> Modal
+  index__barrel_ --> Pagination
+  index__barrel_ --> Popover
+  index__barrel_ -.->|type| positioning
+  index__barrel_ --> Progress
+  index__barrel_ --> Radio
+  index__barrel_ -.->|type| responsive
   index__barrel_ --> Select
+  index__barrel_ --> Skeleton
+  index__barrel_ --> Slider
+  index__barrel_ --> Spinner
   index__barrel_ --> Stack
+  index__barrel_ --> Switch
+  index__barrel_ --> Table
+  index__barrel_ --> Tabs
   index__barrel_ --> Text
+  index__barrel_ --> Textarea
   index__barrel_ --> theme
+  index__barrel_ --> Toast
+  index__barrel_ --> tokenScales
+  index__barrel_ --> Tooltip
+  index__barrel_ --> useBreakpoint
+  index__barrel_ --> useControlled
+  index__barrel_ --> useDismiss
   index__barrel_ --> useIsomorphicLayoutEffect
+  index__barrel_ --> useMediaQuery
+  index__barrel_ --> useTransitionState
   Input --> cx
   Input --> defaultProps
+  Input --> Field
+  Link --> cx
+  Link --> defaultProps
+  Menu --> cx
+  Menu --> listNavigation
+  Menu -.->|type| positioning
+  Menu --> useAnchoredPosition
+  Menu --> useControlled
+  Menu --> useDismiss
+  Menu --> useRovingFocus
+  Menu --> useThemedPortal
+  Menu --> useTransitionState
+  Menu --> useTriggerRef
   Modal --> Blanket
   Modal --> cx
   Modal --> defaultProps
   Modal --> focusTrap
   Modal --> scrollLock
   Modal --> useIsomorphicLayoutEffect
+  Pagination --> Button
+  Pagination --> cx
+  Pagination --> IconButton
+  Pagination --> useControlled
+  Popover --> cx
+  Popover --> focusTrap
+  Popover -.->|type| positioning
+  Popover --> useAnchoredPosition
+  Popover --> useControlled
+  Popover --> useDismiss
+  Popover --> useThemedPortal
+  Popover --> useTransitionState
+  Popover --> useTriggerRef
+  Progress --> cx
+  Progress --> defaultProps
+  Radio --> cx
+  Radio --> defaultProps
+  Radio --> Field
+  Radio --> useControlled
+  responsive --> breakpoints
   Select --> cx
   Select --> defaultProps
+  Select --> Field
   Select --> listNavigation
   Select --> positioning
+  Select --> useControlled
+  Select --> useDismiss
   Select --> useIsomorphicLayoutEffect
+  Skeleton --> cx
+  Skeleton --> defaultProps
+  Skeleton -.->|type| tokenScales
+  Slider --> cx
+  Slider --> drag
+  Slider --> Field
+  Slider --> useControlled
+  Spinner --> cx
+  Spinner --> defaultProps
   Stack --> cx
   Stack --> defaultProps
+  Switch --> cx
+  Switch --> Field
+  Table --> cx
+  Tabs --> cx
+  Tabs --> defaultProps
+  Tabs --> listNavigation
+  Tabs --> useControlled
+  Tabs --> useRovingFocus
   Text --> cx
   Text --> defaultProps
+  Textarea --> cx
+  Textarea --> defaultProps
+  Textarea --> Field
+  Textarea --> useIsomorphicLayoutEffect
   theme --> defaultProps
   theme --> ThemeProvider
   ThemeProvider --> cx
   ThemeProvider --> defaultProps
+  Toast --> cx
+  Toast --> useTransitionState
+  Tooltip --> cx
+  Tooltip -.->|type| positioning
+  Tooltip --> useAnchoredPosition
+  Tooltip --> useControlled
+  Tooltip --> useThemedPortal
+  Tooltip --> useTransitionState
+  Tooltip --> useTriggerRef
+  useAnchoredPosition --> positioning
+  useAnchoredPosition --> useIsomorphicLayoutEffect
+  useBreakpoint --> breakpoints
+  useDismiss --> dismiss
+  useRovingFocus --> listNavigation
+  useRovingFocus --> useIsomorphicLayoutEffect
+  useThemedPortal --> useIsomorphicLayoutEffect
 ```
 
 What to read off this graph:
 
-- **`utils` is a sink.** No node in `utils` points back into `components` or
-  `theme`, so behaviour logic stays framework-free — the property CLAUDE.md
-  requires and the reason a non-React target stays cheap.
+- **`utils` is a sink.** No node in `utils` points back into `components`,
+  `hooks`, or `theme`, so behaviour logic stays framework-free — the property
+  CLAUDE.md requires and the reason a non-React target stays cheap.
+- **`hooks` sit between.** Hook modules may import `utils`, never the
+  reverse; `theme` and `components` may import both. The layering
+  `utils ← hooks ← (theme, components) ← barrel` stays acyclic.
 - **The one apparent cycle is type-only.** `defaultProps` imports each
   component's props type to key `ThemeComponentDefaults`, while every component
   imports `useComponentDefaults` at runtime. The dotted direction disappears
@@ -152,61 +362,39 @@ references. Primitives are raw values; semantic tokens are what components use.
 
 ```mermaid
 graph LR
-  dark_action["dark.action"] -->|6| blue["blue"]
-  dark_action["dark.action"] -->|6| white["white"]
-  dark_action["dark.action"] -->|6| green["green"]
-  dark_action["dark.action"] -->|6| red["red"]
-  dark_action["dark.action"] -->|6| amber["amber"]
-  dark_action["dark.action"] -->|6| purple["purple"]
-  dark_action["dark.action"] -->|6| grey["grey"]
-  dark_border["dark.border"] -->|2| grey["grey"]
-  dark_border["dark.border"] -->|1| red["red"]
-  dark_border["dark.border"] -->|1| blue["blue"]
-  dark_cards["dark.cards"] -->|4| grey["grey"]
-  dark_divider["dark.divider"] -->|2| grey["grey"]
-  dark_divider["dark.divider"] -->|2| blue["blue"]
-  dark_divider["dark.divider"] -->|1| red["red"]
-  dark_focus["dark.focus"] -->|1| blue["blue"]
-  dark_surface["dark.surface"] -->|3| grey["grey"]
-  dark_text["dark.text"] -->|5| grey["grey"]
-  dark_text["dark.text"] -->|1| white["white"]
-  light_action["light.action"] -->|6| blue["blue"]
-  light_action["light.action"] -->|6| white["white"]
-  light_action["light.action"] -->|6| green["green"]
-  light_action["light.action"] -->|6| red["red"]
-  light_action["light.action"] -->|6| amber["amber"]
-  light_action["light.action"] -->|6| purple["purple"]
-  light_action["light.action"] -->|6| grey["grey"]
-  light_border["light.border"] -->|2| grey["grey"]
-  light_border["light.border"] -->|1| red["red"]
-  light_border["light.border"] -->|1| blue["blue"]
-  light_cards["light.cards"] -->|4| grey["grey"]
-  light_divider["light.divider"] -->|2| grey["grey"]
-  light_divider["light.divider"] -->|2| blue["blue"]
-  light_divider["light.divider"] -->|1| red["red"]
-  light_focus["light.focus"] -->|1| blue["blue"]
-  light_surface["light.surface"] -->|2| grey["grey"]
-  light_surface["light.surface"] -->|1| white["white"]
-  light_text["light.text"] -->|5| grey["grey"]
-  light_text["light.text"] -->|1| white["white"]
+  component["component"] -->|18| theme["theme"]
+  component["component"] -->|17| platform["platform"]
+  component["component"] -->|5| z["z"]
+  component["component"] -->|1| focus["focus"]
+  platform["platform"] -->|6| size["size"]
+  platform["platform"] -->|6| theme["theme"]
+  platform["platform"] -->|4| radius["radius"]
+  theme["theme"] -->|60| grey["grey"]
+  theme["theme"] -->|26| blue["blue"]
+  theme["theme"] -->|22| red["red"]
+  theme["theme"] -->|18| green["green"]
+  theme["theme"] -->|18| amber["amber"]
+  theme["theme"] -->|18| purple["purple"]
+  theme["theme"] -->|16| white["white"]
+  viewport["viewport"] -->|5| breakpoint["breakpoint"]
 ```
 
-161 primitive tokens, 260 semantic tokens
+263 primitive tokens, 240 semantic tokens
 (including the `dark.*` overrides, which remap the same custom-property names
 under `[data-theme="dark"]`).
 
 ## Facts
 
-- **Public exports:** 29 values, 44 types
-- **Modules:** 22 (14 components, 3 theme, 4 utils)
-- **`'use client'` files:** 15 — Badge, Banner, Blanket, Breadcrumbs, Button, Card, Checkbox, defaultProps, Input, Modal, Select, Stack, Text, ThemeProvider, useIsomorphicLayoutEffect
-- **Modules with colocated CSS:** 14 — Badge, Banner, Blanket, Breadcrumbs, Button, Card, Checkbox, index (barrel), Input, Modal, Select, Stack, Text, ThemeProvider
+- **Public exports:** 100 values, 140 types
+- **Modules:** 62 (38 components, 3 theme, 10 hooks, 10 utils)
+- **`'use client'` files:** 50 — Accordion, Avatar, Badge, Banner, Blanket, Box, Breadcrumbs, Button, Card, Checkbox, Chip, Container, defaultProps, Divider, Drawer, Field, Flex, Grid, IconButton, Input, Link, Menu, Modal, Pagination, Popover, Progress, Radio, Select, Skeleton, Slider, Spinner, Stack, Switch, Table, Tabs, Text, Textarea, ThemeProvider, Toast, Tooltip, useAnchoredPosition, useBreakpoint, useControlled, useDismiss, useIsomorphicLayoutEffect, useMediaQuery, useRovingFocus, useThemedPortal, useTransitionState, useTriggerRef
+- **Modules with colocated CSS:** 40 — Accordion, Avatar, Badge, Banner, Blanket, Box, Breadcrumbs, Button, Card, Checkbox, Chip, Container, Divider, Drawer, Field, Flex, Grid, IconButton, index (barrel), Input, Link, Menu, Modal, Pagination, Popover, Progress, Radio, Select, Skeleton, Slider, Spinner, Stack, Switch, Table, Tabs, Text, Textarea, ThemeProvider, Toast, Tooltip
 - **External imports:** react, react-dom
 
 ### Values
 
-`Badge` · `Banner` · `Blanket` · `Breadcrumbs` · `Button` · `Card` · `Checkbox` · `Input` · `Modal` · `Select` · `Stack` · `Text` · `ThemeProvider` · `badgeClasses` · `bannerClasses` · `blanketClasses` · `breadcrumbsClasses` · `buttonClasses` · `cardClasses` · `checkboxClasses` · `cx` · `inputClasses` · `modalClasses` · `selectClasses` · `stackClasses` · `textClasses` · `themeClasses` · `useComponentDefaults` · `useIsomorphicLayoutEffect`
+`Accordion` · `Avatar` · `Badge` · `Banner` · `Blanket` · `Box` · `Breadcrumbs` · `Button` · `Card` · `Checkbox` · `Chip` · `Container` · `Divider` · `Drawer` · `Field` · `FieldContext` · `Flex` · `Grid` · `IconButton` · `Input` · `Link` · `Menu` · `Modal` · `Pagination` · `Popover` · `Progress` · `Radio` · `RadioGroup` · `Select` · `Skeleton` · `Slider` · `Spinner` · `Stack` · `Switch` · `Table` · `Tabs` · `Text` · `Textarea` · `ThemeProvider` · `ToastProvider` · `Tooltip` · `accordionClasses` · `avatarClasses` · `badgeClasses` · `bannerClasses` · `blanketClasses` · `borderColorKeys` · `boxClasses` · `breadcrumbsClasses` · `breakpointOrder` · `breakpointWidths` · `buttonClasses` · `cardClasses` · `checkboxClasses` · `chipClasses` · `containerClasses` · `cx` · `dividerClasses` · `dividerTones` · `drawerClasses` · `elevationSteps` · `fieldClasses` · `flexClasses` · `gridClasses` · `iconButtonClasses` · `inputClasses` · `linkClasses` · `menuClasses` · `modalClasses` · `paginationClasses` · `paginationRange` · `popoverClasses` · `progressClasses` · `radioClasses` · `radioGroupClasses` · `radiusSteps` · `selectClasses` · `skeletonClasses` · `sliderClasses` · `spaceSteps` · `spinnerClasses` · `stackClasses` · `surfaceKeys` · `switchClasses` · `tableClasses` · `tabsClasses` · `textClasses` · `textareaClasses` · `themeClasses` · `toastClasses` · `tooltipClasses` · `useBreakpoint` · `useComponentDefaults` · `useControlled` · `useDismiss` · `useField` · `useIsomorphicLayoutEffect` · `useMediaQuery` · `useToast` · `useTransitionState`
 
 ### Types
 
-`BadgeProps` · `BadgeTone` · `BannerIntent` · `BannerProps` · `BannerSlotProps` · `BlanketProps` · `BreadcrumbsItem` · `BreadcrumbsLinkRenderProps` · `BreadcrumbsProps` · `BreadcrumbsSlotProps` · `BreadcrumbsSlots` · `ButtonProps` · `ButtonSize` · `ButtonVariant` · `CardPadding` · `CardProps` · `CardVariant` · `CheckboxProps` · `CheckboxSize` · `ColorScheme` · `InputProps` · `InputSize` · `ModalAppearance` · `ModalProps` · `ModalSize` · `ModalSlotProps` · `SelectOption` · `SelectOptionRenderProps` · `SelectProps` · `SelectSize` · `SelectSlotProps` · `SelectSlots` · `StackAlign` · `StackDirection` · `StackGap` · `StackJustify` · `StackProps` · `TextAs` · `TextProps` · `TextSize` · `TextTone` · `TextWeight` · `ThemeComponentDefaults` · `ThemeProviderProps`
+`AccordionItem` · `AccordionProps` · `AccordionSlotProps` · `Align` · `AvatarProps` · `AvatarShape` · `AvatarSize` · `BadgeProps` · `BadgeTone` · `BannerIntent` · `BannerProps` · `BannerSlotProps` · `BlanketProps` · `BorderColorKey` · `BoxAs` · `BoxProps` · `BreadcrumbsItem` · `BreadcrumbsLinkRenderProps` · `BreadcrumbsProps` · `BreadcrumbsSlotProps` · `BreadcrumbsSlots` · `Breakpoint` · `ButtonProps` · `ButtonSize` · `ButtonVariant` · `CardPadding` · `CardProps` · `CardVariant` · `CheckboxProps` · `CheckboxSize` · `ChipProps` · `ChipSize` · `ChipSlotProps` · `ChipTone` · `ColorScheme` · `ContainerAs` · `ContainerProps` · `ContainerSize` · `DividerOrientation` · `DividerProps` · `DividerTone` · `DrawerPlacement` · `DrawerProps` · `DrawerSize` · `DrawerSlotProps` · `ElevationStep` · `FieldContextValue` · `FieldProps` · `FieldSlotProps` · `FlexAlign` · `FlexDirection` · `FlexJustify` · `FlexProps` · `FlexWrap` · `GridProps` · `IconButtonName` · `IconButtonProps` · `InputProps` · `InputSize` · `LinkAnchorProps` · `LinkProps` · `LinkSlots` · `LinkVariant` · `MenuItem` · `MenuItemDomProps` · `MenuItemRenderProps` · `MenuProps` · `MenuSlotProps` · `MenuSlots` · `ModalAppearance` · `ModalProps` · `ModalSize` · `ModalSlotProps` · `PaginationProps` · `PaginationSlotProps` · `PopoverProps` · `PopoverSlotProps` · `ProgressProps` · `ProgressSize` · `ProgressTone` · `RadioGroupProps` · `RadioProps` · `RadioSize` · `RadiusStep` · `ResponsiveObject` · `ResponsiveValue` · `SelectOption` · `SelectOptionRenderProps` · `SelectProps` · `SelectSize` · `SelectSlotProps` · `SelectSlots` · `Side` · `SkeletonProps` · `SkeletonVariant` · `SliderProps` · `SortDirection` · `SpaceStep` · `SpinnerProps` · `SpinnerSize` · `StackAlign` · `StackDirection` · `StackGap` · `StackJustify` · `StackProps` · `SurfaceKey` · `SwitchProps` · `TabItem` · `TableAlign` · `TableCellRenderProps` · `TableColumn` · `TableHeaderCellRenderProps` · `TableProps` · `TableSlotProps` · `TableSlots` · `TableSort` · `TabsActivation` · `TabsOrientation` · `TabsProps` · `TabsSlotProps` · `TextAs` · `TextProps` · `TextSize` · `TextTone` · `TextWeight` · `TextareaProps` · `TextareaSize` · `ThemeComponentDefaults` · `ThemeProviderProps` · `ToastApi` · `ToastIntent` · `ToastOptions` · `ToastPlacement` · `ToastProviderProps` · `ToastRecord` · `TooltipProps` · `TooltipSlotProps` · `TransitionState` · `UseDismissOptions` · `UseTransitionStateResult`

@@ -1,0 +1,54 @@
+/*
+ * The ring is a border with one transparent quarter, rotated. Continuous
+ * motion uses the linear easing token — the design notes it as required for
+ * spinners (any other curve makes rotation visibly stutter).
+ */
+.ui-spinner {
+  display: inline-block;
+  box-sizing: border-box;
+  inline-size: var(--ui-spinner-size);
+  block-size: var(--ui-spinner-size);
+  border: var(--ui-border-width-thick) solid var(--ui-color-border-default);
+  border-block-start-color: var(--ui-color-action-primary-bg);
+  border-radius: var(--ui-radius-full);
+  animation: ui-spinner-rotate var(--ui-motion-duration-slow) var(--ui-motion-easing-linear)
+    infinite;
+  flex-shrink: 0;
+}
+
+.ui-spinner--sm {
+  --ui-spinner-size: var(--ui-size-icon-sm);
+}
+.ui-spinner--md {
+  --ui-spinner-size: var(--ui-size-icon-lg);
+}
+.ui-spinner--lg {
+  --ui-spinner-size: var(--ui-size-icon-xl);
+}
+
+.ui-spinner__label {
+  /* Visually hidden, still announced. */
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced motion: stop spinning rather than animate. The ring stays visible
+   so the busy state is still conveyed visually. */
+@media (prefers-reduced-motion: reduce) {
+  .ui-spinner {
+    animation: none;
+  }
+}
+
+@keyframes ui-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

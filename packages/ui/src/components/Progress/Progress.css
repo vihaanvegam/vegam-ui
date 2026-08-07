@@ -1,0 +1,62 @@
+.ui-progress {
+  position: relative;
+  inline-size: 100%;
+  overflow: hidden;
+  background: var(--ui-color-surface-disabled);
+  border-radius: var(--ui-radius-full);
+}
+
+.ui-progress--sm {
+  block-size: var(--ui-space-1);
+}
+.ui-progress--md {
+  block-size: var(--ui-space-2);
+}
+
+.ui-progress__fill {
+  block-size: 100%;
+  border-radius: inherit;
+  background: var(--ui-color-action-primary-bg);
+  transition: inline-size var(--ui-motion-duration-normal) var(--ui-motion-easing-standard);
+}
+
+.ui-progress--success .ui-progress__fill {
+  background: var(--ui-color-action-success-bg);
+}
+.ui-progress--warning .ui-progress__fill {
+  background: var(--ui-color-action-warning-bg);
+}
+.ui-progress--danger .ui-progress__fill {
+  background: var(--ui-color-action-danger-bg);
+}
+
+/* Indeterminate: a fixed-width sweep travelling the track. Continuous
+   motion, so the linear easing token applies (design's own note). */
+.ui-progress--indeterminate .ui-progress__fill {
+  inline-size: 40%;
+  transition: none;
+  animation: ui-progress-sweep var(--ui-motion-duration-slow) var(--ui-motion-easing-linear)
+    infinite;
+}
+
+@keyframes ui-progress-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-progress__fill {
+    transition: none;
+  }
+  /* Stop the sweep, but keep a visible partial fill so the busy state still
+     reads without motion. */
+  .ui-progress--indeterminate .ui-progress__fill {
+    animation: none;
+    inline-size: 100%;
+    opacity: var(--ui-opacity-disabled);
+  }
+}

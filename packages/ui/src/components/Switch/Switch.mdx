@@ -1,0 +1,47 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as SwitchStories from './Switch.stories';
+
+<Meta of={SwitchStories} />
+
+# Switch
+
+An on/off toggle for settings that take effect immediately. Use **Checkbox**
+for selections a form submits later — the switch metaphor promises instant
+effect.
+
+## Import
+
+```tsx
+import { Switch } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={SwitchStories.Off} />
+<Canvas of={SwitchStories.WithLabel} />
+<Canvas of={SwitchStories.Disabled} />
+
+Controlled and uncontrolled work exactly like a native checkbox
+(`checked`/`defaultChecked`/`onChange`) — because it IS one.
+
+## Props
+
+<Controls of={SwitchStories.Playground} />
+
+## Accessibility
+
+- A native `<input type="checkbox">` with `role="switch"`: Space toggles,
+  focus and form semantics are the platform's, and screen readers announce
+  on/off.
+- The track and thumb are drawn on the input itself from the
+  `size.switch-track-*` tokens (single 64×32 size); forced-colors mode falls
+  back to the user agent's checkbox rendering.
+- Label it with an external `<label htmlFor>` (or `aria-label`); the label
+  also extends the touch target.
+
+## Theming
+
+No cosmetic axes — geometry comes from the switch tokens; `switchClasses`
+is the class override surface. Motion honors `prefers-reduced-motion`.
+
+<Canvas of={SwitchStories.DarkScheme} />

@@ -1,0 +1,69 @@
+.ui-textarea {
+  display: block;
+  inline-size: 100%;
+  box-sizing: border-box;
+  background: var(--ui-color-surface-page);
+  color: var(--ui-text-primary);
+  border: var(--ui-border-width-hairline) solid var(--ui-color-border-default);
+  border-radius: var(--ui-radius-md);
+  font-family: var(--ui-font-family-sans);
+  line-height: 1.5;
+  resize: vertical;
+  transition:
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard),
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
+}
+
+/* Autosize drives the height from content; manual resize would fight it. */
+.ui-textarea--autosize {
+  resize: none;
+  overflow-y: auto;
+}
+
+.ui-textarea::placeholder {
+  color: var(--ui-text-secondary);
+}
+
+.ui-textarea:hover:not(:disabled) {
+  border-color: var(--ui-color-border-hover);
+}
+
+.ui-textarea:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+  border-color: var(--ui-color-border-focus);
+}
+
+.ui-textarea:disabled {
+  background: var(--ui-color-surface-disabled);
+  color: var(--ui-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Invalid state rides on the native aria-invalid attribute — no custom prop. */
+.ui-textarea[aria-invalid='true'] {
+  border-color: var(--ui-color-border-error);
+}
+.ui-textarea[aria-invalid='true']:focus-visible {
+  outline-color: var(--ui-color-border-error);
+  border-color: var(--ui-color-border-error);
+}
+
+.ui-textarea--sm {
+  font-size: var(--ui-font-size-sm);
+  padding: var(--ui-space-1) var(--ui-space-3);
+}
+.ui-textarea--md {
+  font-size: var(--ui-font-size-md);
+  padding: var(--ui-space-2) var(--ui-space-3);
+}
+.ui-textarea--lg {
+  font-size: var(--ui-font-size-xl);
+  padding: var(--ui-space-3) var(--ui-space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-textarea {
+    transition: none;
+  }
+}

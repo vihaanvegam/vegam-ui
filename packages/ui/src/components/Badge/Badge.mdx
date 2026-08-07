@@ -1,0 +1,61 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as BadgeStories from './Badge.stories';
+
+<Meta of={BadgeStories} />
+
+# Badge
+
+A small, static status label — "Active", "Draft", "3 failed". Use it to
+annotate something else on the page with a state or a count.
+
+Do **not** use it for anything interactive: a badge is a `<span>`, and a label
+you can click is a `Button` or a `Chip`. `Chip` is the interactive, removable
+sibling of this component; reach for it when the token represents a selection
+the user can act on.
+
+## Import
+
+```tsx
+import { Badge } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={BadgeStories.Neutral} />
+
+`tone` is the only axis: a subtle background paired with a readable
+foreground. `neutral` is the default; the four status tones carry meaning.
+
+<Canvas of={BadgeStories.AllTones} />
+
+Because a badge is a `<span>`, it flows inline with text and inherits the
+surrounding line box — put it next to a heading or inside a table cell without
+extra layout work.
+
+## Props
+
+<Controls of={BadgeStories.Playground} />
+
+## Accessibility
+
+- **Colour is never the only signal.** Every tone pairs its background with
+  text that states the status, and each pair clears WCAG AA contrast. A badge
+  whose text is decorative (a bare dot, an icon) is a badge that says nothing
+  to a screen reader.
+- Renders a plain `<span>` with **no ARIA role**. It is static content, so it
+  is read as part of the surrounding text — which is what you want, and why
+  it is not a `status` live region. If the status changes in response to a user
+  action and must be announced, put the badge inside your own live region, or
+  use `Toast`/`Banner`, which own that behaviour.
+- Not focusable and not in the tab order — there is nothing to activate.
+
+## Theming
+
+- **Class constants**: `badgeClasses` exports every rendered class
+  (`ui-badge`, `ui-badge--success`, …) as the documented override surface.
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Badge: { tone: 'info' } }}` —
+  explicit props always win.
+- **Dark scheme**: zero component CSS — every colour is a semantic token, so
+  `[data-theme='dark']` remaps them wholesale.
+
+<Canvas of={BadgeStories.DarkScheme} />

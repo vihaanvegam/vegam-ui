@@ -6,6 +6,7 @@ consumer workarounds: `npm install`, one CSS import, import components.
 ## Session ritual (mandatory)
 
 - Read this file, then docs/PROGRESS.md, then docs/DECISIONS.md before touching code.
+  Picking what to build next? docs/BLUEPRINT.md is the roadmap — ask before starting.
 - If PROGRESS.md contradicts the code, trust the code and fix the file first.
 - Update PROGRESS.md + append DECISIONS.md entries BEFORE reporting a phase complete.
 - Anything that costs >10 minutes to figure out gets written down immediately.
@@ -85,8 +86,14 @@ tokens ONLY — never a primitive, never a literal. Dark mode is a
 - `pnpm check:directive` — dist/index.js line-1 'use client' assert
 - `pnpm graph` — regenerate docs/ARCHITECTURE.md + docs/graphify.html (both
   GENERATED, never hand-edit); `graph:check` gates drift; `graph:serve` opens the map
+- `pnpm icons` — regenerate packages/icons/src from its committed svg/ exports
+  (GENERATED, never hand-edit); `icons:check` gates drift (CI lint job);
+  `pnpm icons:import` reports un-exported glyphs + prints the Figma snippet
 - `pnpm smoke` — pack tarball, npm-install into the 4 apps in a temp dir, build+typecheck
 - `pnpm lint` · `pnpm format:check` · `pnpm typecheck` · `pnpm test` — must be green as well
+- `pnpm test:storybook` — every story rendered as a test in headless Chromium.
+  Needs `pnpm --filter @vegam-ui/ui exec playwright install chromium` once; CI
+  does this in ci.yml's `stories` job.
 - `pnpm --filter @vegam-ui/ui storybook` — dev on :6006; `build-storybook` to verify prod
 - Version pins that matter: ESLint 9 (not 10), TypeScript 5 (not 7), Style
   Dictionary 4 (not 5), Remix apps on Vite 6/React 18 — reasons in
@@ -95,9 +102,9 @@ tokens ONLY — never a primitive, never a literal. Dark mode is a
 ## Release
 
 Changesets. `pnpm changeset` per consumer-visible change; `pnpm changeset version`
-to bump + changelog; `pnpm gates` then `pnpm -r publish`. Both packages are 0.1.0
-and version independently. Repository links are deliberately NOT configured —
-docs/RELEASING.md section 2 has the full how-to when the remote is decided.
+to bump + changelog (needs GITHUB_TOKEN — changelog-github generator); `pnpm gates`
+then `pnpm -r publish`. The packages are published on npm and version
+independently; .github/workflows/release.yml opens version PRs and publishes.
 
 ## Where things are
 
@@ -105,6 +112,12 @@ docs/RELEASING.md section 2 has the full how-to when the remote is decided.
 - Why things are this way: docs/DECISIONS.md (append-only; reversals supersede, never edit)
 - How to run anything (commands, ports, dirs, gitignore): docs/RUNNING.md
 - How to build a component: docs/COMPONENT_RECIPE.md (Button is the reference)
+- What to build next — full-library roadmap (catalog, phases, conventions):
+  docs/BLUEPRINT.md
+- How @vegam-ui/icons gets built (Phase 5 plan): docs/ICONS_PLAN.md;
+  the package's own maintenance loop is packages/icons/README.md
+- The manual screen-reader pass (the last 1.0 gate): docs/SCREEN_READER_CHECKLIST.md
+- Token gaps + additions queue (tokens.json is READ-ONLY): packages/tokens/TOKENS_PLAN.md
 - How to ship: docs/RELEASING.md
 - What's left / known gaps / deliberate omissions: docs/REMAINING.md
 - Relationship graphs (GENERATED — never hand-edit): docs/ARCHITECTURE.md,

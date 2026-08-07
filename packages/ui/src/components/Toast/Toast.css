@@ -1,0 +1,184 @@
+/*
+ * One fixed container holds BOTH live regions (polite + assertive) as
+ * unpositioned children. Positioning each region would pin two stacks to the
+ * same corner, drawn on top of each other.
+ */
+.ui-toast-region {
+  position: fixed;
+  z-index: var(--ui-z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-2);
+  padding: var(--ui-space-4);
+  /* The container spans an edge but must not swallow clicks on the page
+     behind it; individual toasts re-enable pointer events. */
+  pointer-events: none;
+  max-inline-size: min(100vw, var(--ui-toast-max-width, 24rem));
+}
+
+.ui-toast-region__list {
+  display: flex;
+  flex-direction: inherit;
+  gap: var(--ui-space-2);
+}
+
+.ui-toast-region--top-start {
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+.ui-toast-region--top-end {
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+.ui-toast-region--bottom-start {
+  inset-block-end: 0;
+  inset-inline-start: 0;
+}
+.ui-toast-region--bottom-end {
+  inset-block-end: 0;
+  inset-inline-end: 0;
+}
+
+/*
+ * Centering is direction-agnostic, so it uses PHYSICAL `left` deliberately:
+ * pairing logical `inset-inline-start: 50%` with `translateX(-50%)` breaks
+ * in RTL, where the inset flips but the transform does not, throwing the
+ * stack a full width off-centre.
+ */
+.ui-toast-region--top-center,
+.ui-toast-region--bottom-center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.ui-toast-region--top-center {
+  inset-block-start: 0;
+}
+.ui-toast-region--bottom-center {
+  inset-block-end: 0;
+}
+
+/* Newest nearest the edge at the bottom placements, so the stack grows
+   away from it. `flex-direction: inherit` carries this into the lists. */
+.ui-toast-region--bottom-start,
+.ui-toast-region--bottom-center,
+.ui-toast-region--bottom-end {
+  flex-direction: column-reverse;
+}
+
+.ui-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ui-space-3);
+  box-sizing: border-box;
+  inline-size: 100%;
+  padding: var(--ui-space-3) var(--ui-space-4);
+  border: var(--ui-border-width-hairline) solid var(--ui-color-border-default);
+  border-radius: var(--ui-radius-md);
+  background: var(--ui-color-surface-page);
+  box-shadow: var(--ui-elevation-lg);
+  color: var(--ui-text-primary);
+  font-family: var(--ui-font-family-sans);
+  opacity: 0;
+  transition:
+    opacity var(--ui-motion-duration-normal) var(--ui-motion-easing-exit),
+    transform var(--ui-motion-duration-normal) var(--ui-motion-easing-exit);
+  transform: translateY(var(--ui-space-2));
+}
+
+.ui-toast[data-state='entering'],
+.ui-toast[data-state='entered'] {
+  opacity: 1;
+  transform: none;
+  transition-timing-function: var(--ui-motion-easing-enter);
+}
+
+/* Intent tints the left accent bar only — the surface stays neutral so long
+   text keeps its contrast (the feedback tokens' own guidance). */
+.ui-toast--info {
+  border-inline-start: var(--ui-border-width-selected) solid var(--ui-color-feedback-info);
+}
+.ui-toast--success {
+  border-inline-start: var(--ui-border-width-selected) solid var(--ui-color-feedback-success);
+}
+.ui-toast--warning {
+  border-inline-start: var(--ui-border-width-selected) solid var(--ui-color-feedback-warning);
+}
+.ui-toast--danger {
+  border-inline-start: var(--ui-border-width-selected) solid var(--ui-color-feedback-danger);
+}
+
+.ui-toast__content {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.ui-toast__title {
+  font-size: var(--ui-font-size-sm);
+  font-weight: var(--ui-font-weight-semibold);
+  line-height: var(--ui-typography-body-line-height);
+}
+
+.ui-toast__description {
+  margin-block-start: var(--ui-space-1);
+  color: var(--ui-text-secondary);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-typography-body-line-height);
+}
+
+.ui-toast__action {
+  margin-block-start: var(--ui-space-2);
+}
+
+.ui-toast__close {
+  position: relative;
+  flex-shrink: 0;
+  inline-size: var(--ui-size-icon-lg);
+  block-size: var(--ui-size-icon-lg);
+  padding: 0;
+  border: none;
+  border-radius: var(--ui-radius-sm);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.ui-toast__close:hover {
+  background: var(--ui-color-surface-subtle);
+}
+
+.ui-toast__close:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+.ui-toast__close::before,
+.ui-toast__close::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: var(--ui-space-3);
+  block-size: var(--ui-border-width-icon);
+  background: currentColor;
+}
+.ui-toast__close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.ui-toast__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+@media (pointer: coarse) {
+  .ui-toast__close {
+    inline-size: var(--ui-space-11, var(--ui-space-12));
+    block-size: var(--ui-space-11, var(--ui-space-12));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-toast {
+    transition: none;
+    transform: none;
+  }
+}

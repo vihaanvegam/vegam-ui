@@ -4,42 +4,43 @@
 }
 
 /* One class per step of the type scale. Body steps read at 1.5 line height,
-   display steps tighten to 1.25. */
+   display steps tighten to 1.25. The ratio line-height tokens left the
+   Aug-2026 export; the ratios are theme-invariant typography kept inline. */
 .ui-text--size-xxs {
   font-size: var(--ui-font-size-xxs);
-  line-height: var(--ui-font-line-height-1-5);
+  line-height: 1.5;
 }
 .ui-text--size-xs {
   font-size: var(--ui-font-size-xs);
-  line-height: var(--ui-font-line-height-1-5);
+  line-height: 1.5;
 }
 .ui-text--size-sm {
   font-size: var(--ui-font-size-sm);
-  line-height: var(--ui-font-line-height-1-5);
+  line-height: 1.5;
 }
 .ui-text--size-md {
   font-size: var(--ui-font-size-md);
-  line-height: var(--ui-font-line-height-1-5);
+  line-height: 1.5;
 }
 .ui-text--size-lg {
   font-size: var(--ui-font-size-lg);
-  line-height: var(--ui-font-line-height-1-5);
+  line-height: 1.5;
 }
 .ui-text--size-xl {
   font-size: var(--ui-font-size-xl);
-  line-height: var(--ui-font-line-height-1-25);
+  line-height: 1.25;
 }
 .ui-text--size-xxl {
   font-size: var(--ui-font-size-xxl);
-  line-height: var(--ui-font-line-height-1-25);
+  line-height: 1.25;
 }
 .ui-text--size-xxxl {
   font-size: var(--ui-font-size-xxxl);
-  line-height: var(--ui-font-line-height-1-25);
+  line-height: 1.25;
 }
 .ui-text--size-display {
   font-size: var(--ui-font-size-display);
-  line-height: var(--ui-font-line-height-1-25);
+  line-height: 1.25;
 }
 
 .ui-text--regular {
@@ -56,16 +57,17 @@
 }
 
 .ui-text--primary {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
 }
 .ui-text--muted {
-  color: var(--ui-color-text-secondary);
+  color: var(--ui-text-secondary);
 }
 .ui-text--disabled {
   color: var(--ui-color-text-disabled);
 }
 /* Intent tones use fg-on-soft: the token set's readable-text colour for each
-   intent. color.feedback.* is a placeholder in the source. */
+   intent. The Aug-2026 export fills color.feedback.* with the same values;
+   moving tones onto those names is queued in TOKENS_PLAN.md. */
 .ui-text--danger {
   color: var(--ui-color-action-danger-fg-on-soft);
 }

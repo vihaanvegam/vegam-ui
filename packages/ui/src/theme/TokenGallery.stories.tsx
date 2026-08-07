@@ -28,21 +28,31 @@ interface Category {
 }
 
 const CATEGORIES: Category[] = [
-  { title: 'Semantic colors (light / dark)', match: /^--ui-(color|border)-/, kind: 'color-pair' },
+  {
+    title: 'Semantic colors (light / dark)',
+    match: /^--ui-(color-|text-(primary|secondary|tertiary)$)/,
+    kind: 'color-pair',
+  },
   {
     title: 'Palette primitives',
-    match: /^--ui-(white|black|gray|blue|red|green|amber)/,
+    match: /^--ui-(white|black|grey|blue|red|green|amber|purple|turquoise|yellow)/,
     kind: 'color',
   },
-  { title: 'Spacing (4px base)', match: /^--ui-space-/, kind: 'space' },
+  { title: 'Spacing (4px base)', match: /^--ui-(space|spacing)-/, kind: 'space' },
+  { title: 'Sizes', match: /^--ui-(size|icon-size)-/, kind: 'space' },
   { title: 'Radii', match: /^--ui-radius-/, kind: 'radius' },
   { title: 'Font families', match: /^--ui-font-family-/, kind: 'font-family' },
-  { title: 'Font sizes (modular scale)', match: /^--ui-font-size-/, kind: 'font-size' },
+  { title: 'Font sizes', match: /^--ui-font-size-/, kind: 'font-size' },
   { title: 'Font weights', match: /^--ui-font-weight-/, kind: 'font-weight' },
-  { title: 'Line heights', match: /^--ui-font-line-height-/, kind: 'text' },
-  { title: 'Elevation', match: /^--ui-elevation-/, kind: 'elevation' },
+  { title: 'Typography (platform)', match: /^--ui-typography-/, kind: 'text' },
+  { title: 'Elevation (light / dark)', match: /^--ui-elevation-(sm|md|lg|xl)$/, kind: 'elevation' },
+  { title: 'Elevation geometry', match: /^--ui-elevation-\w+-/, kind: 'text' },
   { title: 'Motion', match: /^--ui-motion-/, kind: 'text' },
   { title: 'Focus ring', match: /^--ui-focus-/, kind: 'text' },
+  { title: 'Z layers', match: /^--ui-z-/, kind: 'text' },
+  { title: 'Breakpoints & viewports', match: /^--ui-(breakpoint|viewport)-/, kind: 'text' },
+  { title: 'Opacity & blur', match: /^--ui-(opacity|blur)-/, kind: 'text' },
+  { title: 'Component aliases', match: /^--ui-component-/, kind: 'text' },
 ];
 
 interface TokenDeclaration {
@@ -74,14 +84,14 @@ function readRootTokens(): TokenDeclaration[] {
 
 const labelStyle: CSSProperties = {
   fontFamily: 'var(--ui-font-family-mono)',
-  fontSize: 'var(--ui-font-size-1)',
-  color: 'var(--ui-color-text-primary)',
+  fontSize: 'var(--ui-font-size-xs)',
+  color: 'var(--ui-text-primary)',
 };
 
 const valueStyle: CSSProperties = {
   fontFamily: 'var(--ui-font-family-mono)',
-  fontSize: 'var(--ui-font-size-1)',
-  color: 'var(--ui-color-text-muted)',
+  fontSize: 'var(--ui-font-size-xs)',
+  color: 'var(--ui-text-secondary)',
 };
 
 function Swatch({ name }: { name: string }) {
@@ -92,7 +102,7 @@ function Swatch({ name }: { name: string }) {
         height: 32,
         background: `var(${name})`,
         borderRadius: 'var(--ui-radius-sm)',
-        border: '1px solid var(--ui-border-subtle)',
+        border: '1px solid var(--ui-color-border-default)',
       }}
     />
   );
@@ -109,7 +119,7 @@ function themedPreview(name: string, kind: Kind): ReactNode {
           style={{
             width: `var(${name})`,
             height: 12,
-            background: 'var(--ui-color-action-primary)',
+            background: 'var(--ui-color-action-primary-bg)',
           }}
         />
       );
@@ -120,8 +130,8 @@ function themedPreview(name: string, kind: Kind): ReactNode {
             width: 48,
             height: 32,
             borderRadius: `var(${name})`,
-            background: 'var(--ui-color-bg-muted)',
-            border: '1px solid var(--ui-border-strong)',
+            background: 'var(--ui-color-surface-subtle)',
+            border: '1px solid var(--ui-color-border-default)',
           }}
         />
       );
@@ -138,7 +148,7 @@ function themedPreview(name: string, kind: Kind): ReactNode {
             width: 64,
             height: 32,
             boxShadow: `var(${name})`,
-            background: 'var(--ui-color-bg-surface)',
+            background: 'var(--ui-color-surface-page)',
             borderRadius: 'var(--ui-radius-md)',
           }}
         />
@@ -153,12 +163,12 @@ function TokenRow({ token, kind }: { token: TokenDeclaration; kind: Kind }) {
     kind === 'color-pair' ? (
       <div style={{ display: 'flex', gap: 8 }}>
         <ThemeProvider colorScheme="light">
-          <div style={{ background: 'var(--ui-color-bg-canvas)', padding: 6 }}>
+          <div style={{ background: 'var(--ui-color-surface-page)', padding: 6 }}>
             {themedPreview(token.name, kind)}
           </div>
         </ThemeProvider>
         <ThemeProvider colorScheme="dark">
-          <div style={{ background: 'var(--ui-color-bg-canvas)', padding: 6 }}>
+          <div style={{ background: 'var(--ui-color-surface-page)', padding: 6 }}>
             {themedPreview(token.name, kind)}
           </div>
         </ThemeProvider>
@@ -195,7 +205,7 @@ function TokenGallery() {
           <section key={category.title} style={{ marginBottom: 'var(--ui-space-8)' }}>
             <h2
               style={{
-                fontSize: 'var(--ui-font-size-4)',
+                fontSize: 'var(--ui-font-size-lg)',
                 fontWeight: 'var(--ui-font-weight-semibold)' as CSSProperties['fontWeight'],
               }}
             >

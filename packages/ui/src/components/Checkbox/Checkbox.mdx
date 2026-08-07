@@ -1,0 +1,91 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as CheckboxStories from './Checkbox.stories';
+
+<Meta of={CheckboxStories} />
+
+# Checkbox
+
+A native `<input type="checkbox">` with the design system's control styling.
+Use it for an **independent** on/off choice, or for several options where any
+number may be selected.
+
+Use `RadioGroup` when exactly one of several options may be chosen, and
+`Switch` when the change takes effect immediately (a setting) rather than on
+submit (a form value).
+
+## Import
+
+```tsx
+import { Checkbox } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={CheckboxStories.Default} />
+
+`size` steps the control's box and its hit area. The check glyph is drawn in
+CSS, so it scales with the box and inherits colour — there is no icon asset to
+supply.
+
+<Canvas of={CheckboxStories.WithLabels} />
+
+Controlled and uncontrolled both work, exactly as on the native element: pass
+`checked` + `onChange` for controlled, or `defaultChecked` to let the DOM own
+the state.
+
+### Indeterminate
+
+`indeterminate` renders the mixed state — "some but not all of these are
+selected" — for a parent checkbox above a group of children.
+
+<Canvas of={CheckboxStories.Indeterminate} />
+
+It is a **DOM property, not an attribute**, so it is applied through the
+internal ref; assistive tech reports the control as `mixed`. It is independent
+of `checked`: a checkbox can be indeterminate whether or not it is checked, and
+clicking it clears the mixed state in favour of a real value that you control.
+
+```tsx
+<Checkbox
+  checked={allSelected}
+  indeterminate={someSelected && !allSelected}
+  onChange={(e) => toggleAll(e.target.checked)}
+/>
+```
+
+## Props
+
+<Controls of={CheckboxStories.Playground} />
+
+**Two native attributes are omitted.** `type` is fixed to `checkbox`, and
+`size` — the DOM's character-width hint — is replaced by the design-system size
+union (the same documented collision as `Input`'s).
+
+## Accessibility
+
+- Renders a native `<input type="checkbox">`: space toggles it, it participates
+  in forms, and its checked/mixed state is announced by the platform. No ARIA
+  re-implementation, so nothing to keep in sync.
+- **Every checkbox needs a label.** Use `Field`, or a `<label>` wrapping or
+  pointing at the control — Checkbox reads `FieldContext`, so inside a `Field`
+  it picks up its `id`, `aria-describedby`, and `aria-invalid` automatically.
+- A group of related checkboxes belongs in a `<fieldset>` with a `<legend>`,
+  so the group's question is announced along with each option.
+- The visible box is styled from the real input (which stays in the
+  accessibility tree), so focus, hit-testing, and forced-colours modes behave
+  natively. The `:focus-visible` ring comes from the focus tokens.
+- **The coarse-pointer target is 24px, not 44px** — a deliberate, logged
+  deviation from the library's blanket rule. WCAG 2.5.8 (AA) sets the floor at
+  24px, and a 44px checkbox breaks dense forms and list rows. Where a checkbox
+  is the primary target on a touch surface, give its label the larger area:
+  a label associated with the control is part of the same target.
+
+## Theming
+
+- **Class constants**: `checkboxClasses` exports every rendered class
+  (`ui-checkbox`, `ui-checkbox--lg`, …).
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Checkbox: { size: 'sm' } }}` —
+  explicit props always win.
+- **Dark scheme**: box, border, checked fill, and glyph are semantic tokens.
+
+<Canvas of={CheckboxStories.DarkScheme} />

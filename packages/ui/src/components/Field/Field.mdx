@@ -1,0 +1,55 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as FieldStories from './Field.stories';
+
+<Meta of={FieldStories} />
+
+# Field
+
+Label, description, and error wiring around exactly **one** control. Library
+controls (Input, Textarea, Select, Checkbox, Switch, Slider, RadioGroup) read
+the field's context automatically — ids, `aria-describedby`, `aria-invalid`,
+`aria-required`, and `disabled` — with explicit props on the control always
+winning. All copy is yours; nothing is defaulted, including the required
+marker.
+
+## Import
+
+```tsx
+import { Field, Input } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={FieldStories.Basic} />
+<Canvas of={FieldStories.WithError} />
+
+The error's presence is what marks the control invalid — one source of truth,
+so visual state and `aria-invalid` cannot disagree.
+
+<Canvas of={FieldStories.Required} />
+<Canvas of={FieldStories.WithSelect} />
+
+## Props
+
+<Controls of={FieldStories.Playground} />
+
+## Accessibility
+
+- `<label htmlFor>` targets the wrapped control's generated id (works for
+  Input/Textarea/Switch/Checkbox and Select's trigger button). Group
+  controls — RadioGroup — take the label via `aria-labelledby` instead, and
+  Slider labels its thumb the same way.
+- Description and error ids join the control's `aria-describedby`; screen
+  readers announce them on focus.
+- `required` sets `aria-required` on the control; the visual marker is a
+  slot (`requiredMarker`) and is `aria-hidden` — semantics never depend on
+  an asterisk.
+- Custom controls can join in with the exported `useField()` hook.
+
+## Theming
+
+`fieldClasses` exports root/label/description/error/required classes;
+`slotProps` passes per-part props. No `componentDefaults` entry — Field has
+no cosmetic axes.
+
+<Canvas of={FieldStories.DarkScheme} />

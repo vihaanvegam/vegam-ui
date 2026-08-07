@@ -22,6 +22,28 @@ export default tseslint.config(
     ...jsxA11y.flatConfigs.recommended,
   },
   {
+    files: ['**/*.{jsx,tsx}'],
+    rules: {
+      // The rule cannot see that our wrappers render native controls, so a
+      // valid wrapping <label><Radio /> Alpha</label> reads as unassociated.
+      // Naming them restores real checking instead of disabling the rule.
+      'jsx-a11y/label-has-associated-control': [
+        'error',
+        {
+          controlComponents: ['Input', 'Textarea', 'Checkbox', 'Radio', 'Switch', 'Select'],
+        },
+      ],
+      // A scrollable container MUST be keyboard focusable (WCAG 2.1.1) —
+      // otherwise a keyboard user cannot scroll a wide table. The rule's
+      // default allowlist only covers tabpanel, so the roles we use for
+      // named scroll containers are added rather than the rule disabled.
+      'jsx-a11y/no-noninteractive-tabindex': [
+        'error',
+        { tags: [], roles: ['tabpanel', 'group', 'region'], allowExpressionValues: true },
+      ],
+    },
+  },
+  {
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/ban-ts-comment': [

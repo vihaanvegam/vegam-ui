@@ -8,29 +8,69 @@
  * Components reach the affected values with `var(--token, fallback)`, so the
  * moment a placeholder gains a real value the fallback goes inert on its own.
  *
- * Two layers: primitives (grey.500, space.4 — raw values, no meaning) and
- * semantic tokens, which live under `<platform>.<scheme>.color.*`. Semantic
- * names are emitted WITHOUT their platform/scheme prefix so component CSS is
- * written once and re-themed entirely by selectors:
+ * The Aug-2026 export has four tiers:
  *
- *   :root                                   primitives + web light defaults
- *   [data-theme="light"]                    web light (re-declared, so a light
- *                                           island inside dark re-themes)
- *   [data-theme="dark"]                     web dark
- *   [data-platform="mobile"]                mobile light
- *   [data-platform="mobile"][data-theme="dark"]   mobile dark
+ *   primitives   everything not listed below (grey.500, space.4, z.modal,
+ *                elevation.sm.blur, viewport.*, component.*) — raw values,
+ *                emitted into :root under their full path
+ *   theme        theme.<light|dark>.…  — scheme-dependent semantics
+ *   platform     platform.<web|mobile>.…  — platform-dependent selections
+ *   (viewport and component are alias tiers; they emit as primitives, full
+ *   path, but their references are re-pointed — see below)
+ *
+ * theme/platform tokens are emitted WITHOUT their tier/variant prefix so
+ * component CSS is written once and re-themed entirely by selectors:
+ *
+ *   :root                     primitives + theme.light + platform.web defaults
+ *   [data-theme="light"]      theme.light re-declared (a light island inside
+ *                             dark re-themes) + color-scheme: light
+ *   [data-theme="dark"]       theme.dark + color-scheme: dark
+ *   [data-platform="web"]     platform.web re-declared (a web island)
+ *   [data-platform="mobile"]  platform.mobile
+ *
+ * Aliases that name a specific variant — `{theme.light.color.text.x}` or
+ * `{platform.web.size.y}` — are emitted with the tier/variant prefix STRIPPED
+ * (`var(--ui-color-text-x)`), exactly as the export's own comments direct
+ * ("Figma binds this to Theme/Light; swap the theme segment for the active
+ * scheme").
+ *
+ * CRITICAL subtlety (verified in-browser): a var() inside a custom property is
+ * substituted at the element where that custom property is DECLARED, and the
+ * resolved value is what descendants inherit. An alias declared only in :root
+ * therefore freezes its light/web value even inside a [data-theme="dark"]
+ * wrapper — which is exactly how ThemeProvider scopes themes. So every token
+ * whose reference chain (transitively) reaches a theme/platform token is
+ * RE-DECLARED, with identical text, inside every block of that axis: the
+ * declaration's position, not its text, selects the variant. Platform blocks
+ * come after theme blocks so an element carrying both attributes gets the
+ * platform's selection substituted with the active scheme's values.
+ *
+ * Known limit, by design: a [data-theme] island nested INSIDE a scoped
+ * [data-platform="mobile"] region falls back to the web text selection
+ * (correct scheme, web contrast tier). Nothing in the React API sets
+ * data-platform yet; revisit if a platform switch ships.
  */
 import StyleDictionary from 'style-dictionary';
 
 const REF = /^\{([^}]+)\}$/;
 
-const PLATFORMS = ['web', 'mobile'];
 const SCHEMES = ['light', 'dark'];
+const PLATFORMS = ['web', 'mobile'];
 
-const isPlatformToken = (token) => PLATFORMS.includes(token.path[0]);
+const isThemeToken = (token) => token.path[0] === 'theme' && SCHEMES.includes(token.path[1]);
+const isPlatformToken = (token) =>
+  token.path[0] === 'platform' && PLATFORMS.includes(token.path[1]);
 
-/** Semantic tokens drop their `<platform>.<scheme>` prefix: web.light.color.text.primary → color-text-primary */
-const semanticPath = (path) => path.slice(2);
+/**
+ * theme.light.color.text.x → color.text.x, platform.web.size.y → size.y;
+ * anything else keeps its full path. Applied to both emitted names and
+ * reference targets, so aliases stay variant-relative.
+ */
+const relativePath = (path) => {
+  if (path[0] === 'theme' && SCHEMES.includes(path[1])) return path.slice(2);
+  if (path[0] === 'platform' && PLATFORMS.includes(path[1])) return path.slice(2);
+  return path;
+};
 
 // Dots are not valid in a CSS identifier, so `space.0.5` must emit as
 // --ui-space-0-5; left unescaped the whole declaration is dropped by browsers.
@@ -41,11 +81,12 @@ const hasValue = (token) => token.value !== null && token.value !== undefined;
 
 /**
  * Pure references render as var() so the primitive → semantic chain survives
- * into the emitted CSS instead of being flattened to hex values.
+ * into the emitted CSS instead of being flattened to hex values. Variant
+ * prefixes are stripped from the target (see header).
  */
 const cssValue = (token) => {
   const match = String(token.original.value).match(REF);
-  return match ? `var(--${cssName(match[1].split('.'))})` : token.value;
+  return match ? `var(--${cssName(relativePath(match[1].split('.')))})` : token.value;
 };
 
 const banner = '/* Generated by @vegam-ui/tokens. Do not edit. */';
@@ -54,55 +95,94 @@ StyleDictionary.registerFormat({
   name: 'css/ui-theme',
   format: ({ dictionary }) => {
     const tokens = dictionary.allTokens.filter(hasValue);
-    const globals = tokens.filter((token) => !isPlatformToken(token));
-
-    const semantic = (platform, scheme) =>
-      tokens.filter(
-        (token) => token.path[0] === platform && token.path[1] === scheme && isPlatformToken(token),
-      );
+    const globals = tokens.filter((token) => !isThemeToken(token) && !isPlatformToken(token));
+    const themed = (scheme) =>
+      tokens.filter((token) => isThemeToken(token) && token.path[1] === scheme);
+    const platform = (name) =>
+      tokens.filter((token) => isPlatformToken(token) && token.path[1] === name);
 
     const line = (token, path) => `  --${cssName(path)}: ${cssValue(token)};`;
     const globalLine = (token) => line(token, token.path);
-    const semanticLine = (token) => line(token, semanticPath(token.path));
+    const relativeLine = (token) => line(token, relativePath(token.path));
 
-    // Every scheme/platform combination must declare the same token set, or a
-    // component reads a variable that only exists in one theme.
-    const nameSet = (list) => new Set(list.map((token) => cssName(semanticPath(token.path))));
-    const base = nameSet(semantic('web', 'light'));
-    for (const platform of PLATFORMS) {
-      for (const scheme of SCHEMES) {
-        if (platform === 'web' && scheme === 'light') continue;
-        for (const token of semantic(platform, scheme)) {
-          const name = cssName(semanticPath(token.path));
-          if (!base.has(name)) {
-            throw new Error(
-              `${platform}.${scheme} declares --${name}, which web.light does not — semantic sets must match`,
-            );
-          }
-        }
+    // Transitive axis analysis: a token depends on the scheme axis if its
+    // reference chain reaches a theme.* token, and on the platform axis if it
+    // reaches a platform.* token. Axis-dependent tokens are re-declared in
+    // every block of that axis (see header).
+    const byPath = new Map(dictionary.allTokens.map((token) => [token.path.join('.'), token]));
+    const axesCache = new Map();
+    const axesOf = (token) => {
+      const key = token.path.join('.');
+      if (axesCache.has(key)) return axesCache.get(key);
+      const axes = new Set();
+      axesCache.set(key, axes); // pre-set so a cyclic ref cannot recurse forever
+      if (isThemeToken(token)) axes.add('scheme');
+      if (isPlatformToken(token)) axes.add('platform');
+      const match = String(token.original.value).match(REF);
+      if (match) {
+        const target = byPath.get(match[1]);
+        if (target) for (const axis of axesOf(target)) axes.add(axis);
       }
-    }
+      return axes;
+    };
+    const aliasesOn = (axis, excludeTier) =>
+      tokens.filter((token) => !excludeTier(token) && axesOf(token).has(axis));
+    // Theme blocks carry the web selection of platform-tier aliases (both
+    // variants share one relative name; without this filter the mobile variant
+    // would duplicate and shadow it). The platform blocks own that choice.
+    const schemeAliases = aliasesOn('scheme', isThemeToken).filter(
+      (token) => !isPlatformToken(token) || token.path[1] === 'web',
+    );
+    const platformAliases = aliasesOn('platform', isPlatformToken);
+
+    // Every variant of a tier must declare the same token set, or a component
+    // reads a variable that only exists in one theme/platform.
+    const assertSameSet = (aTokens, bTokens, aLabel, bLabel) => {
+      const names = (list) => new Set(list.map((token) => cssName(relativePath(token.path))));
+      const a = names(aTokens);
+      const b = names(bTokens);
+      for (const name of a) {
+        if (!b.has(name))
+          throw new Error(
+            `${aLabel} declares --${name}, which ${bLabel} does not — sets must match`,
+          );
+      }
+      for (const name of b) {
+        if (!a.has(name))
+          throw new Error(
+            `${bLabel} declares --${name}, which ${aLabel} does not — sets must match`,
+          );
+      }
+    };
+    assertSameSet(themed('light'), themed('dark'), 'theme.light', 'theme.dark');
+    assertSameSet(platform('web'), platform('mobile'), 'platform.web', 'platform.mobile');
 
     const block = (selector, lines, scheme) =>
       lines.length === 0
         ? []
         : [`${selector} {`, ...(scheme ? [`  color-scheme: ${scheme};`] : []), ...lines, '}', ''];
 
+    const themeBlock = (scheme) => [
+      ...themed(scheme).map(relativeLine),
+      ...schemeAliases.map(relativeLine),
+    ];
+    const platformBlock = (name) => [
+      ...platform(name).map(relativeLine),
+      ...platformAliases.map(relativeLine),
+    ];
+
     return [
       banner,
       ':root {',
       ...globals.map(globalLine),
-      ...semantic('web', 'light').map(semanticLine),
+      ...themed('light').map(relativeLine),
+      ...platform('web').map(relativeLine),
       '}',
       '',
-      ...block('[data-theme="light"]', semantic('web', 'light').map(semanticLine), 'light'),
-      ...block('[data-theme="dark"]', semantic('web', 'dark').map(semanticLine), 'dark'),
-      ...block('[data-platform="mobile"]', semantic('mobile', 'light').map(semanticLine), 'light'),
-      ...block(
-        '[data-platform="mobile"][data-theme="dark"]',
-        semantic('mobile', 'dark').map(semanticLine),
-        'dark',
-      ),
+      ...block('[data-theme="light"]', themeBlock('light'), 'light'),
+      ...block('[data-theme="dark"]', themeBlock('dark'), 'dark'),
+      ...block('[data-platform="web"]', platformBlock('web')),
+      ...block('[data-platform="mobile"]', platformBlock('mobile')),
     ].join('\n');
   },
 });

@@ -1,0 +1,71 @@
+.ui-slider {
+  /* No slider tokens in the export — component custom properties are the
+     documented override surface (Modal-sizes precedent), defaulting to the
+     space scale. */
+  --ui-slider-track-size: var(--ui-space-1);
+  --ui-slider-thumb-size: var(--ui-space-5);
+  position: relative;
+  inline-size: 100%;
+  box-sizing: border-box;
+  padding-block: calc((var(--ui-slider-thumb-size) - var(--ui-slider-track-size)) / 2);
+  cursor: pointer;
+  /* The component implements its own panning — without this, touch drags
+     scroll the page instead of moving the thumb. */
+  touch-action: none;
+}
+
+.ui-slider--disabled {
+  cursor: not-allowed;
+  opacity: var(--ui-opacity-disabled);
+}
+
+.ui-slider__track {
+  position: relative;
+  block-size: var(--ui-slider-track-size);
+  border-radius: var(--ui-radius-full);
+  background: var(--ui-color-surface-disabled);
+}
+
+.ui-slider__range {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--ui-slider-fill, 0%);
+  border-radius: inherit;
+  background: var(--ui-color-action-primary-bg);
+}
+
+.ui-slider__thumb {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: var(--ui-slider-fill, 0%);
+  transform: translate(-50%, -50%);
+  inline-size: var(--ui-slider-thumb-size);
+  block-size: var(--ui-slider-thumb-size);
+  box-sizing: border-box;
+  border-radius: var(--ui-radius-full);
+  background: var(--ui-color-surface-page);
+  border: var(--ui-border-width-selected) solid var(--ui-color-action-primary-bg);
+  box-shadow: var(--ui-elevation-sm);
+}
+
+.ui-slider__thumb:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+.ui-slider--disabled .ui-slider__thumb {
+  box-shadow: none;
+}
+
+/* WCAG target size: grow the interactive strip toward the 44px floor on
+   touch — the full track width is draggable, not just the thumb. */
+@media (pointer: coarse) {
+  .ui-slider {
+    padding-block: calc((var(--ui-space-11, var(--ui-space-12)) - var(--ui-slider-track-size)) / 2);
+  }
+  .ui-slider__thumb {
+    inline-size: var(--ui-space-6);
+    block-size: var(--ui-space-6);
+  }
+}

@@ -1,12 +1,12 @@
 /* surface.overlay ships its alpha (rgba scrim values per scheme), so no extra
-   opacity is applied here. blur.standard exists in Figma but not yet in the
-   token export; space-2 (0.5rem = the design's 8px) is the inert-when-filled
-   fallback, same pattern as the focus-ring fallbacks. */
+   opacity is applied here. z.overlay is the design's scrim layer — it sits
+   below the modal it dims; inside .ui-modal the value is neutralized and DOM
+   order stacks the panel above the scrim. */
 .ui-blanket {
   position: fixed;
   inset: 0;
-  z-index: var(--ui-z-overlay, 1000);
+  z-index: var(--ui-z-overlay);
   background: var(--ui-color-surface-overlay);
-  -webkit-backdrop-filter: blur(var(--ui-blur-standard, var(--ui-space-2)));
-  backdrop-filter: blur(var(--ui-blur-standard, var(--ui-space-2)));
+  -webkit-backdrop-filter: blur(var(--ui-blur-standard));
+  backdrop-filter: blur(var(--ui-blur-standard));
 }

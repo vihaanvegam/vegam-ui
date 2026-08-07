@@ -1,0 +1,106 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as BannerStories from './Banner.stories';
+
+<Meta of={BannerStories} />
+
+# Banner
+
+A persistent, inline status message that stays in the layout — a form-level
+error, a maintenance notice, a "your trial ends in 3 days" strip.
+
+Use it when the message belongs to a **place** on the page. Use `Toast` when
+the message belongs to a **moment** (an action just succeeded) and should
+disappear on its own. Use `Field`'s error slot for a message about one
+control — a banner for a single invalid input buries the association a screen
+reader needs.
+
+## Import
+
+```tsx
+import { Banner } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={BannerStories.Info} />
+
+`intent` sets the colour set **and the live-region semantics** (see
+Accessibility). `title` is required — it is the line that carries the message;
+`children` is an optional description underneath.
+
+<Canvas of={BannerStories.AllIntents} />
+
+A banner with only a title is a single-line strip:
+
+<Canvas of={BannerStories.TitleOnly} />
+
+`actions` lays out trailing content — normally one or two small `Button`s. The
+banner only positions them; what they do is yours.
+
+<Canvas of={BannerStories.WithActions} />
+
+`onClose` renders the close button and is called when it is pressed. **The
+banner does not remove itself** — dismissal state belongs to you, because only
+you know whether the condition still holds:
+
+<Canvas of={BannerStories.Dismissible} />
+
+```tsx
+{
+  showBanner && (
+    <Banner
+      intent="warning"
+      title="Payment method expiring"
+      onClose={() => setShowBanner(false)}
+      closeLabel="Dismiss"
+    >
+      Update it before the 30th to avoid interruption.
+    </Banner>
+  );
+}
+```
+
+`icon` is a decorative leading slot; the library ships no icon assets, so pass
+your own. An SVG drawn with `currentColor` — including anything from
+`@vegam-ui/icons` — picks up the intent foreground automatically.
+
+## Props
+
+<Controls of={BannerStories.Playground} />
+
+**`title` shadows the native attribute.** `BannerProps` omits the DOM's
+`title` (the browser tooltip) and redefines it as the heading content — the
+same documented collision as `Input`'s `size`. If you need a real tooltip, put
+`title` on a part via `slotProps` or on a wrapper.
+
+## Accessibility
+
+- **`intent` drives the live region.** `info` and `success` render
+  `role="status"` (polite — announced when the user is idle); `warning` and
+  `danger` render `role="alert"` (assertive — interrupts). That is why this
+  axis is called `intent` and not `tone`: the value changes behaviour, not just
+  colour.
+- Because it is a live region, a banner **rendered on mount is not
+  re-announced**. Live regions announce changes to their contents, so a banner
+  that is present at page load is read in normal document order instead.
+- `closeLabel` is **required whenever `onClose` is set** — the close glyph is
+  decorative CSS, so without it the button has no accessible name. It is
+  deliberately not defaulted: the library ships no hardcoded copy, and this
+  string must be localized.
+- The `icon` wrapper is `aria-hidden`, so the icon is never announced. The
+  title must carry the meaning on its own.
+- Colour is never the only signal — the title states the condition, and each
+  intent's foreground clears WCAG AA against its tinted background.
+
+## Theming
+
+- **Class constants**: `bannerClasses` exports every rendered class
+  (`ui-banner`, `ui-banner--danger`, `ui-banner__title`, …).
+- **Slots**: `slotProps` reaches every internal part — `icon`, `content`,
+  `title`, `description`, `actions`, `close` — with `className` merged via
+  `cx` and the rest spread.
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Banner: { intent: 'warning' } }}` —
+  explicit props always win.
+- **Dark scheme**: tint, border, and foreground are semantic tokens per intent.
+
+<Canvas of={BannerStories.DarkScheme} />

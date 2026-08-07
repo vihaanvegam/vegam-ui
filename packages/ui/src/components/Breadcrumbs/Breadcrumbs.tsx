@@ -1,7 +1,8 @@
 'use client';
 
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
+import { useControlled } from '../../hooks/useControlled';
 import { cx } from '../../utils/cx';
 import type { BreadcrumbsItem, BreadcrumbsProps } from './Breadcrumbs.types';
 import './Breadcrumbs.css';
@@ -54,16 +55,18 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
       ...rest
     } = props;
 
-    const [innerCollapsed, setInnerCollapsed] = useState(defaultCollapsed);
-    const isControlled = collapsed !== undefined;
+    const [collapsedState, setUncontrolledCollapsed, isControlled] = useControlled(
+      collapsed,
+      defaultCollapsed,
+    );
     // The undefined checks below are for noUncheckedIndexedAccess only —
     // length > 2 already guarantees both ends exist.
     const first = items[0];
     const last = items[items.length - 1];
-    const isCollapsed = (isControlled ? collapsed : innerCollapsed) && items.length > 2;
+    const isCollapsed = collapsedState && items.length > 2;
 
     const expand = () => {
-      if (!isControlled) setInnerCollapsed(false);
+      if (!isControlled) setUncontrolledCollapsed(false);
       onCollapsedChange?.(false);
     };
 

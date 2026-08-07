@@ -1,0 +1,60 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as TableStories from './Table.stories';
+
+<Meta of={TableStories} />
+
+# Table
+
+A semantic data table: `columns` + `data` + `getRowKey`. Custom rendering
+goes through `slots.headerCell` / `slots.cell`.
+
+**Scope, deliberately:** selection, expansion, virtualization, and inline
+editing make a DataGrid, which is Tier-Later. This is the table you reach for
+when you have rows and want them readable and accessible.
+
+## Import
+
+```tsx
+import { Table } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={TableStories.Basic} />
+
+### Sorting
+
+<Canvas of={TableStories.Sortable} />
+
+**The library performs no data operations.** A sortable column emits
+`onSortChange` and reflects `sort` as `aria-sort` — you own the data, so you
+do the sorting (and the filtering, and the paginating). This keeps Table
+honest about server-side and async data, where it could not sort anyway.
+
+<Canvas of={TableStories.EmptyState} />
+<Canvas of={TableStories.StickyHeader} />
+<Canvas of={TableStories.CellSlot} />
+
+## Props
+
+<Controls of={TableStories.Playground} />
+
+## Accessibility
+
+- Real `table` / `thead` / `tbody` markup with `scope="col"` on every header,
+  so each cell is associated with its column.
+- A sortable header wraps a real `<button>` — activating a sort must be a
+  control, not a click handler on a `th`. The header carries `aria-sort`,
+  including `none` on sortable-but-unsorted columns, which is what tells
+  assistive tech the column can be sorted at all.
+- The scroll container is `tabIndex={0}` and named, so a keyboard user can
+  scroll a wide table (WCAG 2.1.1) and the stop is not anonymous.
+- Name the table with `label`, or point `aria-labelledby` at a visible
+  heading.
+
+## Theming
+
+`tableClasses` exports every part class; `stickyHeader` pins the header on
+the `z.sticky` layer. Alignment is per column (`align: 'end'` for numbers).
+
+<Canvas of={TableStories.DarkScheme} />

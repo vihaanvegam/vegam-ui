@@ -1,0 +1,61 @@
+/*
+ * Single-element switch: the native checkbox IS the track (appearance:none,
+ * sized by the size.switch-track-* tokens) and the thumb is a radial-gradient
+ * circle whose background-position slides on :checked — no wrapper, so ref,
+ * className, and rest props all land on the real input. Forced-colors mode
+ * restores the user agent's checkbox rendering (backgrounds are stripped
+ * there and the drawn thumb would vanish).
+ */
+.ui-switch {
+  --ui-switch-thumb-size: calc(var(--ui-size-switch-track-h) - 2 * var(--ui-space-0-5));
+  appearance: none;
+  box-sizing: border-box;
+  margin: var(--ui-space-0);
+  inline-size: var(--ui-size-switch-track-w);
+  block-size: var(--ui-size-switch-track-h);
+  border: none;
+  border-radius: var(--ui-radius-full);
+  background-color: var(--ui-color-border-default);
+  background-image: radial-gradient(circle, var(--ui-color-surface-page) 0 55%, transparent 62%);
+  background-size: var(--ui-switch-thumb-size) var(--ui-switch-thumb-size);
+  background-position: var(--ui-space-0-5) center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard),
+    background-position var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
+}
+
+.ui-switch:checked {
+  background-color: var(--ui-color-action-primary-bg);
+  /* With an explicit background-size, 100% pins the image's right edge. */
+  background-position: calc(100% - var(--ui-space-0-5)) center;
+}
+
+.ui-switch:hover:not(:disabled):not(:checked) {
+  background-color: var(--ui-color-border-hover);
+}
+
+.ui-switch:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+.ui-switch:disabled {
+  cursor: not-allowed;
+  opacity: var(--ui-opacity-disabled);
+}
+
+@media (forced-colors: active) {
+  .ui-switch {
+    appearance: auto;
+    background: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-switch {
+    transition: none;
+  }
+}

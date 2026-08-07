@@ -1,0 +1,51 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as AvatarStories from './Avatar.stories';
+
+<Meta of={AvatarStories} />
+
+# Avatar
+
+A person or entity's picture, falling back to initials and then to
+`children`. The library ships no default icon — pass one as `children` if you
+want a generic placeholder.
+
+## Import
+
+```tsx
+import { Avatar } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={AvatarStories.Initials} />
+<Canvas of={AvatarStories.Sizes} />
+<Canvas of={AvatarStories.Shapes} />
+
+Initials come from the first and last word of `name`, so "Ada Lovelace"
+gives "AL". Multi-code-unit characters (emoji, combining marks) are handled
+via `Intl.Segmenter`, so they are never sliced in half.
+
+<Canvas of={AvatarStories.BrokenImageFallsBack} />
+<Canvas of={AvatarStories.Group} />
+
+## Props
+
+<Controls of={AvatarStories.Playground} />
+
+## Accessibility
+
+- With a `name`, the image carries it as `alt` and the initials fallback is
+  real text — so the identity survives a broken image.
+- **Without a `name` the avatar is `aria-hidden` decoration.** That is only
+  correct when the name is already adjacent in the UI (a row showing the name
+  beside the picture); otherwise the person becomes invisible to assistive
+  tech.
+- In a stacked group, give each avatar a `name` — or label the group and hide
+  the avatars — so the same person is not announced twice.
+
+## Theming
+
+`size` and `shape` are themeable via `componentDefaults={{ Avatar: … }}`.
+The fallback uses the neutral action tokens, so dark mode is a pure remap.
+
+<Canvas of={AvatarStories.DarkScheme} />

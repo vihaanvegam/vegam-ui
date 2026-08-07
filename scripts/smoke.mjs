@@ -1,11 +1,16 @@
 /**
- * Smoke gate: prove the PACKED TARBALL works for real consumers.
+ * Smoke gate: prove the PACKED TARBALLS work for real consumers.
  *
  * Each app under apps/ is copied out of the workspace into a temp directory,
- * its `workspace:*` dependency is rewritten to the packed @vegam-ui/ui tarball,
- * and it is installed with plain npm — no pnpm linking, no monorepo resolution,
- * exactly what `npm install @vegam-ui/ui` gives a real project. Then each app
- * must build and typecheck.
+ * its `workspace:*` dependencies are rewritten to the packed @vegam-ui/ui and
+ * @vegam-ui/icons tarballs, and it is installed with plain npm — no pnpm
+ * linking, no monorepo resolution, exactly what `npm install` gives a real
+ * project. Then each app must build and typecheck.
+ *
+ * smoke-next-app renders an icon from its ROOT LAYOUT — a server component
+ * with no 'use client' above it. That is the one place the "icons work inside
+ * the RSC boundary" claim can actually be proven, and Next fails the build if
+ * it is false.
  */
 import { execSync } from 'node:child_process';
 import {
@@ -22,7 +27,10 @@ import { join, resolve, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const uiDir = join(root, 'packages', 'ui');
+const packages = {
+  '@vegam-ui/ui': { dir: join(root, 'packages', 'ui'), tgz: 'ui.tgz' },
+  '@vegam-ui/icons': { dir: join(root, 'packages', 'icons'), tgz: 'icons.tgz' },
+};
 const apps = ['smoke-vite', 'smoke-next-app', 'smoke-next-pages', 'smoke-remix'];
 
 const run = (command, cwd) => {
@@ -34,9 +42,11 @@ const run = (command, cwd) => {
   });
 };
 
-if (!existsSync(join(uiDir, 'dist', 'index.js'))) {
-  console.error('smoke — packages/ui/dist missing; run pnpm build first');
-  process.exit(1);
+for (const [name, { dir }] of Object.entries(packages)) {
+  if (!existsSync(join(dir, 'dist', 'index.js'))) {
+    console.error(`smoke — dist missing for ${name}; run pnpm build first`);
+    process.exit(1);
+  }
 }
 
 // realpath the temp root: on Windows tmpdir() can be an 8.3 short path
@@ -46,8 +56,12 @@ if (!existsSync(join(uiDir, 'dist', 'index.js'))) {
 const work = mkdtempSync(join(realpathSync.native(tmpdir()), 'vegam-ui-smoke-'));
 console.log(`smoke — working directory: ${work}`);
 
-run(`pnpm pack --out ${JSON.stringify(join(work, 'ui.tgz'))}`, uiDir);
-const tarball = join(work, 'ui.tgz');
+const tarballs = new Map();
+for (const [name, { dir, tgz }] of Object.entries(packages)) {
+  const out = join(work, tgz);
+  run(`pnpm pack --out ${JSON.stringify(out)}`, dir);
+  tarballs.set(name, out);
+}
 
 const skip = new Set(['node_modules', 'dist', 'build', '.next']);
 let failed = false;
@@ -62,7 +76,13 @@ for (const app of apps) {
 
   const pkgPath = join(dest, 'package.json');
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
-  pkg.dependencies['@vegam-ui/ui'] = `file:${tarball}`;
+  for (const [name, tgz] of tarballs) {
+    if (pkg.dependencies[name] === undefined) {
+      console.error(`smoke — ${app} does not depend on ${name}; it must exercise every package`);
+      process.exit(1);
+    }
+    pkg.dependencies[name] = `file:${tgz}`;
+  }
   writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 
   try {
@@ -78,7 +98,7 @@ for (const app of apps) {
 
 if (!failed) {
   rmSync(work, { recursive: true, force: true });
-  console.log('\nsmoke — all four apps consumed the tarball: build + typecheck green');
+  console.log('\nsmoke — all four apps consumed both tarballs: build + typecheck green');
 } else {
   console.error(`\nsmoke — failures above; temp dir kept for inspection: ${work}`);
   process.exit(1);

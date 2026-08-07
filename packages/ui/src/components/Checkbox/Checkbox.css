@@ -7,9 +7,8 @@
 }
 
 .ui-checkbox:focus-visible {
-  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
-    var(--ui-color-border-focus);
-  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 .ui-checkbox:disabled {

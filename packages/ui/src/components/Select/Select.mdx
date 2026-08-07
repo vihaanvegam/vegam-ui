@@ -1,0 +1,105 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as SelectStories from './Select.stories';
+
+<Meta of={SelectStories} />
+
+# Select
+
+A single-choice control from a fixed list. It is a custom listbox — a trigger
+button plus a portalled `ul[role="listbox"]` — because a native `<select>`
+cannot be styled to the design system on every platform, and cannot render
+custom option content at all.
+
+Use it when one value comes from a known set. For a handful of options that
+should all be visible at once, `RadioGroup` is usually kinder. For free text
+with suggestions, this is the wrong control — that is a combobox, which the
+library does not ship.
+
+## Import
+
+```tsx
+import { Select } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={SelectStories.Default} />
+
+`options` is data, not children — an array of `{ value, label, disabled? }`.
+Keeping it as data is what makes type-ahead, keyboard navigation, and the
+hidden form input possible without inspecting React children.
+
+<Canvas of={SelectStories.Sizes} />
+
+Controlled and uncontrolled both work. `onChange` is called with the **value
+string**, not an event — there is no native change event to forward:
+
+<Canvas of={SelectStories.Controlled} />
+
+```tsx
+const [country, setCountry] = useState('uk');
+
+<Select options={countries} value={country} onChange={setCountry} placeholder="Choose a country" />;
+```
+
+`name` renders a hidden input carrying the current value, so a Select inside a
+plain `<form>` submits like any other field.
+
+<Canvas of={SelectStories.Preselected} />
+<Canvas of={SelectStories.Disabled} />
+
+### Custom option content
+
+`slots.option` replaces what renders inside each `li[role="option"]`, receiving
+the option plus its `selected` and `active` state:
+
+<Canvas of={SelectStories.CustomOptionSlot} />
+
+**`label` must stay a string even when you customize the rendering.** It is
+what keyboard type-ahead matches against and what the trigger displays; a
+ReactNode there would break both.
+
+## Props
+
+<Controls of={SelectStories.Playground} />
+
+**Three native attributes are redefined.** The root element is the trigger
+`<button>`, so `SelectProps` omits its `value`, `defaultValue`, and `onChange`
+and gives them selection semantics instead.
+
+## Accessibility
+
+Implements the WAI-ARIA **listbox** pattern:
+
+- The trigger is a real `<button>` with `aria-haspopup="listbox"`,
+  `aria-expanded`, and `aria-controls`; the popup is a `ul[role="listbox"]`
+  whose options are `li[role="option"]` with `aria-selected`.
+- Focus stays on the trigger and the active option is tracked with
+  `aria-activedescendant`, so the listbox never steals focus and a screen
+  reader announces each option as you move through it.
+- **Keyboard**: `↑`/`↓` move the active option (skipping disabled ones),
+  `Home`/`End` jump to the ends, `Enter` and **`Space` commit the active
+  option**, `Escape` closes without changing the value, and `Tab` closes and
+  moves on. Typing letters jumps to the option whose `label` starts with them.
+- ⚠ Note that **Space commits rather than continuing type-ahead**. That is the
+  APG listbox behaviour, but it means a label with a leading space cannot be
+  reached by typing.
+- Dismissal is Escape, an outside pointer press, or `Tab`; on close, focus
+  returns to the trigger so the tab sequence is never lost.
+- The popup is portalled to the theme root, so it escapes `overflow: hidden`
+  ancestors while staying inside the theme scope — its tokens still resolve.
+- Inside a `Field`, Select reads the context for its `id`, `aria-describedby`,
+  and `aria-invalid`; the label points at the trigger.
+
+## Theming
+
+- **Class constants**: `selectClasses` exports every rendered class
+  (`ui-select`, `ui-select__popup`, `ui-select__option--active`, …).
+- **Slots**: `slots.option` replaces option content; `slotProps` reaches the
+  `popup`, `listbox`, and every `option`, with `className` merged via `cx`.
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Select: { size: 'lg' } }}` —
+  explicit props always win.
+- **Dark scheme**: trigger, popup surface, elevation, and the active/selected
+  option states are all semantic tokens.
+
+<Canvas of={SelectStories.DarkScheme} />

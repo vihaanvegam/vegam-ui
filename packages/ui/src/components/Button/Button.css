@@ -8,21 +8,20 @@
   border-radius: var(--ui-radius-md);
   font-family: var(--ui-font-family-sans);
   font-weight: var(--ui-font-weight-medium);
-  line-height: var(--ui-font-line-height-1-25);
+  /* The ratio line-height scale left the Aug-2026 token export; single-line
+     and heading ratios are theme-invariant typography kept inline. */
+  line-height: 1.25;
   cursor: pointer;
   text-decoration: none;
   transition:
-    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease),
-    border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease),
-    color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard, ease);
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard),
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard),
+    color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
 }
 
-/* focus.ring-width / focus.ring-offset are placeholders in the token source;
-   the fallbacks are real tokens and go inert once the design system fills them. */
 .ui-button:focus-visible {
-  outline: var(--ui-focus-ring-width, var(--ui-border-width-focus)) solid
-    var(--ui-color-border-focus);
-  outline-offset: var(--ui-focus-ring-offset, var(--ui-space-0-5));
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 .ui-button--primary {
@@ -40,7 +39,7 @@
    grey-500, which reads as a primary-weight button. */
 .ui-button--secondary {
   background: var(--ui-color-action-neutral-bg-soft);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
   border-color: var(--ui-color-border-default);
 }
 .ui-button--secondary:hover:not(:disabled) {
@@ -63,7 +62,7 @@
 
 .ui-button--ghost {
   background: transparent;
-  color: var(--ui-color-text-primary);
+  color: var(--ui-text-primary);
 }
 .ui-button--ghost:hover:not(:disabled) {
   background: var(--ui-color-surface-subtle);

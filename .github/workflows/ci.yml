@@ -25,6 +25,8 @@ jobs:
       - run: pnpm format:check
       # docs/ARCHITECTURE.md is generated — fail if it drifts from the source
       - run: pnpm graph:check
+      # packages/icons/src is generated from svg/ — fail if it drifts too
+      - run: pnpm icons:check
 
   gates:
     name: Package gates (attw, publint, directive, smoke)
@@ -47,3 +49,42 @@ jobs:
       # Gate 3: pack the tarball, install it into all four smoke apps with
       # plain npm outside the workspace, then build + typecheck each
       - run: pnpm smoke
+
+  stories:
+    name: Story tests (headless Chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # .storybook/preview.ts imports @vegam-ui/tokens/tokens.css from dist,
+      # which is gitignored. The ui package is NOT built — stories import their
+      # components from relative source paths, which Vite compiles directly.
+      # icons IS built: the gallery story imports it as a package (it is a
+      # devDependency of ui), and its exports map points at dist.
+      - run: pnpm --filter @vegam-ui/tokens build
+      - run: pnpm --filter @vegam-ui/icons build
+      # The browsers are ~200MB a run, so cache them against the resolved
+      # Playwright version — the binary revision is pinned by that version, so
+      # a dependency bump invalidates the cache automatically.
+      - name: Resolve Playwright version
+        id: playwright
+        run: echo "version=$(pnpm --filter @vegam-ui/ui exec playwright --version | cut -d' ' -f2)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+      # `install chromium` also fetches chrome-headless-shell, which is what
+      # vitest.config.ts's `headless: true` browser mode actually launches.
+      - if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm --filter @vegam-ui/ui exec playwright install --with-deps chromium
+      # A cache hit restores the binaries but NOT the apt system libraries they
+      # link against — those live outside ~/.cache and must be reinstalled.
+      - if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm --filter @vegam-ui/ui exec playwright install-deps chromium
+      - run: pnpm test:storybook

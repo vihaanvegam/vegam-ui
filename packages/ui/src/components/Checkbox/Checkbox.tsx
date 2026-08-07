@@ -3,7 +3,8 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useComponentDefaults } from '../../theme/defaultProps';
 import { cx } from '../../utils/cx';
-import { useIsomorphicLayoutEffect } from '../../utils/useIsomorphicLayoutEffect';
+import { useIsomorphicLayoutEffect } from '../../hooks/useIsomorphicLayoutEffect';
+import { useField } from '../Field/FieldContext';
 import type { CheckboxProps } from './Checkbox.types';
 import './Checkbox.css';
 
@@ -33,7 +34,18 @@ export const checkboxClasses = {
  */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(props, ref) {
   const defaults = useComponentDefaults('Checkbox');
-  const { size = defaults.size ?? 'md', indeterminate, className, ...rest } = props;
+  const field = useField();
+  const {
+    size = defaults.size ?? 'md',
+    indeterminate,
+    className,
+    id = field?.controlId,
+    disabled = field?.disabled || undefined,
+    'aria-describedby': ariaDescribedBy = field?.describedBy,
+    'aria-invalid': ariaInvalid = field?.invalid || undefined,
+    'aria-required': ariaRequired = field?.required || undefined,
+    ...rest
+  } = props;
 
   const innerRef = useRef<HTMLInputElement>(null);
   useImperativeHandle(ref, () => innerRef.current as HTMLInputElement);
@@ -50,6 +62,11 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
     <input
       ref={innerRef}
       type="checkbox"
+      id={id}
+      disabled={disabled}
+      aria-describedby={ariaDescribedBy}
+      aria-invalid={ariaInvalid}
+      aria-required={ariaRequired}
       className={cx(checkboxClasses.root, checkboxClasses[size], className)}
       {...rest}
     />

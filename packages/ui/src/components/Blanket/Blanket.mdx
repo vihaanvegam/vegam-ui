@@ -1,0 +1,64 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as BlanketStories from './Blanket.stories';
+
+<Meta of={BlanketStories} />
+
+# Blanket
+
+The dimming scrim that sits behind a layer — the grey wash under a `Modal` or
+a `Drawer`. It is exported standalone so you can build your own overlay on the
+same surface treatment the library uses.
+
+Most of the time you do **not** need this component: `Modal` and `Drawer`
+already render their own blanket and wire its click to dismissal. Reach for it
+directly only when you are composing a layer they do not cover.
+
+## Import
+
+```tsx
+import { Blanket } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={BlanketStories.Default} />
+
+Blanket is **purely presentational**. It takes the native `div` props
+unchanged and adds nothing of its own — no state, no portal, no dismissal.
+Wiring behaviour is the composer's job, exactly as `Modal` does it:
+
+```tsx
+<Blanket onClick={onClose} />
+```
+
+It fills its containing block and sits on the scrim layer of the z-index
+scale, so it stacks below a modal panel and above page content without your
+having to pick a number.
+
+## Props
+
+<Controls of={BlanketStories.Playground} />
+
+## Accessibility
+
+- Renders a plain `<div>` with **no role** and no accessible name — a scrim is
+  decoration, and announcing it would only add noise between the user and the
+  layer they opened.
+- **A click on the blanket must not be the only way out.** Pointer users get
+  it for free; keyboard users need Escape, and every user needs a visible
+  close control. `Modal` and `Drawer` provide all three — if you compose your
+  own layer, you own that obligation.
+- The blanket does not trap focus, hide background content from screen
+  readers, or lock scrolling. Those come from the layer above it —
+  `utils/focusTrap` and `utils/scrollLock` are what `Modal` uses, and a custom
+  overlay needs the same treatment or background content stays reachable by
+  Tab while it looks unavailable.
+- The scrim colour is an alpha token, so it dims rather than obscures, and
+  content behind it keeps a legible relationship to the layer in front.
+
+## Theming
+
+- **Class constants**: `blanketClasses` exports every rendered class
+  (`ui-blanket`).
+- **Dark scheme**: the scrim is a semantic alpha token, so the dark theme
+  deepens it rather than reusing a colour tuned for light backgrounds.

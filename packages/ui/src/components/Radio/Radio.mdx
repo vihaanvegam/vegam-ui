@@ -1,0 +1,52 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as RadioStories from './Radio.stories';
+
+<Meta of={RadioStories} />
+
+# Radio + RadioGroup
+
+Single-select from a visible set. `RadioGroup` owns the selection state
+(controlled or uncontrolled) and supplies each `Radio` with a shared `name`,
+the checked state, `disabled`, and `size` — explicit props on a Radio always
+win. Use Select when the set is long enough to hide; use Checkbox for
+independent on/off choices.
+
+## Import
+
+```tsx
+import { Radio, RadioGroup } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={RadioStories.Basic} />
+<Canvas of={RadioStories.Sizes} />
+<Canvas of={RadioStories.InField} />
+
+## Props
+
+<Controls of={RadioStories.Playground} />
+
+## Accessibility
+
+- Each Radio stays a **native** `<input type="radio">`: Tab reaches the
+  checked (or first) radio and arrow keys move AND select within the group —
+  all platform behaviour, nothing re-implemented.
+- Only the appearance is drawn: the checked ring uses the
+  `border-width.selected` token (the state it was cut for) with a gradient
+  dot; forced-colors mode restores the user agent's rendering so the state
+  never disappears.
+- The group is `role="radiogroup"` — name it with `aria-label`, or wrap it
+  in a Field (label wires via `aria-labelledby`; description/error/required
+  follow).
+- Label every radio with a paired `<label>`; it also extends the touch
+  target (the control itself meets the 24px AA minimum on coarse pointers —
+  the Checkbox precedent).
+
+## Theming
+
+`size` is themeable via `componentDefaults={{ Radio: { size } }}` (a group
+`size` prop overrides it for its radios). `radioClasses` /
+`radioGroupClasses` are the class override surfaces.
+
+<Canvas of={RadioStories.DarkScheme} />

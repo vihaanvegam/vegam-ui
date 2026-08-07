@@ -13,7 +13,10 @@ import {
 } from '../../utils/listNavigation';
 import { computePopupPlacement } from '../../utils/positioning';
 import type { PopupPlacement } from '../../utils/positioning';
-import { useIsomorphicLayoutEffect } from '../../utils/useIsomorphicLayoutEffect';
+import { useControlled } from '../../hooks/useControlled';
+import { useDismiss } from '../../hooks/useDismiss';
+import { useIsomorphicLayoutEffect } from '../../hooks/useIsomorphicLayoutEffect';
+import { useField } from '../Field/FieldContext';
 import type { SelectProps } from './Select.types';
 import './Select.css';
 
@@ -56,6 +59,7 @@ const POPUP_OFFSET_PX = 4;
  */
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(props, ref) {
   const defaults = useComponentDefaults('Select');
+  const field = useField();
   const {
     options,
     value,
@@ -67,9 +71,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     slots,
     slotProps,
     className,
-    disabled,
+    disabled = field?.disabled || undefined,
     onKeyDown,
     onClick,
+    id = field?.controlId,
+    'aria-describedby': ariaDescribedBy = field?.describedBy,
+    'aria-invalid': ariaInvalid = field?.invalid || undefined,
+    'aria-required': ariaRequired = field?.required || undefined,
     ...rest
   } = props;
 
@@ -82,12 +90,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
 
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const [innerValue, setInnerValue] = useState(defaultValue);
   const [placement, setPlacement] = useState<PopupPlacement | null>(null);
   const [container, setContainer] = useState<HTMLElement | null>(null);
 
-  const isControlled = value !== undefined;
-  const currentValue = isControlled ? value : innerValue;
+  const [currentValue, setUncontrolledValue, isControlled] = useControlled(value, defaultValue);
   const selectedIndex = options.findIndex((option) => option.value === currentValue);
   const selectedOption = selectedIndex >= 0 ? options[selectedIndex] : undefined;
 
@@ -119,7 +125,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   const commit = (index: number) => {
     const option = options[index];
     if (!option || option.disabled) return;
-    if (!isControlled) setInnerValue(option.value);
+    if (!isControlled) setUncontrolledValue(option.value);
     onChange?.(option.value);
     closeList();
   };
@@ -150,18 +156,14 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     };
   }, [open, options.length]);
 
-  // Dismiss on pointer interaction outside both the trigger and the popup.
-  useEffect(() => {
-    if (!open) return undefined;
-    const onPointerDown = (event: PointerEvent) => {
-      const target = event.target;
-      if (!(target instanceof Node)) return;
-      if (triggerRef.current?.contains(target) || popupRef.current?.contains(target)) return;
-      closeList();
-    };
-    document.addEventListener('pointerdown', onPointerDown);
-    return () => document.removeEventListener('pointerdown', onPointerDown);
-  }, [open]);
+  // Light dismiss: pointerdown outside the trigger and popup closes the list.
+  // Escape stays in the trigger's keydown — focus never leaves the combobox.
+  useDismiss({
+    active: open,
+    inside: [triggerRef, popupRef],
+    escape: false,
+    onDismiss: closeList,
+  });
 
   // Clear any pending type-ahead reset timer on unmount.
   useEffect(() => {
@@ -286,10 +288,14 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
         ref={triggerRef}
         type="button"
         role="combobox"
+        id={id}
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-controls={open ? listboxId : undefined}
         aria-activedescendant={open && activeIndex >= 0 ? optionId(activeIndex) : undefined}
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid}
+        aria-required={ariaRequired}
         disabled={disabled}
         className={cx(selectClasses.root, selectClasses[size], className)}
         onKeyDown={handleKeyDown}

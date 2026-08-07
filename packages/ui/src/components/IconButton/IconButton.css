@@ -1,0 +1,31 @@
+/*
+ * IconButton composes Button's variant classes (ui-button ui-button--*) for
+ * every color/state — these rules only square the control off.
+ */
+.ui-icon-button {
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.ui-icon-button--sm {
+  inline-size: var(--ui-space-8);
+  min-inline-size: var(--ui-space-8);
+}
+.ui-icon-button--md {
+  inline-size: var(--ui-space-10);
+  min-inline-size: var(--ui-space-10);
+}
+.ui-icon-button--lg {
+  inline-size: var(--ui-space-12);
+  min-inline-size: var(--ui-space-12);
+}
+
+/* WCAG target size: match Button's coarse-pointer height floor in width too. */
+@media (pointer: coarse) {
+  .ui-icon-button--sm,
+  .ui-icon-button--md,
+  .ui-icon-button--lg {
+    inline-size: var(--ui-space-11, var(--ui-space-12));
+    min-inline-size: var(--ui-space-11, var(--ui-space-12));
+  }
+}

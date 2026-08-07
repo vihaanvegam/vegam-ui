@@ -1,0 +1,57 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as SkeletonStories from './Skeleton.stories';
+
+<Meta of={SkeletonStories} />
+
+# Skeleton
+
+A content-shaped loading placeholder. Reach for it when you know the shape of
+what is arriving; use **Spinner** when you do not, and **Progress** when a
+percentage is known.
+
+## Import
+
+```tsx
+import { Skeleton } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={SkeletonStories.Text} />
+<Canvas of={SkeletonStories.Shapes} />
+<Canvas of={SkeletonStories.CardPlaceholder} />
+
+Multi-line text shortens its last line, so a paragraph placeholder reads as
+text rather than a solid block.
+
+## Props
+
+<Controls of={SkeletonStories.Playground} />
+
+## Accessibility
+
+Skeletons are **purely decorative and always `aria-hidden`** — screen readers
+never announce placeholder boxes.
+
+**This means the surrounding region must convey loading some other way.**
+Pair the skeleton with a live region, e.g.:
+
+```tsx
+<div role="status" aria-live="polite">
+  {loading ? <Spinner label="Loading projects" /> : null}
+</div>;
+{
+  loading ? <Skeleton lines={3} /> : <ProjectList />;
+}
+```
+
+The shimmer stops under `prefers-reduced-motion`, leaving a flat fill.
+
+## Theming
+
+`variant` is themeable via `componentDefaults={{ Skeleton: { variant } }}`.
+Sizes ride the `--ui-skeleton-*` custom properties; the fill uses
+`surface.disabled` with `surface.subtle` as the shimmer band (a dedicated
+skeleton token is an open request in TOKENS_PLAN).
+
+<Canvas of={SkeletonStories.DarkScheme} />

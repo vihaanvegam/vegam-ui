@@ -1,0 +1,57 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as TabsStories from './Tabs.stories';
+
+<Meta of={TabsStories} />
+
+# Tabs
+
+Panels sharing one region, one visible at a time. Items are data — each
+carries its label and its panel content, and only the selected panel renders.
+
+**When not to use it:** sequential steps are a Stepper (Tier-Later); showing
+several sections at once is an **Accordion**; navigating to a different URL
+is a set of **Link**s, not tabs.
+
+## Import
+
+```tsx
+import { Tabs } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={TabsStories.Horizontal} />
+<Canvas of={TabsStories.Vertical} />
+
+### Automatic vs manual activation
+
+<Canvas of={TabsStories.ManualActivation} />
+
+`automatic` (the default) selects whatever tab focus lands on — right when
+panels are cheap. Switch to `manual` when rendering a panel is expensive:
+arrows then move focus only, and Enter or Space commits.
+
+## Props
+
+<Controls of={TabsStories.Playground} />
+
+## Accessibility
+
+- `role="tablist"` named by `label`, `role="tab"` buttons wired to their
+  `role="tabpanel"` via `aria-controls` / `aria-labelledby`, with
+  `aria-selected` on the selected tab.
+- **Roving tabindex**: only one tab is in the tab order, so Tab enters the
+  tablist once and then moves on to the panel — it does not walk every tab.
+- Arrows follow the orientation and **wrap** at the ends (the APG tabs
+  behaviour; Menu and Select deliberately stop instead). Home/End jump.
+  Disabled tabs are skipped.
+- The panel is `tabIndex={0}` so keyboard users can reach content that has no
+  focusable elements of its own.
+
+## Theming
+
+`orientation` and `activation` are themeable via
+`componentDefaults={{ Tabs: … }}`. `tabsClasses` exports every part class;
+the selected indicator is a pseudo-element, so it never shifts layout.
+
+<Canvas of={TabsStories.DarkScheme} />

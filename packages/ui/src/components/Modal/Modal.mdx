@@ -1,0 +1,124 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as ModalStories from './Modal.stories';
+
+<Meta of={ModalStories} />
+
+# Modal
+
+A dialog that interrupts: it takes focus, dims the page behind it, and must be
+dealt with before anything else. Use it for a decision the user has to make
+now — confirming a destructive action, a short focused form.
+
+Modals are expensive. They break the user's place on the page, they are
+awkward on small screens, and stacking them is always a mistake. Prefer
+`Drawer` for a side panel that complements the page, `Popover` for something
+anchored and lightweight, and `Banner` for a message that does not need a
+decision.
+
+## Import
+
+```tsx
+import { Modal } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={ModalStories.Small} />
+
+Modal is **fully controlled**: it renders nothing when `open` is false, and it
+never closes itself. `onClose` fires when the user asks to dismiss — Escape, a
+blanket click, or the close button — and flipping `open` is your job.
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Modal
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Delete project"
+  description="This cannot be undone."
+  appearance="danger"
+  closeLabel="Close"
+  footer={
+    <>
+      <Button variant="secondary" onClick={() => setOpen(false)}>
+        Cancel
+      </Button>
+      <Button variant="danger" onClick={confirmDelete}>
+        Delete
+      </Button>
+    </>
+  }
+>
+  Everything in this project will be permanently removed.
+</Modal>;
+```
+
+`size` steps the panel width; `fullscreen` fills the padded viewport in both
+dimensions.
+
+<Canvas of={ModalStories.Medium} />
+<Canvas of={ModalStories.Large} />
+<Canvas of={ModalStories.FullScreen} />
+
+`appearance` tints **only the header icon slot**, so a `currentColor` icon
+reads as the intent while the rest of the panel stays neutral:
+
+<Canvas of={ModalStories.Warning} />
+<Canvas of={ModalStories.Danger} />
+
+`footer` is an end-aligned action row, and `children` is a scrollable body —
+both are optional:
+
+<Canvas of={ModalStories.NoFooter} />
+
+## Props
+
+<Controls of={ModalStories.Playground} />
+
+**`title` shadows the native attribute.** `ModalProps` omits the DOM's `title`
+(the browser tooltip) and redefines it as the dialog heading — the same
+documented collision as `Input`'s `size` and `Banner`'s `title`.
+
+**The close button renders only when both `onClose` and `closeLabel` are set.**
+The glyph is decorative CSS, so a close button without a name would be
+unusable; requiring the label is what prevents that.
+
+## Accessibility
+
+Implements the WAI-ARIA **modal dialog** pattern:
+
+- The panel is `role="dialog"` with `aria-modal="true"`, named by `title` via
+  `aria-labelledby` and described by `description` via `aria-describedby` — so
+  opening it announces what it is and what it is for.
+- **Focus is trapped** inside the panel while open (`utils/focusTrap`), so Tab
+  and Shift+Tab cycle within the dialog instead of wandering into the page
+  behind it. On close, focus is **restored to the element that opened it**, so
+  the keyboard user is put back where they were.
+- **Escape closes**, and so does a click on the blanket. Both go through
+  `onClose`, so all three dismissal paths are one code path for you.
+- Background scrolling is locked while the dialog is open
+  (`utils/scrollLock`), so the page behind cannot drift out from under it.
+- The panel is portalled to the theme root — it escapes `overflow: hidden`
+  ancestors while staying inside the theme scope, so its tokens still resolve
+  and dark mode still applies.
+- The `icon` wrapper is `aria-hidden`; the title must carry the meaning.
+- **Give the dialog somewhere for focus to land.** The panel receives focus on
+  open; if the first thing in the body is a text input, focus it yourself so
+  the user can start typing.
+- ⚠ **Do not stack modals.** A second dialog over the first leaves two focus
+  traps competing, and screen-reader users lose the thread entirely.
+
+## Theming
+
+- **Class constants**: `modalClasses` exports every rendered class
+  (`ui-modal`, `ui-modal--lg`, `ui-modal__header`, …).
+- **Slots**: `slotProps` reaches every internal part — `root`, `blanket`,
+  `header`, `icon`, `title`, `description`, `body`, `footer`, `close`.
+- **Theme defaults**: `ThemeProvider componentDefaults={{ Modal: { size: 'md', appearance: 'default' } }}` —
+  explicit props always win.
+- **Dark scheme**: panel surface, scrim alpha, border, and the appearance
+  tints are all semantic tokens; the dark elevation ramp uses higher-alpha
+  shadows so the panel still reads as lifted.
+
+<Canvas of={ModalStories.DarkScheme} />

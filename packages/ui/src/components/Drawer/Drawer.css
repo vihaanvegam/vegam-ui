@@ -1,0 +1,182 @@
+/*
+ * Sizes are component custom properties: the export has no drawer-width
+ * scale, and these are the documented override surface (Modal-sizes
+ * precedent, DECISIONS 2026-08-04).
+ */
+.ui-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ui-z-drawer);
+}
+
+.ui-drawer .ui-blanket {
+  /* DOM order stacks the panel above the scrim inside the drawer root. */
+  z-index: auto;
+}
+
+.ui-drawer__panel {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: var(--ui-color-surface-page);
+  color: var(--ui-text-primary);
+  box-shadow: var(--ui-elevation-xl);
+  font-family: var(--ui-font-family-sans);
+  transition: transform var(--ui-motion-duration-slow) var(--ui-motion-easing-exit);
+}
+
+.ui-drawer__panel[data-state='entering'],
+.ui-drawer__panel[data-state='entered'] {
+  transform: none;
+  transition-timing-function: var(--ui-motion-easing-enter);
+}
+
+.ui-drawer__panel:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: calc(-1 * var(--ui-focus-ring-width));
+}
+
+/* --- placement: inline axis --- */
+.ui-drawer__panel--left,
+.ui-drawer__panel--right {
+  inset-block: 0;
+  inline-size: var(--ui-drawer-size);
+  max-inline-size: 100vw;
+}
+.ui-drawer__panel--left {
+  inset-inline-start: 0;
+  transform: translateX(-100%);
+}
+.ui-drawer__panel--right {
+  inset-inline-end: 0;
+  transform: translateX(100%);
+}
+
+/* --- placement: block axis --- */
+.ui-drawer__panel--top,
+.ui-drawer__panel--bottom {
+  inset-inline: 0;
+  block-size: var(--ui-drawer-size);
+  max-block-size: 100vh;
+}
+.ui-drawer__panel--top {
+  inset-block-start: 0;
+  transform: translateY(-100%);
+}
+.ui-drawer__panel--bottom {
+  inset-block-end: 0;
+  transform: translateY(100%);
+}
+
+/* --- sizes --- */
+.ui-drawer__panel--sm {
+  --ui-drawer-size: 20rem;
+}
+.ui-drawer__panel--md {
+  --ui-drawer-size: 28rem;
+}
+.ui-drawer__panel--lg {
+  --ui-drawer-size: 40rem;
+}
+.ui-drawer__panel--full {
+  --ui-drawer-size: 100%;
+}
+
+/* --- parts --- */
+.ui-drawer__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ui-space-3);
+  padding: var(--ui-space-5);
+  border-block-end: var(--ui-border-width-hairline) solid var(--ui-color-divider-default);
+}
+
+.ui-drawer__headings {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.ui-drawer__title {
+  font-size: var(--ui-font-size-lg);
+  font-weight: var(--ui-font-weight-semibold);
+}
+
+.ui-drawer__description {
+  margin-block-start: var(--ui-space-1);
+  color: var(--ui-text-secondary);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-typography-body-line-height);
+}
+
+.ui-drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--ui-space-5);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-typography-body-line-height);
+}
+
+.ui-drawer__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ui-space-3);
+  padding: var(--ui-space-5);
+  border-block-start: var(--ui-border-width-hairline) solid var(--ui-color-divider-default);
+}
+
+/* Close glyph: two rotated bars in currentColor — no icon assets, matching
+   Banner's drawn ✕. */
+.ui-drawer__close {
+  position: relative;
+  flex-shrink: 0;
+  inline-size: var(--ui-size-control-md);
+  block-size: var(--ui-size-control-md);
+  padding: 0;
+  border: none;
+  border-radius: var(--ui-radius-sm);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.ui-drawer__close:hover {
+  background: var(--ui-color-surface-subtle);
+}
+
+.ui-drawer__close:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+.ui-drawer__close::before,
+.ui-drawer__close::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: var(--ui-space-3);
+  block-size: var(--ui-border-width-icon);
+  background: currentColor;
+}
+.ui-drawer__close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.ui-drawer__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+@media (pointer: coarse) {
+  .ui-drawer__close {
+    inline-size: var(--ui-space-11, var(--ui-space-12));
+    block-size: var(--ui-space-11, var(--ui-space-12));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-drawer__panel {
+    transition: none;
+    /* Without the slide, the panel must still land in place. */
+    transform: none;
+  }
+}

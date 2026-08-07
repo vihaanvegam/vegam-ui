@@ -1,0 +1,46 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as SpinnerStories from './Spinner.stories';
+
+<Meta of={SpinnerStories} />
+
+# Spinner
+
+An indeterminate busy indicator — a ring drawn from borders, no icon assets.
+Use **Progress** when a percentage is known, and **Skeleton** when you know
+the shape of the content that is coming.
+
+## Import
+
+```tsx
+import { Spinner } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={SpinnerStories.Basic} />
+<Canvas of={SpinnerStories.Sizes} />
+<Canvas of={SpinnerStories.InlineWithText} />
+
+## Props
+
+<Controls of={SpinnerStories.Playground} />
+
+## Accessibility
+
+- With a `label`, the root is `role="status"` — an implicit polite live
+  region — and the label renders visually hidden, so screen readers announce
+  it when the spinner appears.
+- Without a label the spinner is `aria-hidden` decoration. **That is only
+  correct when something else announces the wait** (a surrounding live
+  region, or adjacent text as in the inline example); otherwise the loading
+  state is silent to assistive tech.
+- Rotation stops under `prefers-reduced-motion`, and the ring stays visible
+  so the busy state still reads.
+
+## Theming
+
+`size` is themeable via `componentDefaults={{ Spinner: { size } }}`.
+`spinnerClasses` is the class override surface; the ring colour comes from
+the action and border tokens, so dark mode is a pure remap.
+
+<Canvas of={SpinnerStories.DarkScheme} />

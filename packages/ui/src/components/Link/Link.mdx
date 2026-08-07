@@ -1,0 +1,60 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as LinkStories from './Link.stories';
+
+<Meta of={LinkStories} />
+
+# Link
+
+Navigation to somewhere else. **Use a Link to go somewhere and a Button to do
+something** — styling one as the other breaks keyboard expectations (Enter vs
+Space), middle-click, and history.
+
+## Import
+
+```tsx
+import { Link } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={LinkStories.InProse} />
+<Canvas of={LinkStories.Variants} />
+
+`default` underlines — in flowing text that underline is what marks the link
+without relying on colour. `subtle` and `standalone` drop it until hover, and
+are for links that are not inside a sentence (nav items, cards), where
+position already signals the affordance.
+
+### External links
+
+<Canvas of={LinkStories.External} />
+
+`external` pairs `target="_blank"` with `rel="noopener noreferrer"` and
+requires `newTabLabel`, which is appended as visually hidden text so the tab
+switch is announced _before_ it happens.
+
+### Router integration
+
+<Canvas of={LinkStories.RouterLink} />
+
+`slots.anchor` receives every anchor prop, including `href` and `className`.
+It must render a real `<a>` so link semantics survive.
+
+## Props
+
+<Controls of={LinkStories.Playground} />
+
+## Accessibility
+
+- The link text is the accessible name — make it meaningful alone ("Pricing",
+  not "click here"), since screen reader users navigate by a list of links.
+- `variant="default"` underlines, so colour is never the only cue (WCAG
+  1.4.1). If you use `subtle` in prose, make sure something else marks it.
+- The focus ring comes from the focus tokens.
+
+## Theming
+
+`variant` is themeable via `componentDefaults={{ Link: { variant } }}`;
+`linkClasses` is the class override surface.
+
+<Canvas of={LinkStories.DarkScheme} />

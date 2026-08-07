@@ -1,0 +1,47 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as FlexStories from './Flex.stories';
+
+<Meta of={FlexStories} />
+
+# Flex
+
+The full flexbox container surface with responsive props. **Stack is the
+simple sibling** — one axis, one gap, class-per-step; keep using it for plain
+vertical/horizontal stacks. Flex is for everything else: wrapping, reversed
+axes, per-breakpoint direction changes, distribution control, and styling a
+flex _item_ (`grow`/`shrink`/`basis`). Flex has no padding/margin surface —
+compose with Box for spacing.
+
+## Import
+
+```tsx
+import { Flex } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={FlexStories.Row} />
+<Canvas of={FlexStories.SpaceBetween} />
+<Canvas of={FlexStories.Wrapping} />
+
+`direction`, `wrap`, `align`, `justify`, and `gap` all take responsive
+values — the classic stack-on-mobile, row-on-desktop pattern is one prop:
+
+<Canvas of={FlexStories.ResponsiveDirection} />
+
+## Props
+
+<Controls of={FlexStories.Playground} />
+
+## Accessibility
+
+A generic `<div>` with no implicit role and no interaction. Layout only —
+pass `role`/`aria-*` through when the group has meaning.
+
+## Theming
+
+- `gap` is themeable via
+  `ThemeProvider componentDefaults={{ Flex: { gap: 4 } }}`.
+- `flexClasses.root` is the class override surface.
+
+<Canvas of={FlexStories.DarkScheme} />

@@ -20,30 +20,33 @@ function resolveToken(tokens, path) {
   return match ? resolveToken(tokens, match[1]) : String(node.value);
 }
 
+// Paths follow the Aug-2026 export's theme tier. The pre-migration
+// `web.<scheme>.color.*` paths resolved to null after the schema change, so
+// every chrome colour silently fell back to #000 (caught 2026-08-07).
 const LIGHT = {
-  canvas: 'web.light.color.surface.page',
-  surface: 'web.light.color.surface.page',
-  subtle: 'web.light.color.surface.subtle',
-  muted: 'web.light.color.surface.disabled',
-  text: 'web.light.color.text.primary',
-  textMuted: 'web.light.color.text.secondary',
-  border: 'web.light.color.border.default',
-  borderSubtle: 'web.light.color.divider.default',
-  focus: 'web.light.color.border.focus',
-  accent: 'web.light.color.action.primary.bg',
+  canvas: 'theme.light.color.surface.page',
+  surface: 'theme.light.color.surface.page',
+  subtle: 'theme.light.color.surface.subtle',
+  muted: 'theme.light.color.surface.disabled',
+  text: 'theme.light.color.text.primary-standard',
+  textMuted: 'theme.light.color.text.secondary-standard',
+  border: 'theme.light.color.border.default',
+  borderSubtle: 'theme.light.color.divider.default',
+  focus: 'theme.light.color.border.focus',
+  accent: 'theme.light.color.action.primary.bg',
 };
 
 const DARK = {
-  canvas: 'web.dark.color.surface.page',
-  surface: 'web.dark.color.surface.page',
-  subtle: 'web.dark.color.surface.subtle',
-  muted: 'web.dark.color.surface.disabled',
-  text: 'web.dark.color.text.primary',
-  textMuted: 'web.dark.color.text.secondary',
-  border: 'web.dark.color.border.default',
-  borderSubtle: 'web.dark.color.divider.default',
-  focus: 'web.dark.color.border.focus',
-  accent: 'web.dark.color.action.primary.bg',
+  canvas: 'theme.dark.color.surface.page',
+  surface: 'theme.dark.color.surface.page',
+  subtle: 'theme.dark.color.surface.subtle',
+  muted: 'theme.dark.color.surface.disabled',
+  text: 'theme.dark.color.text.primary-standard',
+  textMuted: 'theme.dark.color.text.secondary-standard',
+  border: 'theme.dark.color.border.default',
+  borderSubtle: 'theme.dark.color.divider.default',
+  focus: 'theme.dark.color.border.focus',
+  accent: 'theme.dark.color.action.primary.bg',
 };
 
 /** Node colours per category, taken from the primitive palette. */
@@ -51,6 +54,7 @@ const CATEGORY_TOKENS = {
   barrel: 'blue.700',
   components: 'blue.500',
   theme: 'amber.500',
+  hooks: 'purple.500',
   utils: 'green.500',
   package: 'blue.600',
   app: 'grey.500',

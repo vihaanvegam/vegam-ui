@@ -1,0 +1,48 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as ProgressStories from './Progress.stories';
+
+<Meta of={ProgressStories} />
+
+# Progress
+
+A progress bar. With `value` it is **determinate** and announces a
+percentage; without one it is **indeterminate** — an animated sweep that
+reports busy-ness with no number. Use Spinner when there is no meaningful
+track to draw.
+
+## Import
+
+```tsx
+import { Progress } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={ProgressStories.Determinate} />
+<Canvas of={ProgressStories.Indeterminate} />
+<Canvas of={ProgressStories.Tones} />
+
+When the raw number is not what a user should hear, pass `valueText`:
+
+<Canvas of={ProgressStories.WithValueText} />
+
+## Props
+
+<Controls of={ProgressStories.Playground} />
+
+## Accessibility
+
+- `role="progressbar"` with `aria-valuemin`/`-valuemax`, plus
+  `aria-valuenow` when determinate.
+- An indeterminate bar **deliberately omits `aria-valuenow`** — that absence
+  is precisely how assistive tech is told the value is unknown.
+- Name it with `aria-label` or `aria-labelledby`; the component ships no
+  copy. Not focusable, not interactive.
+- Motion stops under `prefers-reduced-motion`, leaving a static filled track.
+
+## Theming
+
+`size` and `tone` are themeable via `componentDefaults={{ Progress: … }}`.
+`progressClasses` exports the root and fill classes.
+
+<Canvas of={ProgressStories.DarkScheme} />

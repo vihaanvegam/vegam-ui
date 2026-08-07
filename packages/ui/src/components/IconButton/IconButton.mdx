@@ -1,0 +1,48 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as IconButtonStories from './IconButton.stories';
+
+<Meta of={IconButtonStories} />
+
+# IconButton
+
+Button's square sibling for icon-only actions. It composes Button's variant
+classes for every color and state — the two can never drift — and adds only
+the square geometry. The glyph is `children`: the library ships no icons, so
+pass your own SVG (marked `aria-hidden`) or an `@vegam-ui/icons` icon once
+Phase 5 lands.
+
+## Import
+
+```tsx
+import { IconButton } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={IconButtonStories.Ghost} />
+<Canvas of={IconButtonStories.Sizes} />
+
+The default variant is `ghost` — icon-only actions are usually
+toolbar-weight, not page-primary (Button's default stays `primary`).
+
+## Props
+
+<Controls of={IconButtonStories.Playground} />
+
+## Accessibility
+
+- **The accessible name is required at the type level**: exactly one of
+  `aria-label` or `aria-labelledby` — omitting both is a compile error, not a
+  runtime hope.
+- Everything else is Button: native `<button>`, `type="button"` default,
+  `:focus-visible` ring, disabled semantics, and 44px coarse-pointer targets
+  (the square's width grows to match).
+
+## Theming
+
+- `variant`/`size` are themeable via
+  `componentDefaults={{ IconButton: { … } }}` — independent of Button's own
+  defaults.
+- Override surface: Button's classes (composed) plus `iconButtonClasses`.
+
+<Canvas of={IconButtonStories.DarkScheme} />

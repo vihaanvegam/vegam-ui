@@ -1,0 +1,45 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as TextareaStories from './Textarea.stories';
+
+<Meta of={TextareaStories} />
+
+# Textarea
+
+Input's multi-line sibling — same sizes, states, and tokens. Fixed height
+comes from the native `rows` attribute (with the user agent's resize handle);
+passing `minRows`/`maxRows` opts into **autosize**, where the height tracks
+the content between those bounds and manual resizing is disabled so it cannot
+fight the measurement.
+
+## Import
+
+```tsx
+import { Textarea } from '@vegam-ui/ui';
+```
+
+## Usage
+
+<Canvas of={TextareaStories.Basic} />
+<Canvas of={TextareaStories.Autosize} />
+<Canvas of={TextareaStories.Invalid} />
+
+## Props
+
+<Controls of={TextareaStories.Playground} />
+
+## Accessibility
+
+- Native `<textarea>` — focus, IME, and form semantics come from the
+  platform.
+- Mark invalid values with `aria-invalid`; the danger styling keys off the
+  attribute (Input's precedent), or let a wrapping Field set it from its
+  `error`.
+- Inside a Field the id, `aria-describedby`, `aria-invalid`,
+  `aria-required`, and `disabled` wire up automatically.
+
+## Theming
+
+`size` is themeable via `componentDefaults={{ Textarea: { size } }}`;
+`textareaClasses` is the class override surface.
+
+<Canvas of={TextareaStories.DarkScheme} />

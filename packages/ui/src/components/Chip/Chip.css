@@ -1,0 +1,142 @@
+/*
+ * Geometry comes from the component-tier chip tokens (height/radius), which
+ * the token build re-declares per theme, so dark mode is a pure remap.
+ */
+.ui-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  border: var(--ui-border-width-hairline) solid transparent;
+  border-radius: var(--ui-component-chip-radius);
+  font-family: var(--ui-font-family-sans);
+  font-weight: var(--ui-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ui-chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ui-chip--md {
+  min-block-size: var(--ui-space-6);
+  padding-inline: var(--ui-space-3);
+  padding-block: var(--ui-space-1);
+  font-size: var(--ui-font-size-sm);
+}
+
+.ui-chip--sm {
+  min-block-size: var(--ui-space-5);
+  padding-inline: var(--ui-space-2);
+  padding-block: var(--ui-space-0-5);
+  font-size: var(--ui-font-size-xs);
+}
+
+/* --- tones: tinted fill + its contrast-safe foreground pair --- */
+.ui-chip--neutral {
+  background: var(--ui-component-chip-fill);
+  color: var(--ui-component-chip-text-color);
+}
+.ui-chip--info {
+  background: var(--ui-color-feedback-info-subtle);
+  color: var(--ui-color-feedback-info-fg);
+}
+.ui-chip--success {
+  background: var(--ui-color-feedback-success-subtle);
+  color: var(--ui-color-feedback-success-fg);
+}
+.ui-chip--warning {
+  background: var(--ui-color-feedback-warning-subtle);
+  color: var(--ui-color-feedback-warning-fg);
+}
+.ui-chip--danger {
+  background: var(--ui-color-feedback-danger-subtle);
+  color: var(--ui-color-feedback-danger-fg);
+}
+.ui-chip--tag {
+  background: var(--ui-color-feedback-tag-subtle);
+  color: var(--ui-color-feedback-tag-fg);
+}
+
+/* --- activatable --- */
+.ui-chip--interactive {
+  cursor: pointer;
+  transition:
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard),
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-easing-standard);
+}
+
+.ui-chip--interactive:hover:not(:disabled) {
+  border-color: var(--ui-color-border-hover);
+}
+
+.ui-chip--interactive:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+/* Selected needs a non-colour cue too, so it also carries a border. */
+.ui-chip--selected {
+  border-color: var(--ui-color-action-primary-bg);
+  border-width: var(--ui-border-width-selected);
+}
+
+.ui-chip--disabled,
+.ui-chip:disabled {
+  opacity: var(--ui-opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* --- remove affordance: a drawn ✕, no icon assets --- */
+.ui-chip__remove {
+  position: relative;
+  flex-shrink: 0;
+  inline-size: var(--ui-space-4);
+  block-size: var(--ui-space-4);
+  padding: 0;
+  border: none;
+  border-radius: var(--ui-radius-full);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.ui-chip__remove:hover:not(:disabled) {
+  background: var(--ui-color-surface-disabled);
+}
+
+.ui-chip__remove:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-border-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+.ui-chip__remove:disabled {
+  cursor: not-allowed;
+}
+
+.ui-chip__remove::before,
+.ui-chip__remove::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: var(--ui-space-2);
+  block-size: var(--ui-border-width-icon);
+  background: currentColor;
+}
+.ui-chip__remove::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.ui-chip__remove::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-chip--interactive {
+    transition: none;
+  }
+}

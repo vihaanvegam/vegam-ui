@@ -1,0 +1,222 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as IconStories from './Icons.stories';
+
+<Meta of={IconStories} />
+
+# Icons
+
+`@vegam-ui/icons` is the drawn set from the Figma library, one tree-shakeable
+React component per glyph. It is a **separate package** from `@vegam-ui/ui`:
+components never import an icon at runtime, so installing the library does not
+drag the icon set into your bundle, and you can take the icons without the
+components.
+
+Reach for these when a glyph carries meaning or saves space in a dense UI.
+Do **not** reach for them as decoration around text that already says the same
+thing — a redundant glyph is noise that every user pays for in scanning cost.
+
+## Install
+
+```bash
+npm install @vegam-ui/icons
+```
+
+No stylesheet to import — the package ships no CSS. React is the only peer
+dependency, and there are no runtime dependencies at all.
+
+```tsx
+import { IconSearch } from '@vegam-ui/icons';
+
+<IconSearch />;
+```
+
+Each icon is its own module behind a side-effect-free barrel, so importing one
+icon bundles one icon.
+
+## Gallery
+
+Type to filter; click a tile to copy its import line.
+
+<Canvas of={IconStories.Gallery} />
+
+## Sizing
+
+`size` accepts a named step from the `size.icon-*` token ramp, or a number in
+px. Omit it and the icon is `1em` — it follows the surrounding font size, so
+an icon dropped into a paragraph or a button just fits.
+
+<Canvas of={IconStories.SizeRamp} />
+
+**The ramp is not alphabetical.** `xxl` is the 28px rung that sits between
+`lg` and `xl`:
+
+| Step  | Token                | Size |
+| ----- | -------------------- | ---- |
+| `xxs` | `--ui-size-icon-xxs` | 12px |
+| `sm`  | `--ui-size-icon-sm`  | 16px |
+| `md`  | `--ui-size-icon-md`  | 20px |
+| `lg`  | `--ui-size-icon-lg`  | 24px |
+| `xxl` | `--ui-size-icon-xxl` | 28px |
+| `xl`  | `--ui-size-icon-xl`  | 32px |
+
+Named steps resolve to the token `var()` **with the token's own value baked in
+as a fallback**, so icons are sized correctly even in an app that never loads
+`@vegam-ui/tokens`. An explicit `style` width or height still wins over `size`.
+
+```tsx
+<IconSearch />           {/* 1em — matches the text around it */}
+<IconSearch size="md" /> {/* 20px via --ui-size-icon-md */}
+<IconSearch size={18} /> {/* 18px */}
+```
+
+## Colour
+
+There is no `color` prop. Every glyph paints with `currentColor`, so an icon
+takes the colour of whatever it sits in — set CSS `color` on the icon or on any
+ancestor. The theme ships tokens for the usual roles.
+
+<Canvas of={IconStories.Colour} />
+
+```tsx
+<span style={{ color: 'var(--ui-color-icon-subtle)' }}>
+  <IconInfo />
+</span>
+```
+
+`--ui-color-icon-default` · `--ui-color-icon-subtle` ·
+`--ui-color-icon-disabled` all remap under `[data-theme="dark"]`, so icons
+follow dark mode with no work from you.
+
+## Props
+
+Every icon takes the same props. They extend the native `SVGProps`, so
+`className`, `style`, `data-*`, event handlers and a `ref` to the `<svg>` all
+work as you would expect.
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>size</code>
+      </td>
+      <td>
+        <code>'xxs' | 'sm' | 'md' | 'lg' | 'xxl' | 'xl' | number</code>
+      </td>
+      <td>
+        <code>'1em'</code>
+      </td>
+      <td>Named token step, or a number treated as px.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>title</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>
+        <code>undefined</code>
+      </td>
+      <td>
+        Accessible name. Present → <code>role="img"</code> with this text; absent → the icon is
+        hidden from assistive tech.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<Canvas of={IconStories.Playground} />
+
+## Accessibility
+
+An icon is either **decorative** or **meaningful**, and the difference is
+whether the same information is already available as text.
+
+**Decorative (the default).** Beside a visible label, the icon adds nothing for
+a screen reader, so it ships `aria-hidden="true"` and is skipped entirely.
+
+```tsx
+<Button>
+  <IconAdd /> Add item
+</Button>
+```
+
+**Icon-only controls.** The accessible name belongs to the control, not the
+glyph — `IconButton` requires one and will not compile without it. Leave the
+icon decorative so the name is announced once, not twice.
+
+```tsx
+<IconButton aria-label="Delete" onClick={remove}>
+  <IconDelete />
+</IconButton>
+```
+
+**Meaningful on its own.** When the icon is the only carrier of the
+information, give it a `title` and it becomes `role="img"` with that name.
+
+```tsx
+<IconWarning title="Validation failed" />
+```
+
+An `aria-label` or `aria-labelledby` you pass yourself is honoured the same way
+as `title` — the icon will not stay hidden when you have plainly asked for it
+to be named.
+
+Interactive icons are always a wrapped `IconButton`, never a `tabindex` on the
+`<svg>`: an SVG is not a control, and making it focusable gives keyboard and
+screen-reader users something that behaves like neither a button nor an image.
+
+## Server components
+
+Icons are the one `@vegam-ui` package usable **directly from a React Server
+Component**. There is no `'use client'`, no hook, no context and no browser
+global anywhere in it, so an icon rendered in a Next.js App Router layout or
+page stays on the server and never enters the client bundle. The release gates
+prove it rather than assume it: one gate asserts the built bundles contain no
+`'use client'`, and the smoke app renders an icon from its root layout, so a
+regression fails the build.
+
+## Adding your own icon
+
+`createIcon` is exported, so a project-specific glyph behaves exactly like a
+shipped one — same sizing, same accessibility switch, same class:
+
+```tsx
+import { createIcon } from '@vegam-ui/icons';
+
+export const IconSparkle = createIcon(
+  'IconSparkle',
+  '0 0 16 16',
+  <path d="M8 1 L10 6 15 8 10 10 8 15 6 10 1 8 6 6Z" fill="currentColor" />,
+);
+```
+
+Paint with `currentColor`, and keep the artwork free of `id` attributes — ids
+would collide the moment the icon rendered twice on one page.
+
+## Where the set comes from
+
+The glyphs are exported from the Figma library (page **07 · Icon Pack**) into
+`packages/icons/svg/`, and `pnpm icons` generates the components from them.
+Both the SVG sources and the generated output are committed, and `pnpm
+icons:check` fails CI if they drift apart — so the code always matches the
+design file. The set is drawn at a 1.25px stroke, which is the
+`border-width.icon` token.
+
+To add or redraw an icon: change it in Figma, re-export to `svg/`, run
+`pnpm icons`, and commit.
+
+## Theming
+
+Icons carry the class `ui-icon` for blanket overrides, and inherit colour, so
+theming is done with the `--ui-color-icon-*` tokens or plain CSS `color` on an
+ancestor. See [Theming](?path=/docs/guides-theming--docs) for the token layers
+and dark mode.
