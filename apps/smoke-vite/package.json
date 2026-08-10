@@ -10,11 +10,11 @@
     "@vegam-ui/icons": "workspace:*",
     "@vegam-ui/ui": "workspace:*",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.5",
+    "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.4",
     "typescript": "^5.9.0",
     "vite": "^8.1.5"
